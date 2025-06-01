@@ -56,5 +56,12 @@ function getColorFromUsername($username) {
 
   <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
   <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
+
+
+
+  <form action="sellerlog.php" method="GET">
+  <button type="submit">Seller Manage</button>
+  </form>
+
 </body>
 </html>

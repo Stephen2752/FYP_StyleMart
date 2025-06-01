@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Sign Up</title>
   <style>
+    .error {
+      color: red;
+      font-size: 0.9em;
+      display: none;
+    }
     .login-link {
       margin-top: 10px;
     }
@@ -11,23 +16,27 @@
 </head>
 <body>
   <h2>User Sign Up</h2>
-  <form action="signup.php" method="POST" onsubmit="return validateForm()">
+  <form action="signup.php" method="POST">
     <label for="username">Username:</label><br>
-    <input type="text" name="username" required><br><br>
+    <input type="text" name="username" id="username" required><br>
+    <span id="usernameError" class="error">Username already taken.</span><br><br>
 
     <label for="email">Email:</label><br>
-    <input type="email" name="email" required><br><br>
+    <input type="email" name="email" id="email" required><br>
+    <span id="emailError" class="error">Username or email already taken.</span><br><br>
 
     <label for="password">Password:</label><br>
-    <input type="password" name="password" required><br><br>
+    <input type="password" name="password" id="password" required><br><br>
 
     <label for="confirm_password">Confirm Password:</label><br>
-    <input type="password" name="confirm_password" required><br><br>
+    <input type="password" name="confirm_password" id="confirm_password" required><br>
+    <span id="confirmError" class="error">Passwords do not match.</span><br><br>
 
     <label>
       <input type="checkbox" name="agree_terms" id="agree_terms" required>
       Do you agree to the <a href="#">Terms and Conditions</a>?
-    </label><br><br>
+    </label><br>
+    <span id="termsError" class="error">You must agree to the Terms and Conditions.</span><br><br>
 
     <input type="submit" value="Sign Up">
   </form>
@@ -37,13 +46,27 @@
   </div>
 
   <script>
-    function validateForm() {
-      if (!document.getElementById('agree_terms').checked) {
-        alert("You must agree to the Terms and Conditions to sign up.");
-        return false;
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const error = params.get('error');
+
+      if (error === 'taken') {
+        document.getElementById('usernameError').style.display = 'inline';
+        document.getElementById('emailError').value = '';
+        document.getElementById('username').value = '';
+        document.getElementById('email').value = '';
       }
-      return true;
-    }
+
+      if (error === 'mismatch') {
+        document.getElementById('confirmError').style.display = 'inline';
+        document.getElementById('password').value = '';
+        document.getElementById('confirm_password').value = '';
+      }
+
+      if (error === 'terms') {
+        document.getElementById('termsError').style.display = 'inline';
+      }
+    };
   </script>
 </body>
 </html>

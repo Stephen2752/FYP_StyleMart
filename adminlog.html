@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <style>
+        .error {
+            color: red;
+            font-size: 0.9em;
+            display: none;
+        }
+        
+    </style>
+</head>
+<body>
+    <h2>Admin Login</h2>
+    <form id="loginForm" action="adminlog.php" method="POST">
+        <label>Username:</label><br>
+        <input type="text" name="adminlogin_id" id="adminusername" required><br>
+        <span id="adminusernameError" class="error">Username not found.</span><br><br>
+
+        <label>Password:</label><br>
+        <input type="password" name="adminpassword" id="adminpassword" required><br>
+        <span id="adminpasswordError" class="error">Incorrect password.</span><br><br>
+
+        <button type="submit">Login</button>
+    </form>
+
+    <script>
+        // Get error from URL
+        const params = new URLSearchParams(window.location.search);
+        const usernameInput = document.getElementById('adminusername');
+        const passwordInput = document.getElementById('adminpassword');
+
+        if (params.has('error')) {
+            const errorType = params.get('error');
+
+            if (errorType === 'admin_not_found') {
+                document.getElementById('adminusernameError').style.display = 'inline';
+                usernameInput.value = ''; // Clear username
+            }
+
+            if (errorType === 'incorrect_password') {
+                document.getElementById('adminpasswordError').style.display = 'inline';
+                passwordInput.value = ''; // Clear password
+            }
+        }
+    </script>
+</body>
+</html>
