@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Create Product</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    .preview img { width: 100px; margin: 5px; }
+    .size-grid { margin-top: 15px; }
+    .size-row { display: flex; gap: 10px; margin-bottom: 10px; }
+    .button { padding: 6px 10px; margin: 5px; cursor: pointer; }
+    .category-btn, .subcategory-btn { border: 1px solid #aaa; background: white; }
+    .selected { background-color: black; color: white; }
+  </style>
+</head>
+<body>
+  <h2>Create Product</h2>
+  <form id="productForm" action="create_product.php" method="POST" enctype="multipart/form-data">
+    <label>Product Name: <input type="text" name="name" required></label><br><br>
+    
+    <label>Price (RM): <input type="number" name="price" step="0.01" required></label><br><br>
+
+    <label>Description:<br>
+      <textarea name="description" rows="4" cols="50"></textarea>
+    </label><br><br>
+
+    <!-- Category Selection -->
+    <div>
+      <strong>Category:</strong><br>
+      <button type="button" class="button category-btn" onclick="selectCategory('Men')">Men</button>
+      <button type="button" class="button category-btn" onclick="selectCategory('Women')">Women</button>
+      <button type="button" class="button category-btn" onclick="selectCategory('Kids')">Kids</button>
+    </div>
+
+    <input type="hidden" name="category" id="categoryInput"><br>
+
+    <!-- Subcategory -->
+    <div id="subcategoryContainer" style="display: none;">
+      <strong>Subcategory:</strong><br>
+      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Clothes')">Clothes</button>
+      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Shoes')">Shoes</button>
+      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Pants')">Pants</button>
+    </div>
+
+    <input type="hidden" name="subcategory" id="subcategoryInput"><br><br>
+
+    <!-- Multiple Image Upload -->
+    <label>Product Photos: 
+      <input type="file" name="images[]" multiple id="imageInput" accept="image/*">
+    </label>
+    <div class="preview" id="imagePreview"></div><br>
+
+    <!-- Size & Stock -->
+    <div>
+      <strong>Sizes:</strong>
+      <div id="sizesContainer" class="size-grid"></div>
+      <button type="button" class="button" onclick="addSize()">+ Add Size</button>
+    </div><br>
+
+    <button type="submit" class="button">Save Product</button>
+  </form>
+
+  <script>
+    // Show image previews
+    document.getElementById('imageInput').addEventListener('change', function () {
+      const preview = document.getElementById('imagePreview');
+      preview.innerHTML = '';
+      Array.from(this.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = document.createElement('img');
+          img.src = e.target.result;
+          preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
+      });
+    });
+
+    // Add size + stock row
+    function addSize() {
+      const container = document.getElementById('sizesContainer');
+      const row = document.createElement('div');
+      row.className = 'size-row';
+
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'text';
+      sizeInput.name = 'sizes[]';
+      sizeInput.placeholder = 'Size (e.g. S)';
+      sizeInput.required = true;
+
+      const stockInput = document.createElement('input');
+      stockInput.type = 'number';
+      stockInput.name = 'stocks[]';
+      stockInput.placeholder = 'Stock';
+      stockInput.min = 0;
+      stockInput.required = true;
+
+      row.appendChild(sizeInput);
+      row.appendChild(stockInput);
+      container.appendChild(row);
+    }
+
+    // Category Selection
+    function selectCategory(category) {
+      document.getElementById('categoryInput').value = category;
+      document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('selected'));
+      event.target.classList.add('selected');
+      document.getElementById('subcategoryContainer').style.display = 'block';
+    }
+
+    // Subcategory Selection
+    function selectSubcategory(subcategory) {
+      document.getElementById('subcategoryInput').value = subcategory;
+      document.querySelectorAll('.subcategory-btn').forEach(btn => btn.classList.remove('selected'));
+      event.target.classList.add('selected');
+    }
+  </script>
+</body>
+</html>
