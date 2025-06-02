@@ -1,0 +1,229 @@
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f2f2f2;
+    color: #333;
+  }
+  
+  /* Topbar */
+  .topbar {
+    background: #3e3e3e;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+  }
+  
+  .topbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  /* From Uiverse.io by joe-watson-sbf */ 
+  .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .search__input {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #f4f2f2;
+    border: none;
+    color: #646464;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    width: 30em;
+    transition: all ease-in-out .5s;
+    margin-right: -2rem;
+  }
+
+  .search__input:hover, .search__input:focus {
+    box-shadow: 0 0 1em #00000013;
+  }
+
+  .search__input:focus {
+    outline: none;
+    background-color: #f0eeee;
+  }
+
+  .search__input::-webkit-input-placeholder {
+    font-weight: 100;
+    color: #ccc;
+  }
+
+  .search__input:focus + .search__button {
+    background-color: #f0eeee;
+  }
+
+  .search__button {
+    border: none;
+    background-color: #f4f2f2;
+    margin-top: .1em;
+  }
+
+  .search__button:hover {
+    cursor: pointer;
+  }
+
+  .search__icon {
+    height: 1.3em;
+    width: 1.3em;
+    fill: #b4b4b4;
+  }
+  
+  .icons .icon {
+    margin-left: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* Menu bar */
+  .menu-bar {
+    background: white;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    gap: 30px;
+    border-bottom: 1px #ddd;
+  }
+  
+  .menu-bar button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  /* 下拉容器 */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* 下拉内容（默认隐藏） */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top: 5px;
+  border-radius: 4px;
+}
+
+/* 下拉内容中的链接 */
+.dropdown-content a {
+  color: #333;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+}
+
+/* 悬停链接效果 */
+.dropdown-content a:hover {
+  background-color: #f2f2f2;
+}
+
+/* 当鼠标悬停 .dropdown 时显示内容 */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+  /* Product Grid */
+/* 产品卡片整体样式 */
+.product-card {
+  background: white;
+  border: 1px #ccc;
+  border-radius: 8px;
+  text-align: center;
+  padding: 8px;
+  transition: box-shadow 0.3s;
+  width: 160px; /* 稍微更窄 */
+  box-sizing: border-box;
+}
+
+.product-card img {
+  width: 100%;
+  height: 160px; /* 高度更小 */
+  object-fit: cover; /* 图片保持比例填满 */
+  border-radius: 4px;
+}
+
+.product-card p {
+  margin: 3px 0;
+  font-size: 13px; /* 字体更小 */
+  line-height: 1.2;
+}
+
+.product-card .price {
+  font-weight: bold;
+  color: #6a5acd;
+  font-size: 13px;
+  margin-top: 3px;
+}
+
+.product-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+
+/* 产品网格布局调整 */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 一行5个产品 */
+  gap: 30px; /* 产品卡片间距 */
+  justify-items: center;
+  margin-top: 20px;
+}
+
+  
+  /* Footer */
+  .footer {
+    background: #747474;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 20px; /* 由原来的 30px 变为 10px */
+    flex-wrap: wrap;
+    text-align: left;
+    font-size: 14px; /* 可选：字体小一点 */
+  }
+  
+  .footer-section {
+    max-width: 180px; /* 可选：缩小宽度，减少换行 */
+    margin: 5px 0; /* 由 10px 变为 5px */
+  }
+  
+  .footer h4 {
+    margin-bottom: 5px; /* 减小标题下方空隙 */
+  }
+  
+  
+  .footer h4 {
+    color: #000000; 
+  }
+
+
+  .footer-section.connect .social-icons {
+    display: flex; /* 横向排列 */
+    gap: 10px;     /* logo 之间的间距 */
+    margin-top: 5px;
+  }
+  
+  .footer-section.connect .social-icons img {
+    width: 32px;
+    height: 32px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .footer-section.connect .social-icons img:hover {
+    transform: scale(1.1);
+  }

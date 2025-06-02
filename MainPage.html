@@ -1,10 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StyleMart</title>
-  <link rel="stylesheet" href="main menu.css" />
+  <link rel="stylesheet" href="MainPage.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
 </head>
@@ -31,11 +32,20 @@
 
   <!-- Menu bar -->
   <nav class="menu-bar">
-    <button>☰ Category</button>
+    <div class="dropdown">
+      <button>☰ Category</button>
+      <div class="dropdown-content">
+        <a href="#">Men</a>
+        <a href="#">Women</a>
+        <a href="#">Kids</a>
+        <a href="#">Sport</a>
+      </div>
+    </div>
     <button>All Products</button>
     <button>🛒 Cart</button>
-    <button>❤ Favorite</button>
+    <button>❤️ Favorite</button>
   </nav>
+  
 
   <!-- Products Grid -->
   <section class="products">
@@ -43,27 +53,60 @@
       <!-- Product card x9 -->
       <!-- You can duplicate this block as needed -->
       <div class="product-card">
-        <img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey">
+        <img src="image/lbj 23.png" alt="Jersey">
         <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
       </div>
       <!-- Repeat product card -->
       <!-- Use a loop on real backends -->
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
-      <div class="product-card"><img src="https://via.placeholder.com/150x200.png?text=Jersey" alt="Jersey"><p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p></div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
+      <div class="product-card">
+        <img src="image/lbj 23.png" alt="Jersey">
+        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
+        <p class="price">RM349</p>
+      </div>
     </div>
   </section>
 
-  <!-- Footer -->
+<!-- Footer -->
   <footer class="footer">
     <div class="footer-section about">
       <h4>About us</h4>
-      <p>Style Mart is your go-to destination for trendy, affordable fashion.</p>
+      <p>Style Mart is your go-to destination for trendy, affordable fashion. We offer a wide selection of styles, brands, and sizes—so you can find the perfect look without breaking the bank. New arrivals drop regularly, keeping your wardrobe fresh and fabulous.</p>
     </div>
     <div class="footer-section contact">
       <h4>Contact</h4>
@@ -75,9 +118,20 @@
     </div>
     <div class="footer-section connect">
       <h4>Connect With Us</h4>
-      <p>📷 🐦 📱</p>
+      <!-- 这里我们用一个额外的容器来放 logo -->
+      <div class="social-icons">
+        <a href="https://www.facebook.com" target="_blank">
+          <img src="image/fb.png" alt="Facebook">
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+          <img src="image/ig.png" alt="Instagram">
+        </a>
+        <a href="https://www.x.com" target="_blank">
+          <img src="image/twitter.png" alt="x">
+        </a>
+      </div>
     </div>
+      
   </footer>
 </body>
 </html>
-
