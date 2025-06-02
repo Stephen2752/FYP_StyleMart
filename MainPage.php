@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
 </head>
 <body>
+     <div class="page-wrapper">
   <!-- Topbar -->
   <header class="topbar">
     <div class="logo">StyleMart</div>
@@ -48,59 +49,12 @@
   
 
   <!-- Products Grid -->
-  <section class="products">
-    <div class="grid">
-      <!-- Product card x9 -->
-      <!-- You can duplicate this block as needed -->
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <!-- Repeat product card -->
-      <!-- Use a loop on real backends -->
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-      <div class="product-card">
-        <img src="image/lbj 23.png" alt="Jersey">
-        <p>Los Angeles<br>Lakers Icon<br>Edition 2022/23</p>
-        <p class="price">RM349</p>
-      </div>
-    </div>
-  </section>
+<section class="products">
+  <div class="grid">
+    <?php include('load_product.php'); ?>
+  </div>
+</section>
+     </div>
 
 <!-- Footer -->
   <footer class="footer">

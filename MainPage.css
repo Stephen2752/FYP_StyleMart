@@ -1,10 +1,19 @@
-
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     background: #f2f2f2;
     color: #333;
+    display: flex;
+   flex-direction: column;
+   min-height: 100vh; /* full viewport height */
+   margin: 0;
   }
+  
+  .page-wrapper {
+  flex: 1; /* grow and fill vertical space pushing footer down */
+  display: flex;
+  flex-direction: column;
+}
   
   /* Topbar */
   .topbar {
@@ -146,6 +155,10 @@ body {
   transition: box-shadow 0.3s;
   width: 160px; /* 稍微更窄 */
   box-sizing: border-box;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+
 }
 
 .product-card img {
@@ -184,46 +197,49 @@ body {
 
   
   /* Footer */
-  .footer {
-    background: #747474;
-    color: #fff;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 20px; /* 由原来的 30px 变为 10px */
-    flex-wrap: wrap;
-    text-align: left;
-    font-size: 14px; /* 可选：字体小一点 */
-  }
-  
-  .footer-section {
-    max-width: 180px; /* 可选：缩小宽度，减少换行 */
-    margin: 5px 0; /* 由 10px 变为 5px */
-  }
-  
-  .footer h4 {
-    margin-bottom: 5px; /* 减小标题下方空隙 */
-  }
-  
-  
-  .footer h4 {
-    color: #000000; 
-  }
+/* Footer - 让 footer 不覆盖商品内容，内部间距缩小 */
+.footer {
+  background: #747474;
+  color: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 20px;
+  flex-wrap: wrap;
+  text-align: left;
+  font-size: 14px;
+  line-height: 1.4;
+  position: relative; /* 改为相对定位，而非固定 */
+  bottom: auto;
+  left: auto;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 20px; /* 增加上方间距，防止与商品重叠 */
+}
+
+.footer-section {
+  flex: 1 1 250px; /* 把每个section的最小宽度提高到250px */
+  max-width: 250px; /* 让文字一行容纳更多 */
+  margin: 5px 10px;
+}
 
 
-  .footer-section.connect .social-icons {
-    display: flex; /* 横向排列 */
-    gap: 10px;     /* logo 之间的间距 */
-    margin-top: 5px;
-  }
-  
-  .footer-section.connect .social-icons img {
-    width: 32px;
-    height: 32px;
-    object-fit: cover;
-    cursor: pointer;
-    transition: transform 0.3s;
-  }
-  
-  .footer-section.connect .social-icons img:hover {
-    transform: scale(1.1);
-  }
+
+.footer h4 {
+  margin-bottom: 5px; /* 缩小标题和文字之间的距离 */
+  color: black;
+}
+
+.footer p {
+  margin: 2px 0; /* 缩小段落的上下 margin */
+}
+
+.footer-section.connect .social-icons {
+  display: flex;
+  gap: 8px; /* 缩小 social icon 间距 */
+  margin-top: 5px;
+}
+
+.footer-section.connect .social-icons img {
+  width: 28px; /* 保持图标尺寸 */
+  height: 28px;
+}
