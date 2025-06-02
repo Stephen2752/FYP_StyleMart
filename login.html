@@ -2,35 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login</title>
-  <script>
-    window.onload = function () {
-      const params = new URLSearchParams(window.location.search);
-      const error = params.get('error');
-      if (error === 'user_not_found') {
-        alert("Login failed: Please re-enter your username or sign up.");
-      } else if (error === 'incorrect_password') {
-        alert("Login failed: Incorrect password.");
-      }
+  <title>User Login</title>
+  <style>
+    .error {
+      color: red;
+      font-size: 0.9em;
+      display: none;
     }
-  </script>
+  </style>
 </head>
 <body>
   <h2>User Login</h2>
   <form action="login.php" method="POST">
     <label for="login_id">Username or Email:</label><br>
-    <input type="text" name="login_id" required><br><br>
+    <input type="text" name="login_id" id="login_id" required><br>
+    <span id="loginIdError" class="error">Username or Email not found.</span><br><br>
 
     <label for="password">Password:</label><br>
-    <input type="password" name="password" required><br><br>
+    <input type="password" name="password" id="password" required><br>
+    <span id="passwordError" class="error">Incorrect password.</span><br><br>
 
     <input type="submit" value="Login">
   </form>
+
   <p>Don't have an account? <a href="signup.html">Sign up here</a>.</p>
 
   <div class="adminlogin-link">
-   <a href="adminlogin.html">Log in to admin dashboard here</a>.
+    <a href="adminlog.html">Log in to admin dashboard here</a>.
   </div>
-  
+
+  <script>
+    window.onload = function () {
+      const params = new URLSearchParams(window.location.search);
+      const error = params.get('error');
+
+      if (error === 'user_not_found') {
+        document.getElementById('loginIdError').style.display = 'inline';
+        document.getElementById('login_id').value = '';
+      } else if (error === 'incorrect_password') {
+        document.getElementById('passwordError').style.display = 'inline';
+        document.getElementById('password').value = '';
+      }
+    };
+  </script>
 </body>
 </html>

@@ -8,32 +8,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $confirm_password = $_POST["confirm_password"];
 
     if (!isset($_POST["agree_terms"])) {
-        die("Error: You must agree to the Terms and Conditions.");
+        header("Location: signup.html?error=terms");
+        exit;
     }
 
     if ($password !== $confirm_password) {
-        die("Error: Passwords do not match.");
+        header("Location: signup.html?error=mismatch");
+        exit;
     }
 
     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
     try {
-        // Check if username or email already exists
         $stmt = $pdo->prepare("SELECT user_id FROM user WHERE username = ? OR email = ?");
         $stmt->execute([$username, $email]);
+
         if ($stmt->rowCount() > 0) {
-            die("Error: Username or email already taken.");
+            header("Location: signup.html?error=taken");
+            exit;
         }
 
-        // Insert new user (exclude contact_info)
-        $stmt = $pdo->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
-        $stmt->execute([$username, $email, $hashed_password]);
+        $stmt = $pdo->prepare("INSERT INTO user (username, password) VALUES (?, ?)");
+        $stmt->execute([$username, $hashed_password]);
 
-        echo "Sign-up successful!";
-         header("Location: login.html");
-                exit;
+        header("Location: login.html");
+        exit;
     } catch (PDOException $e) {
         die("Database error: " . $e->getMessage());
     }
 }
-?>
+
