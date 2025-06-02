@@ -1,78 +1,96 @@
 <?php
-require_once 'db.php';
+// view_product.php
+session_start();
+require 'db.php';
 
-try {
-    $stmt = $pdo->query("SELECT * FROM product ORDER BY created_at DESC");
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch (PDOException $e) {
-    die("Error fetching products: " . $e->getMessage());
+if (!isset($_SESSION['user_id'])) {
+    die('You must be logged in to view product details.');
 }
-?>
 
+$user_id = $_SESSION['user_id'];
+
+if (!isset($_GET['product_id'])) {
+    die('Product not specified.');
+}
+
+$product_id = $_GET['product_id'];
+
+// Fetch product
+$stmt = $pdo->prepare("SELECT * FROM product WHERE product_id = ? AND user_id = ?");
+$stmt->execute([$product_id, $user_id]);
+$product = $stmt->fetch();
+
+if (!$product) {
+    die('Product not found.');
+}
+
+// Fetch images
+$img_stmt = $pdo->prepare("SELECT * FROM product_image WHERE product_id = ?");
+$img_stmt->execute([$product_id]);
+$images = $img_stmt->fetchAll();
+
+// Fetch stock
+$stock_stmt = $pdo->prepare("SELECT * FROM product_stock WHERE product_id = ?");
+$stock_stmt->execute([$product_id]);
+$stocks = $stock_stmt->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>View Products</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 20px;
-        }
-        .product {
-            background: #fff;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .product h2 {
-            margin-top: 0;
-        }
-        .images img {
-            height: 100px;
-            margin-right: 10px;
-            border-radius: 4px;
-        }
-        .info {
-            margin-top: 10px;
-        }
-        .label {
-            font-weight: bold;
-            display: inline-block;
-            width: 150px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Edit Product</title>
+  <style>
+    img { width: 100px; margin: 5px; }
+    .size-stock-row { display: flex; gap: 10px; margin-bottom: 5px; }
+  </style>
 </head>
 <body>
+  <h1>Edit Product: <?= htmlspecialchars($product['product_name']) ?></h1>
 
-<h1>All Products</h1>
+  <form action="update_product.php" method="POST" enctype="multipart/form-data">
+    <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
 
-<?php foreach ($products as $product): ?>
-    <div class="product">
-        <h2><?= htmlspecialchars($product['product_name']) ?></h2>
+    <label>Product Name</label>
+    <input type="text" name="product_name" value="<?= htmlspecialchars($product['product_name']) ?>" required>
 
-        <div class="images">
-            <?php
-                $images = explode(',', $product['images']);
-                foreach ($images as $imgPath):
-                    if (trim($imgPath) !== ''):
-            ?>
-                <img src="<?= htmlspecialchars($imgPath) ?>" alt="Product Image">
-            <?php endif; endforeach; ?>
+    <label>Price</label>
+    <input type="number" step="0.01" name="price" value="<?= $product['price'] ?>" required>
+
+    <label>Description</label>
+    <textarea name="description" required><?= htmlspecialchars($product['description']) ?></textarea>
+
+    <label>Images</label><br>
+    <?php foreach ($images as $img): ?>
+      <img src="<?= htmlspecialchars($img['image_path']) ?>" alt="Image">
+    <?php endforeach; ?>
+    <br>
+    <input type="file" name="images[]" multiple accept="image/*">
+
+    <label>Sizes & Stock</label>
+    <div id="sizeStockWrapper">
+      <?php foreach ($stocks as $stock): ?>
+        <div class="size-stock-row">
+          <input type="text" name="sizes[]" value="<?= htmlspecialchars($stock['size']) ?>" required>
+          <input type="number" name="stock[]" value="<?= $stock['quantity'] ?>" required>
         </div>
-
-        <div class="info"><span class="label">Category:</span> <?= htmlspecialchars($product['category']) ?></div>
-        <div class="info"><span class="label">Description:</span> <?= nl2br(htmlspecialchars($product['description'])) ?></div>
-        <div class="info"><span class="label">Price:</span> RM<?= number_format($product['price'], 2) ?></div>
-        <div class="info"><span class="label">Sizes & Stock:</span> <?= htmlspecialchars($product['comment']) ?></div>
-        <div class="info"><span class="label">Status:</span> <?= htmlspecialchars($product['status']) ?></div>
-        <div class="info"><span class="label">Total Stock:</span> <?= $product['stock_quantity'] ?></div>
-        <div class="info"><span class="label">Created At:</span> <?= $product['created_at'] ?></div>
+      <?php endforeach; ?>
     </div>
-<?php endforeach; ?>
+    <button type="button" onclick="addSizeStockRow()">+ Add Size</button>
 
+    <button type="submit">Update Product</button>
+  </form>
+
+  <script>
+    function addSizeStockRow() {
+      const wrapper = document.getElementById('sizeStockWrapper');
+      const div = document.createElement('div');
+      div.className = 'size-stock-row';
+      div.innerHTML = `
+        <input type="text" name="sizes[]" placeholder="Size" required>
+        <input type="number" name="stock[]" placeholder="Stock" required>
+      `;
+      wrapper.appendChild(div);
+    }
+  </script>
 </body>
 </html>

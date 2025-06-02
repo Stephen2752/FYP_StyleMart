@@ -74,7 +74,9 @@ $qrcodeIsNull = empty($user['qrcode']);
     <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
   <?php else: ?>
     <p>You have already set up your seller information.</p>
-    <a href="profile.php">Back to Profile</a>
+    <p><a href="create_product.html">Create Product</a></p>
+    <p><a href="view_product_list.php">View Product</a></p>
+    <p><a href="profile.php">Back to Profile</a></p>
   <?php endif; ?>
 </body>
 </html>

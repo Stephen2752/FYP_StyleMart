@@ -2,118 +2,190 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Create Product</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .preview img { width: 100px; margin: 5px; }
-    .size-grid { margin-top: 15px; }
-    .size-row { display: flex; gap: 10px; margin-bottom: 10px; }
-    .button { padding: 6px 10px; margin: 5px; cursor: pointer; }
-    .category-btn, .subcategory-btn { border: 1px solid #aaa; background: white; }
-    .selected { background-color: black; color: white; }
+    body { font-family: Arial; margin: 20px; }
+    label, input, select, textarea, button { display: block; margin: 10px 0; }
+    .image-preview img { height: 80px; margin-right: 5px; }
+    .size-stock-row { display: flex; gap: 10px; margin-bottom: 5px; }
+    .category-list span { background: #ddd; padding: 5px 10px; margin-right: 5px; display: inline-block; border-radius: 5px; }
+    .category-entry { display: flex; gap: 10px; margin-bottom: 5px; }
+    .preview-container { display: flex; align-items: center; gap: 10px; margin-top: 5px; }
+    .preview-container input[type="file"] { flex-grow: 1; }
+    .preview-container button { width: 30px; height: 30px; font-weight: bold; font-size: 18px; line-height: 18px; padding: 0; }
   </style>
 </head>
 <body>
-  <h2>Create Product</h2>
+  <h1>Create Product</h1>
+  <a href="sellerlog.php">Back</a>
   <form id="productForm" action="create_product.php" method="POST" enctype="multipart/form-data">
-    <label>Product Name: <input type="text" name="name" required></label><br><br>
-    
-    <label>Price (RM): <input type="number" name="price" step="0.01" required></label><br><br>
+    <label>Product Name</label>
+    <input type="text" name="product_name" required />
 
-    <label>Description:<br>
-      <textarea name="description" rows="4" cols="50"></textarea>
-    </label><br><br>
+    <label>Category</label>
+    <div id="categoryWrapper"></div>
+    <button type="button" onclick="addCategoryField()">+ ADD Category</button>
 
-    <!-- Category Selection -->
-    <div>
-      <strong>Category:</strong><br>
-      <button type="button" class="button category-btn" onclick="selectCategory('Men')">Men</button>
-      <button type="button" class="button category-btn" onclick="selectCategory('Women')">Women</button>
-      <button type="button" class="button category-btn" onclick="selectCategory('Kids')">Kids</button>
+    <div class="category-list" id="selectedCategories"></div>
+    <input type="hidden" name="categories_json" id="categoryInput" />
+
+    <label>Price</label>
+    <input type="number" name="price" step="0.01" required />
+
+    <label>Description</label>
+    <textarea name="description" required></textarea>
+
+    <!-- Status hidden input -->
+    <input type="hidden" name="status" id="statusInput" value="Available" />
+
+    <label>Product Images</label>
+    <div id="imageInputs">
+      <div class="preview-container">
+        <input type="file" name="images[]" accept="image/*" onchange="previewImage(this)" />
+        <div class="image-preview"></div>
+        <button type="button" onclick="addImageInput()" class="add-btn">+</button>
+        <button type="button" onclick="removeImageInput(this)">-</button>
+      </div>
     </div>
 
-    <input type="hidden" name="category" id="categoryInput"><br>
+    <label>Sizes & Stock</label>
+    <div id="sizeStockWrapper"></div>
+    <button type="button" onclick="addSizeStockRow()">+ ADD Size/Stock</button>
 
-    <!-- Subcategory -->
-    <div id="subcategoryContainer" style="display: none;">
-      <strong>Subcategory:</strong><br>
-      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Clothes')">Clothes</button>
-      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Shoes')">Shoes</button>
-      <button type="button" class="button subcategory-btn" onclick="selectSubcategory('Pants')">Pants</button>
-    </div>
-
-    <input type="hidden" name="subcategory" id="subcategoryInput"><br><br>
-
-    <!-- Multiple Image Upload -->
-    <label>Product Photos: 
-      <input type="file" name="images[]" multiple id="imageInput" accept="image/*">
-    </label>
-    <div class="preview" id="imagePreview"></div><br>
-
-    <!-- Size & Stock -->
-    <div>
-      <strong>Sizes:</strong>
-      <div id="sizesContainer" class="size-grid"></div>
-      <button type="button" class="button" onclick="addSize()">+ Add Size</button>
-    </div><br>
-
-    <button type="submit" class="button">Save Product</button>
+    <button type="submit">Create Product</button>
   </form>
 
   <script>
-    // Show image previews
-    document.getElementById('imageInput').addEventListener('change', function () {
-      const preview = document.getElementById('imagePreview');
-      preview.innerHTML = '';
-      Array.from(this.files).forEach(file => {
+    // Category code as you requested:
+    let selectedCategories = [];
+
+    function addCategoryField() {
+      const wrapper = document.getElementById('categoryWrapper');
+      const div = document.createElement('div');
+      div.className = 'category-entry';
+      div.innerHTML = `
+        <select>
+          <option value="Men">Men</option>
+          <option value="Women">Women</option>
+          <option value="Kids">Kids</option>
+        </select>
+        <select>
+          <option value="Clothes">Clothes</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Pants">Pants</option>
+        </select>
+        <button type="button" onclick="confirmCategory(this)">Confirm</button>
+        <button type="button" onclick="removeCategory(this)">Remove</button>
+      `;
+      wrapper.appendChild(div);
+    }
+
+    function confirmCategory(button) {
+      const entry = button.parentElement;
+      const selects = entry.getElementsByTagName('select');
+      const main = selects[0].value;
+      const sub = selects[1].value;
+      selectedCategories.push({ main, sub });
+      updateCategoryDisplay();
+      entry.remove();
+    }
+
+    function updateCategoryDisplay() {
+      const container = document.getElementById('selectedCategories');
+      const hiddenInput = document.getElementById('categoryInput');
+      container.innerHTML = '';
+      selectedCategories.forEach(cat => {
+        const span = document.createElement('span');
+        span.textContent = `${cat.main} - ${cat.sub}`;
+        container.appendChild(span);
+      });
+      hiddenInput.value = JSON.stringify(selectedCategories);
+    }
+
+    function removeCategory(button) {
+      button.parentElement.remove();
+    }
+
+    // Image inputs with add/remove buttons + preview
+    function previewImage(input) {
+      const previewContainer = input.nextElementSibling;
+      previewContainer.innerHTML = '';
+      const file = input.files[0];
+      if (file) {
         const reader = new FileReader();
         reader.onload = e => {
           const img = document.createElement('img');
           img.src = e.target.result;
-          preview.appendChild(img);
+          previewContainer.appendChild(img);
         };
         reader.readAsDataURL(file);
+      }
+    }
+
+    function addImageInput() {
+      const container = document.getElementById('imageInputs');
+      const div = document.createElement('div');
+      div.className = 'preview-container';
+      div.innerHTML = `
+        <input type="file" name="images[]" accept="image/*" onchange="previewImage(this)" />
+        <div class="image-preview"></div>
+        <button type="button" onclick="addImageInput()" class="add-btn">+</button>
+        <button type="button" onclick="removeImageInput(this)">-</button>
+      `;
+      container.appendChild(div);
+      updateAddButtons();
+    }
+
+    function removeImageInput(button) {
+      const container = document.getElementById('imageInputs');
+      const divToRemove = button.parentElement;
+      if (container.children.length > 1) {
+        container.removeChild(divToRemove);
+        updateAddButtons();
+      } else {
+        alert("At least one image input is required.");
+      }
+    }
+
+    function updateAddButtons() {
+      const containers = document.querySelectorAll('#imageInputs .preview-container');
+      containers.forEach((div, i) => {
+        const addBtn = div.querySelector('.add-btn');
+        if (i === 0) {
+          addBtn.style.display = 'inline-block';
+        } else {
+          addBtn.style.display = 'none';
+        }
       });
+    }
+
+    // Sizes & stock rows
+    function addSizeStockRow() {
+      const wrapper = document.getElementById('sizeStockWrapper');
+      const div = document.createElement('div');
+      div.className = 'size-stock-row';
+      div.innerHTML = `
+        <input type="text" name="sizes[]" placeholder="Size (e.g., S, M, L)" required />
+        <input type="number" name="stock[]" placeholder="Stock" required />
+        <button type="button" onclick="this.parentElement.remove()">Remove</button>
+      `;
+      wrapper.appendChild(div);
+    }
+
+    // Set status based on stock before submit
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+      const stocks = document.querySelectorAll('input[name="stock[]"]');
+      let totalStock = 0;
+      stocks.forEach(input => {
+        totalStock += Number(input.value) || 0;
+      });
+      const statusInput = document.getElementById('statusInput');
+      statusInput.value = totalStock > 1 ? "Available" : "Out of Stock";
     });
 
-    // Add size + stock row
-    function addSize() {
-      const container = document.getElementById('sizesContainer');
-      const row = document.createElement('div');
-      row.className = 'size-row';
-
-      const sizeInput = document.createElement('input');
-      sizeInput.type = 'text';
-      sizeInput.name = 'sizes[]';
-      sizeInput.placeholder = 'Size (e.g. S)';
-      sizeInput.required = true;
-
-      const stockInput = document.createElement('input');
-      stockInput.type = 'number';
-      stockInput.name = 'stocks[]';
-      stockInput.placeholder = 'Stock';
-      stockInput.min = 0;
-      stockInput.required = true;
-
-      row.appendChild(sizeInput);
-      row.appendChild(stockInput);
-      container.appendChild(row);
-    }
-
-    // Category Selection
-    function selectCategory(category) {
-      document.getElementById('categoryInput').value = category;
-      document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('selected'));
-      event.target.classList.add('selected');
-      document.getElementById('subcategoryContainer').style.display = 'block';
-    }
-
-    // Subcategory Selection
-    function selectSubcategory(subcategory) {
-      document.getElementById('subcategoryInput').value = subcategory;
-      document.querySelectorAll('.subcategory-btn').forEach(btn => btn.classList.remove('selected'));
-      event.target.classList.add('selected');
-    }
+    // Initialize + button visibility
+    updateAddButtons();
   </script>
 </body>
 </html>
