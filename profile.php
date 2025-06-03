@@ -45,9 +45,27 @@ function getColorFromUsername($username) {
       font-weight: bold;
       margin-bottom: 10px;
     }
+    .back-btn a {
+      text-decoration: none;
+      color: black;
+    }
+    .button-group {
+      margin-top: 20px;
+    }
+    .button-group form {
+      display: inline-block;
+      margin-right: 10px;
+    }
+    .button-group button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
+  <div class="back-btn"><a href="MainPage.php"><img src="image/previous.png" alt="Back">Back</a></div>
+
   <h2>My Profile</h2>
 
   <div class="avatar-circle" style="background-color: <?= getColorFromUsername($user['username']) ?>;">
@@ -57,11 +75,18 @@ function getColorFromUsername($username) {
   <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
   <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
 
+  <div class="button-group">
+    <form action="sellerlog.php" method="GET">
+      <button type="submit">Seller Manage</button>
+    </form>
 
+    <form action="account_settings.php" method="GET">
+      <button type="submit">Account Settings</button>
+    </form>
 
-  <form action="sellerlog.php" method="GET">
-  <button type="submit">Seller Manage</button>
-  </form>
-
+    <form action="logout.php" method="POST">
+      <button type="submit">Log Out</button>
+    </form>
+  </div>
 </body>
 </html>

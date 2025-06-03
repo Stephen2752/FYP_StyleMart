@@ -1,6 +1,9 @@
 <?php
 require 'db.php';
 
+session_start();
+$isGuest = !isset($_SESSION['user_id']);
+
 try {
     // Get all products
     $stmt = $pdo->prepare("
