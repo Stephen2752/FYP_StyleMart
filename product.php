@@ -154,7 +154,7 @@ function displayStars($rate) {
 </header>
 
 <main class="product-container">
-  <div class="back-btn"><a href="MainPage.php"><img src="image/previous.png" alt="Back">Back</a></div>
+  <div class="back-btn"><a href="MainPage.php"><img src="uploads\previous.png" alt="Back">Back</a></div>
 
   <div class="product-details">
     <div class="left-panel">

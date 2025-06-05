@@ -4,9 +4,254 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>StyleMart</title>
-  <link rel="stylesheet" href="MainPage.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f2f2f2;
+    color: #333;
+    display: flex;
+   flex-direction: column;
+   min-height: 100vh; /* full viewport height */
+   margin: 0;
+  }
+  
+  .page-wrapper {
+  flex: 1; /* grow and fill vertical space pushing footer down */
+  display: flex;
+  flex-direction: column;
+}
+  
+  /* Topbar */
+  .topbar {
+    background: #3e3e3e;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+  }
+  
+  .topbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  /* From Uiverse.io by joe-watson-sbf */ 
+  .search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+  }
+
+  .search__input {
+    font-family: inherit;
+    font-size: inherit;
+    background-color: #f4f2f2;
+    border: none;
+    color: #646464;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    width: 30em;
+    transition: all ease-in-out .5s;
+    margin-right: -2rem;
+  }
+
+  .search__input:hover, .search__input:focus {
+    box-shadow: 0 0 1em #00000013;
+  }
+
+  .search__input:focus {
+    outline: none;
+    background-color: #f0eeee;
+  }
+
+  .search__input::-webkit-input-placeholder {
+    font-weight: 100;
+    color: #ccc;
+  }
+
+  .search__input:focus + .search__button {
+    background-color: #f0eeee;
+  }
+
+  .search__button {
+    border: none;
+    background-color: #f4f2f2;
+    margin-top: .1em;
+  }
+
+  .search__button:hover {
+    cursor: pointer;
+  }
+
+  .search__icon {
+    height: 1.3em;
+    width: 1.3em;
+    fill: #b4b4b4;
+  }
+  
+  .icons .icon {
+    margin-left: 15px;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  /* Menu bar */
+  .menu-bar {
+    background: white;
+    display: flex;
+    justify-content: center;
+    padding: 12px 0;
+    gap: 30px;
+    border-bottom: 1px #ddd;
+  }
+  
+  .menu-bar button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+      /* 下拉容器 */
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 120px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1;
+    top: 100%;
+    left: 0;
+    border-radius: 4px;
+    /* 移除 margin-top */
+  }
+
+  .dropdown-content a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f2f2f2;
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+
+    /* Product Grid */
+  /* 产品卡片整体样式 */
+  .product-card {
+    background: white;
+    border: 1px #ccc;
+    border-radius: 8px;
+    text-align: center;
+    padding: 8px;
+    transition: box-shadow 0.3s;
+    width: 160px; /* 稍微更窄 */
+    box-sizing: border-box;
+    display: block;
+    text-decoration: none;
+    color: inherit;
+
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 160px; /* 高度更小 */
+    object-fit: cover; /* 图片保持比例填满 */
+    border-radius: 4px;
+  }
+
+  .product-card p {
+    margin: 3px 0;
+    font-size: 13px; /* 字体更小 */
+    line-height: 1.2;
+  }
+
+  .product-card .price {
+    font-weight: bold;
+    color: #6a5acd;
+    font-size: 13px;
+    margin-top: 3px;
+  }
+
+  .product-card:hover {
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+
+
+  /* 产品网格布局调整 */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 一行5个产品 */
+    gap: 30px; /* 产品卡片间距 */
+    justify-items: center;
+    margin-top: 20px;
+  }
+
+    
+    /* Footer */
+  /* Footer - 让 footer 不覆盖商品内容，内部间距缩小 */
+  .footer {
+    background: #747474;
+    color: #fff;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+    text-align: left;
+    font-size: 14px;
+    line-height: 1.4;
+    position: relative; /* 改为相对定位，而非固定 */
+    bottom: auto;
+    left: auto;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 20px; /* 增加上方间距，防止与商品重叠 */
+  }
+
+  .footer-section {
+    flex: 1 1 250px; /* 把每个section的最小宽度提高到250px */
+    max-width: 250px; /* 让文字一行容纳更多 */
+    margin: 5px 10px;
+  }
+
+
+
+  .footer h4 {
+    margin-bottom: 5px; /* 缩小标题和文字之间的距离 */
+    color: black;
+  }
+
+  .footer p {
+    margin: 2px 0; /* 缩小段落的上下 margin */
+  }
+
+  .footer-section.connect .social-icons {
+    display: flex;
+    gap: 8px; /* 缩小 social icon 间距 */
+    margin-top: 5px;
+  }
+
+  .footer-section.connect .social-icons img {
+    width: 28px; /* 保持图标尺寸 */
+    height: 28px;
+  }
+</style>
 </head>
 <body>
   <div class="page-wrapper">
@@ -30,22 +275,44 @@
       <div class="icons">
         <span class="icon" id="profile">👤</span>
         <span class="icon">🛒</span>
+        <span class="icon" onclick="checkLogin('favorite.php')">❤️</span>
       </div>
     </header>
 
     <!-- Menu bar -->
     <nav class="menu-bar">
       <div class="dropdown">
-        <button>☰ Category</button>
+        <button>Mens</button>
+        <div class="dropdown-content">
+          <a href="#">Jeans</a>
+          <a href="#">Shirts</a>
+          <a href="#">Shoes</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button>Womens</button>
         <div class="dropdown-content">
           <a href="#">Men</a>
           <a href="#">Women</a>
           <a href="#">Kids</a>
         </div>
       </div>
-      <button onclick="location.href='all_products.php'">All Products</button>
-      <button onclick="checkLogin('cart.php')">🛒 Cart</button>
-      <button onclick="checkLogin('favorite.php')">❤️ Favorite</button>
+      <div class="dropdown">
+        <button>Kids</button>
+        <div class="dropdown-content">
+          <a href="#">Men</a>
+          <a href="#">Women</a>
+          <a href="#">Kids</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button>Sports</button>
+        <div class="dropdown-content">
+          <a href="#">Men</a>
+          <a href="#">Women</a>
+          <a href="#">Kids</a>
+        </div>
+      </div>
     </nav>
 
     <!-- Products Grid -->
@@ -74,13 +341,13 @@
       <h4>Connect With Us</h4>
       <div class="social-icons">
         <a href="https://www.facebook.com" target="_blank">
-          <img src="image/fb.png" alt="Facebook">
+          <img src="uploads/fb.png" alt="Facebook">
         </a>
         <a href="https://www.instagram.com" target="_blank">
-          <img src="image/ig.png" alt="Instagram">
+          <img src="uploads/ig.png" alt="Instagram">
         </a>
         <a href="https://www.x.com" target="_blank">
-          <img src="image/twitter.png" alt="x">
+          <img src="uploads/twitter.png" alt="x">
         </a>
       </div>
     </div>
