@@ -287,33 +287,33 @@ body {
       <div class="dropdown">
         <button>Mens</button>
         <div class="dropdown-content">
-          <a href="#">Jeans</a>
-          <a href="#">Shirts</a>
-          <a href="#">Shoes</a>
+          <a href="category_men_clothes.html">Clothes</a>
+          <a href="category_men_shirts.html">Shirts</a>
+          <a href="category_men_shoes.html">Shoes</a>
         </div>
       </div>
       <div class="dropdown">
         <button>Womens</button>
         <div class="dropdown-content">
-          <a href="#">Men</a>
-          <a href="#">Women</a>
-          <a href="#">Kids</a>
+          <a href="category_women_clothes.html">Clothes</a>
+          <a href="category_women_shirts.html">Shirts</a>
+          <a href="category_women_shoes.html">Shoes</a>
         </div>
       </div>
       <div class="dropdown">
         <button>Kids</button>
         <div class="dropdown-content">
-          <a href="#">Men</a>
-          <a href="#">Women</a>
-          <a href="#">Kids</a>
+          <a href="category_kid_clothes.html">Clothes</a>
+          <a href="category_kid_shirts.html">Shirt</a>
+          <a href="category_kid_shoes.html">Shoes</a>
         </div>
       </div>
       <div class="dropdown">
         <button>Sports</button>
         <div class="dropdown-content">
-          <a href="#">Men</a>
-          <a href="#">Women</a>
-          <a href="#">Kids</a>
+          <a href="#">?</a>
+          <a href="#">?</a>
+          <a href="#">?</a>
         </div>
       </div>
     </nav>
