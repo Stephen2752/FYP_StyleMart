@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f2f2f2;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px 20px;
+  background: #3e3e3e;
+  color: white;
+  height: 42px;
+}
+
+.topbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* Container */
+.container {
+  padding: 20px;
+}
+
+/* Back Button */
+.back-btn {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #000;
+  font-weight: bold;
+}
+
+.back-btn img {
+  width: 16px;
+  height: auto;
+  margin-right: 6px;
+}
+
+/* Form Styling */
+.form-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 120px;
+}
+
+.form {
+  background-color: #fff;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+              0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-sizing: border-box;
+}
+
+.form-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  text-align: center;
+  color: #000;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container input,
+.form button {
+  outline: none;
+  border: 1px solid #e5e7eb;
+  margin: 8px 0;
+}
+
+.input-container input {
+  background-color: #fff;
+  padding: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.submit {
+  display: block;
+  padding: 0.75rem 1.25rem;
+  background-color: #4F46E5;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: 100%;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+}
+
+/* Error Text */
+.error {
+  color: red;
+  font-size: 0.8rem;
+  display: none;
+}
+
+/* Signup link */
+.signup-link {
+  color: #6B7280;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.signup-link a {
+  text-decoration: underline;
+}

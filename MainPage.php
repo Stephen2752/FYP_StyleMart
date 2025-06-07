@@ -1,3 +1,6 @@
+<?php
+session_start(); // ✅ 所有输出之前执行
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -274,7 +277,7 @@ body {
       <!-- Icons -->
       <div class="icons">
         <span class="icon" id="profile">👤</span>
-        <span class="icon">🛒</span>
+        <span class="icon" onclick="checkLogin('cart.php')">🛒</span>
         <span class="icon" onclick="checkLogin('favorite.php')">❤️</span>
       </div>
     </header>

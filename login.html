@@ -3,34 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <title>User Login</title>
-  <style>
-    .error {
-      color: red;
-      font-size: 0.9em;
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" href="login.css" />
 </head>
 <body>
-  <h2>User Login</h2>
-  <form action="login.php" method="POST">
-    <label for="login_id">Username or Email:</label><br>
-    <input type="text" name="login_id" id="login_id" required><br>
-    <span id="loginIdError" class="error">Username or Email not found.</span><br><br>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+  </header>
+  <div class="container">
+    <div class="back-btn"><a href="MainPage.php"><img src="uploads/previous.png">Back</a></div>
+    <div class="form-wrapper">
+      <form class="form" action="login.php" method="POST">
+        <p class="form-title">Sign in to your account</p>
 
-    <label for="password">Password:</label><br>
-    <input type="password" name="password" id="password" required><br>
-    <span id="passwordError" class="error">Incorrect password.</span><br><br>
+        <div class="input-container">
+          <input placeholder="Enter email" type="text" name="login_id" id="login_id" required>
+          <span id="loginIdError" class="error" style="color: red; font-size: 0.8rem; display: none;">Username or Email not found.</span>
+        </div>
 
-    <input type="submit" value="Login">
-  </form>
+        <div class="input-container">
+          <input placeholder="Enter password" type="password" name="password" id="password" required>
+          <span id="passwordError" class="error" style="color: red; font-size: 0.8rem; display: none;">Incorrect password.</span>
+        </div>
 
-  <p>Don't have an account? <a href="signup.html">Sign up here</a>.</p>
+        <button class="submit" type="submit">Login</button>
 
-  <div class="adminlogin-link">
-    <a href="adminlog.html">Log in to admin dashboard here</a>.
-  </div>
+        <p class="signup-link">
+          Don't have an account? <a href="signup.html">Sign up here</a>.
+        </p>
 
+        <div class="signup-link">
+          <a href="adminlog.html">Log in to admin dashboard here</a>.
+        </div>
+      </form>
+    </div>  
+  </div> 
   <script>
     window.onload = function () {
       const params = new URLSearchParams(window.location.search);

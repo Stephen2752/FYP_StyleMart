@@ -2,47 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="signup.css" />
   <title>Sign Up</title>
-  <style>
-    .error {
-      color: red;
-      font-size: 0.9em;
-      display: none;
-    }
-    .login-link {
-      margin-top: 10px;
-    }
-  </style>
 </head>
 <body>
-  <h2>User Sign Up</h2>
-  <form action="signup.php" method="POST">
-    <label for="username">Username:</label><br>
-    <input type="text" name="username" id="username" required><br>
-    <span id="usernameError" class="error">Username already taken.</span><br><br>
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+  </header>
 
-    <label for="email">Email:</label><br>
-    <input type="email" name="email" id="email" required><br>
-    <span id="emailError" class="error">Username or email already taken.</span><br><br>
+  <div class="container">
+    <div class="back-btn"><a href="MainPage.php"><img src="uploads/previous.png">Back</a></div>
+    <div class="form-wrapper">
+      <form class="form" action="signup.php" method="POST">
+        <p class="form-title">User Sign Up</p>
 
-    <label for="password">Password:</label><br>
-    <input type="password" name="password" id="password" required><br><br>
+        <div class="input-container">
+          <input type="text" name="username" id="username" placeholder="Username" required>
+          <span id="usernameError" class="error" style="color: red; font-size: 0.8rem; display: none;">Username already taken.</span>
+        </div>
 
-    <label for="confirm_password">Confirm Password:</label><br>
-    <input type="password" name="confirm_password" id="confirm_password" required><br>
-    <span id="confirmError" class="error">Passwords do not match.</span><br><br>
+        <div class="input-container">
+          <input type="email" name="email" id="email" placeholder="Email" required>
+          <span id="emailError" class="error" style="color: red; font-size: 0.8rem; display: none;">Username or email already taken.</span>
+        </div>
 
-    <label>
-      <input type="checkbox" name="agree_terms" id="agree_terms" required>
-      Do you agree to the <a href="#">Terms and Conditions</a>?
-    </label><br>
-    <span id="termsError" class="error">You must agree to the Terms and Conditions.</span><br><br>
+        <div class="input-container">
+          <input type="password" name="password" id="password" placeholder="Password" required>
+        </div>
 
-    <input type="submit" value="Sign Up">
-  </form>
+        <div class="input-container">
+          <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+          <span id="confirmError" class="error" style="color: red; font-size: 0.8rem; display: none;">Passwords do not match.</span>
+        </div>
 
-  <div class="login-link">
-    Already have an account? <a href="login.html">Log in here</a>.
+        <div class="input-container">
+          <div class="checkbox-row">
+            <input type="checkbox" name="agree_terms" id="agree_terms" required>
+            <label for="agree_terms">Do you agree to the <a href="#">Terms and Conditions</a>?</label>
+          </div>
+          <span id="termsError" class="error">You must agree to the Terms and Conditions.</span><br><br>
+        </div>
+
+        <button class="submit" type="submit">Sign Up</button>
+
+        <p class="signup-link">
+          Already have an account? <a href="login.html">Log in here</a>.
+        </p>
+      </form>
+    </div>
   </div>
 
   <script>
@@ -52,7 +60,7 @@
 
       if (error === 'taken') {
         document.getElementById('usernameError').style.display = 'inline';
-        document.getElementById('emailError').value = '';
+        document.getElementById('emailError').style.display = 'inline';
         document.getElementById('username').value = '';
         document.getElementById('email').value = '';
       }

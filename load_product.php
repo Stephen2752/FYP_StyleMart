@@ -1,7 +1,6 @@
 <?php
 require 'db.php';
 
-session_start();
 $isGuest = !isset($_SESSION['user_id']);
 
 try {

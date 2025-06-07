@@ -1,0 +1,219 @@
+body {
+margin: 0;
+font-family: 'Inter', sans-serif;
+background: #f2f2f2;
+color: #333;
+display: flex;
+flex-direction: column;
+min-height: 100vh; /* full viewport height */
+margin: 0;
+}
+
+.page-wrapper {
+flex: 1; /* grow and fill vertical space pushing footer down */
+display: flex;
+flex-direction: column;
+}
+
+/* Topbar */
+.topbar {
+display: flex;
+justify-content: flex-start; /* logo靠左 */
+align-items: center;
+padding: 12px 20px;
+background: #3e3e3e;
+color: white;
+height: 42px; /* 保持原来高度 */
+}
+
+.topbar .logo {
+font-size: 20px;
+font-weight: bold;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+/* From Uiverse.io by joe-watson-sbf */ 
+.search {
+display: flex;
+align-items: center;
+justify-content: space-between;
+text-align: center;
+}
+
+.search__input {
+font-family: inherit;
+font-size: inherit;
+background-color: #f4f2f2;
+border: none;
+color: #646464;
+padding: 0.7rem 1rem;
+border-radius: 30px;
+width: 30em;
+transition: all ease-in-out .5s;
+margin-right: -2rem;
+}
+
+.search__input:hover, .search__input:focus {
+box-shadow: 0 0 1em #00000013;
+}
+
+.search__input:focus {
+outline: none;
+background-color: #f0eeee;
+}
+
+.search__input::-webkit-input-placeholder {
+font-weight: 100;
+color: #ccc;
+}
+
+.search__input:focus + .search__button {
+background-color: #f0eeee;
+}
+
+.search__button {
+border: none;
+background-color: #f4f2f2;
+margin-top: .1em;
+}
+
+.search__button:hover {
+cursor: pointer;
+}
+
+.search__icon {
+height: 1.3em;
+width: 1.3em;
+fill: #b4b4b4;
+}
+
+.icons .icon {
+margin-left: 15px;
+font-size: 20px;
+cursor: pointer;
+}
+
+.container {
+  padding: 20px;
+}
+
+.back-btn {
+  display: flex;          /* 并排显示 */
+  align-items: center;    /* 垂直居中 */
+  margin-bottom: 15px;
+  cursor: pointer;
+  color: #000000;
+  font-weight: bold;      /* 可选：让文字更醒目 */
+}
+
+.back-btn img {
+  width: 16px;            /* 根据需要调整图片大小 */
+  height: auto;
+  margin-right: 6px;      /* 图片和文字的间距 */
+}
+
+.back-btn a {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+/* From Uiverse.io by Yaya12085 */ 
+.form {
+background-color: #fff;
+padding: 2rem;
+width: 100%;
+max-width: 500px;
+border-radius: 0.5rem;
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 
+            0 4px 6px -2px rgba(0, 0, 0, 0.05);
+box-sizing: border-box;
+margin-top: 60px;
+}
+
+.form-title {
+font-size: 1.25rem;
+line-height: 1.75rem;
+font-weight: 600;
+text-align: center;
+color: #000;
+}
+
+.input-container {
+position: relative;
+}
+
+.input-container input, .form button {
+outline: none;
+border: 1px solid #e5e7eb;
+margin: 8px 0;
+}
+
+.input-container input {
+background-color: #fff;
+padding: 1rem 1rem; /* 左右一致 */
+font-size: 0.875rem;
+line-height: 1.25rem;
+width: 100%;
+box-sizing: border-box;
+border-radius: 0.5rem;
+border: 1px solid #e5e7eb;
+box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.input-container span {
+display: grid;
+position: absolute;
+top: 0;
+bottom: 0;
+right: 0;
+padding-left: 1rem;
+padding-right: 1rem;
+place-content: center;
+}
+
+.input-container span svg {
+color: #9CA3AF;
+width: 1rem;
+height: 1rem;
+}
+
+.submit {
+display: block;
+padding-top: 0.75rem;
+padding-bottom: 0.75rem;
+padding-left: 1.25rem;
+padding-right: 1.25rem;
+background-color: #4F46E5;
+color: #ffffff;
+font-size: 0.875rem;
+line-height: 1.25rem;
+font-weight: 500;
+width: 100%;
+border-radius: 0.5rem;
+text-transform: uppercase;
+}
+
+.signup-link {
+color: #6B7280;
+font-size: 0.875rem;
+line-height: 1.25rem;
+text-align: center;
+}
+
+.signup-link a {
+text-decoration: underline;
+}
+
+.form-wrapper {
+flex: 1;
+display: flex;
+justify-content: center;
+align-items: center;
+margin-bottom: 120px;
+}
