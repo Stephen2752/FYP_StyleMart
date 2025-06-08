@@ -28,12 +28,22 @@ if ($stock['quantity'] < $quantity) {
     die("Not enough stock available.");
 }
 
-// Insert to cart (assuming cart doesn't store size)
-$stmt = $pdo->prepare("INSERT INTO cart (user_id, product_id, quantity) VALUES (?, ?, ?)");
-$stmt->execute([$user_id, $product_id, $quantity]);
-
 // Set success message in session
 $_SESSION['cart_message'] = "Added to cart successfully.";
+
+// Check if item with same size already in cart
+$stmt = $pdo->prepare("SELECT cart_id, quantity FROM cart WHERE user_id = ? AND product_id = ? AND size = ?");
+$stmt->execute([$user_id, $product_id, $size]);
+$existing = $stmt->fetch();
+
+if ($existing) {
+    $newQty = $existing['quantity'] + $quantity;
+    $stmt = $pdo->prepare("UPDATE cart SET quantity = ? WHERE cart_id = ?");
+    $stmt->execute([$newQty, $existing['cart_id']]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO cart (user_id, product_id, quantity, size) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$user_id, $product_id, $quantity, $size]);
+}
 
 // Redirect to cart.php
 header("Location: cart.php");

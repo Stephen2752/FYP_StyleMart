@@ -96,62 +96,57 @@ body {
     background: white;
     display: flex;
     justify-content: center;
+    padding: 12px 0;
     gap: 30px;
-    border-bottom: 1px solid #ddd;
-    position: relative;
-    z-index: 10;
-    padding: 0;
-    height: 60px;
+    border-bottom: 1px #ddd;
   }
   
+  .menu-bar button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+      /* 下拉容器 */
   .dropdown {
     position: relative;
     display: inline-block;
   }
-  
-  .dropdown > button {
-    padding: 8px 16px;
-    font-size: 16px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    line-height: 1;
-    margin: 0;
-    display: block;
-    position: relative;
-    z-index: 2;
-  }
-  
+
   .dropdown-content {
     display: none;
     position: absolute;
-    top: 100%; /* 紧贴 button 底部 */
-    left: 0;
     background-color: white;
     min-width: 120px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1;
+    top: 100%;
+    left: 0;
     border-radius: 4px;
-    margin-top: 0;  /* 确保贴合 */
-    padding: 8px 0;
+    /* 移除 margin-top */
   }
-  
-  /* 当鼠标进入 dropdown 整个区域（包括下拉栏）时都显示 */
+
+  .dropdown-content a {
+    color: #333;
+    padding: 10px 15px;
+    text-decoration: none;
+    display: block;
+  }
+
+  .dropdown-content a:hover {
+    background-color: #f2f2f2;
+  }
+
   .dropdown:hover .dropdown-content {
     display: block;
   }
-  
-  .dropdown > button {
-    margin: 0;
-    padding: 8px 16px;
-    display: block;
-  }
-  
 
-  /* Product Grid */
+
+    /* Product Grid */
   /* 产品卡片整体样式 */
   .product-card {
-    background: white;
+    background: rgb(255, 255, 255);
     border: 1px #ccc;
     border-radius: 8px;
     text-align: center;
