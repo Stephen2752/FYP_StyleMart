@@ -10,10 +10,9 @@ if (!$user_id || empty($cart_ids) || !isset($_FILES['receipt'])) {
     exit;
 }
 
-// Handle file upload
+// Handle receipt upload
 $uploadDir = 'uploads/receipts/';
 if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
 $receiptName = basename($_FILES['receipt']['name']);
 $targetFile = $uploadDir . time() . '_' . $receiptName;
 
@@ -23,13 +22,29 @@ if (!move_uploaded_file($_FILES['receipt']['tmp_name'], $targetFile)) {
 }
 
 foreach ($cart_ids as $cart_id) {
-    $stmt = $pdo->prepare("SELECT * FROM cart c JOIN product p ON c.product_id = p.product_id WHERE cart_id = ?");
+    // Get item details
+    $stmt = $pdo->prepare("SELECT c.*, p.price, p.user_id AS seller_id FROM cart c JOIN product p ON c.product_id = p.product_id WHERE c.cart_id = ?");
     $stmt->execute([$cart_id]);
     $item = $stmt->fetch();
 
-    $stmt = $pdo->prepare("INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, receipt) VALUES (?, ?, ?, 'Paid', ?)");
-    $stmt->execute([$user_id, $item['user_id'], $item['product_id'], $targetFile]);
+    if (!$item) continue;
 
+    $totalAmount = $item['price'] * $item['quantity'];
+
+    // Insert transaction
+    $stmt = $pdo->prepare("
+        INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, total_amount, receipt)
+        VALUES (?, ?, ?, 'Paid', ?, ?)
+    ");
+    $stmt->execute([
+        $user_id,
+        $item['seller_id'],
+        $item['product_id'],
+        $totalAmount,
+        $targetFile
+    ]);
+
+    // Remove from cart
     $pdo->prepare("DELETE FROM cart WHERE cart_id = ?")->execute([$cart_id]);
 }
 

@@ -64,7 +64,7 @@ function getColorFromUsername($username) {
   </style>
 </head>
 <body>
-  <div class="back-btn"><a href="MainPage.php"><img src="image/previous.png" alt="Back">Back</a></div>
+  <div class="back-btn"><a href="MainPage.php"><img src="uploads\previous.png" alt="Back">Back</a></div>
 
   <h2>My Profile</h2>
 
@@ -83,6 +83,9 @@ function getColorFromUsername($username) {
     <form action="account_settings.php" method="GET">
       <button type="submit">Account Settings</button>
     </form>
+
+    <form action="order_history.php" method="POST">
+      <button type="submit">Order History</button>
 
     <form action="logout.php" method="POST">
       <button type="submit">Log Out</button>
