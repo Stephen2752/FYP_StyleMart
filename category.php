@@ -1,26 +1,18 @@
 <?php
-// category_form.php
+require 'db.php';
 
-// Define categories and subcategories
-$categories = [
-    "Men" => ["Jeans", "Shirt", "Shoes"],
-    "Women" => ["Jeans", "Shirt", "Shoes"],
-    "Kids" => ["Jeans", "Shirt", "Shoes"],
-    "Sport" => ["Jeans", "Shirt", "Shoes"],
-];
+// 这里假设mens clothes的分类ID是1（你可根据实际数据库调整）
+$category_id = 1;
 
-// Handle form submission
-$message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $main_category = $_POST['main_category'] ?? '';
-    $sub_category = $_POST['sub_category'] ?? '';
+try {
+    // 取出分类下所有产品
+    $stmt = $pdo->prepare("SELECT product_id, product_name, price, (SELECT image_path FROM product_image WHERE product_id = p.product_id LIMIT 1) AS thumbnail FROM product p WHERE category_id = ?");
+    $stmt->execute([$category_id]);
+    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    if ($main_category && $sub_category && isset($categories[$main_category]) && in_array($sub_category, $categories[$main_category])) {
-        // Here you can add your logic to save the category selection to database or session
-        $message = "You selected: <strong>$main_category - $sub_category</strong>";
-    } else {
-        $message = "Invalid category selection.";
-    }
+} catch (Exception $e) {
+    echo "Error: " . $e->getMessage();
+    exit;
 }
 ?>
 
@@ -28,89 +20,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Category Form</title>
+  <title>Mens Clothes - StyleMart</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 30px;
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    label, select {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-    select {
+    .product-card {
       width: 200px;
-      padding: 5px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
     }
-    .message {
-      margin: 20px 0;
-      font-size: 1.1em;
-      color: green;
+    .product-card img {
+      max-width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+    .product-card a {
+      text-decoration: none;
+      color: #333;
+      font-weight: bold;
+      display: block;
+      margin: 10px 0 5px;
+    }
+    .price {
+      color: #f00;
     }
   </style>
-  <script>
-    // JS to update subcategory options dynamically
-    const categories = <?php echo json_encode($categories); ?>;
-
-    function updateSubCategories() {
-      const mainSelect = document.getElementById('main_category');
-      const subSelect = document.getElementById('sub_category');
-      const selectedMain = mainSelect.value;
-
-      // Clear current options
-      subSelect.innerHTML = '<option value="">-- Select Sub Category --</option>';
-
-      if (selectedMain && categories[selectedMain]) {
-        categories[selectedMain].forEach(sub => {
-          const option = document.createElement('option');
-          option.value = sub;
-          option.textContent = sub;
-          subSelect.appendChild(option);
-        });
-      }
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('main_category').addEventListener('change', updateSubCategories);
-    });
-  </script>
 </head>
 <body>
-  <h1>Select Product Category</h1>
-
-  <?php if ($message): ?>
-    <div class="message"><?php echo $message; ?></div>
-  <?php endif; ?>
-
-  <form id="categoryForm" action="" method="POST">
-    <label for="main_category">Main Category:</label>
-    <select name="main_category" id="main_category" required>
-      <option value="">-- Select Main Category --</option>
-      <?php foreach ($categories as $main => $subs): ?>
-        <option value="<?php echo htmlspecialchars($main); ?>" <?php if (isset($main_category) && $main_category === $main) echo 'selected'; ?>>
-          <?php echo htmlspecialchars($main); ?>
-        </option>
-      <?php endforeach; ?>
-    </select>
-
-    <label for="sub_category">Sub Category:</label>
-    <select name="sub_category" id="sub_category" required>
-      <option value="">-- Select Sub Category --</option>
-      <?php
-      // If form submitted and main category selected, populate subcategories server-side on reload
-      if (!empty($main_category) && isset($categories[$main_category])) {
-          foreach ($categories[$main_category] as $sub) {
-              $selected = (isset($sub_category) && $sub_category === $sub) ? 'selected' : '';
-              echo "<option value=\"" . htmlspecialchars($sub) . "\" $selected>" . htmlspecialchars($sub) . "</option>";
-          }
-      }
-      ?>
-    </select>
-
-    <br />
-    <button type="submit">Submit Category</button>
-  </form>
+  <h1>Mens Clothes</h1>
+  <div class="product-list">
+    <?php foreach ($products as $product): ?>
+      <div class="product-card">
+        <a href="product.php?id=<?= $product['product_id'] ?>">
+          <img src="<?= htmlspecialchars($product['thumbnail'] ?: 'placeholder.png') ?>" alt="<?= htmlspecialchars($product['product_name']) ?>" />
+          <?= htmlspecialchars($product['product_name']) ?>
+        </a>
+        <div class="price">RM<?= number_format($product['price'], 2) ?></div>
+      </div>
+    <?php endforeach; ?>
+  </div>
 </body>
 </html>
+
+
