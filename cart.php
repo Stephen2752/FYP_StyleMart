@@ -232,28 +232,31 @@ document.getElementById('payment-form').addEventListener('submit', function(e) {
     body: formData
   }).then(res => res.json())
     .then(data => {
-      if (data.success) {
-        alert('Payment successful!');
+  if (data.success) {
+    alert(data.message || 'Order placed successfully!');
 
-        const containersToCheck = new Set();
-        selectedCartIds.forEach(id => {
-          const item = document.querySelector(`.cart-item[data-cart-id='${id}']`);
-          if (item) {
-            containersToCheck.add(item.closest('.cart-container'));
-            item.remove();
-          }
-        });
-
-        containersToCheck.forEach(container => {
-          if (container.querySelectorAll('.cart-item').length === 0) {
-            container.remove();
-          }
-        });
-
-        selectedSellerId = null; // Reset lock for next merchant
-        updateTotal();
-        document.getElementById('payment-modal').style.display = 'none';
+    const containersToCheck = new Set();
+    selectedCartIds.forEach(id => {
+      const item = document.querySelector(`.cart-item[data-cart-id='${id}']`);
+      if (item) {
+        containersToCheck.add(item.closest('.cart-container'));
+        item.remove();
       }
     });
+
+    containersToCheck.forEach(container => {
+      if (container.querySelectorAll('.cart-item').length === 0) {
+        container.remove();
+      }
+    });
+
+    selectedSellerId = null;
+    updateTotal();
+    document.getElementById('payment-modal').style.display = 'none';
+  } else {
+    alert(data.error || 'Something went wrong!');
+  }
+});
+
 });
 </script>

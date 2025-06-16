@@ -275,6 +275,10 @@ cursor: pointer;
           <button type="submit">Account Settings</button>
         </form>
 
+        <form action="order_history.php" method="GET">
+          <button type="submit">Order History</button>
+        </form>
+
         <form action="logout.php" method="POST">
           <button type="submit">Log Out</button>
         </form>

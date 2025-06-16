@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require 'db.php';
 session_start();
 
@@ -21,31 +24,79 @@ if (!move_uploaded_file($_FILES['receipt']['tmp_name'], $targetFile)) {
     exit;
 }
 
+// Group cart items by seller
+$cartDetails = [];
+$totalAmount = 0;
+$sellerId = null;
+
 foreach ($cart_ids as $cart_id) {
-    // Get item details
     $stmt = $pdo->prepare("SELECT c.*, p.price, p.user_id AS seller_id FROM cart c JOIN product p ON c.product_id = p.product_id WHERE c.cart_id = ?");
     $stmt->execute([$cart_id]);
     $item = $stmt->fetch();
 
     if (!$item) continue;
 
-    $totalAmount = $item['price'] * $item['quantity'];
+    if ($sellerId === null) {
+        $sellerId = $item['seller_id']; // all items must belong to the same seller
+    }
 
-    // Insert transaction
-    $stmt = $pdo->prepare("
-        INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, total_amount, receipt)
-        VALUES (?, ?, ?, 'Paid', ?, ?)
-    ");
-    $stmt->execute([
-        $user_id,
-        $item['seller_id'],
-        $item['product_id'],
-        $totalAmount,
-        $targetFile
-    ]);
+    // Calculate total
+    $itemTotal = $item['price'] * $item['quantity'];
+    $totalAmount += $itemTotal;
 
-    // Remove from cart
-    $pdo->prepare("DELETE FROM cart WHERE cart_id = ?")->execute([$cart_id]);
+    $cartDetails[] = [
+        'product_id' => $item['product_id'],
+        'size' => $item['size'],
+        'quantity' => $item['quantity'],
+        'price' => $item['price']
+    ];
 }
 
-echo json_encode(['success' => true]);
+// Insert a single transaction
+$stmt = $pdo->prepare("
+    INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, total_amount, receipt)
+    VALUES (?, ?, ?, 'Paid', ?, ?)
+");
+$stmt->execute([
+    $user_id,
+    $sellerId,
+    $cartDetails[0]['product_id'], // still need a product_id (can be the first one)
+    $totalAmount,
+    $targetFile
+]);
+
+$transaction_id = $pdo->lastInsertId();
+
+// Insert each item into transaction_item
+foreach ($cartDetails as $item) {
+    $stmt = $pdo->prepare("
+        INSERT INTO transaction_item (transaction_id, product_id, size, quantity, price)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    $stmt->execute([
+        $transaction_id,
+        $item['product_id'],
+        $item['size'],
+        $item['quantity'],
+        $item['price']
+    ]);
+
+    // Decrease product_stock
+    $updateStock = $pdo->prepare("
+        UPDATE product_stock 
+        SET quantity = quantity - ? 
+        WHERE product_id = ? AND size = ?
+    ");
+    $updateStock->execute([
+        $item['quantity'],
+        $item['product_id'],
+        $item['size']
+    ]);
+}
+
+// Remove items from cart
+$inClause = implode(',', array_fill(0, count($cart_ids), '?'));
+$deleteStmt = $pdo->prepare("DELETE FROM cart WHERE cart_id IN ($inClause)");
+$deleteStmt->execute($cart_ids);
+
+echo json_encode(['success' => true, 'message' => 'Order placed successfully']);

@@ -172,8 +172,8 @@ function displayStars($rate) {
       <div class="mydict">
         <div>
           <?php foreach ($stock as $size => $qty): ?>
-            <label class="<?= $qty <= 1 ? 'disabled' : '' ?>">
-              <input type="radio" name="radio" <?= $qty <= 1 ? 'disabled' : '' ?>>
+            <label class="<?= $qty < 1 ? 'disabled' : '' ?>">
+              <input type="radio" name="radio" <?= $qty < 1 ? 'disabled' : '' ?>>
               <span><?= htmlspecialchars($size) ?></span>
             </label>
           <?php endforeach; ?>

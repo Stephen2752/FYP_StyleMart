@@ -2,16 +2,25 @@
 require 'db.php';
 session_start();
 
-$user_id = $_SESSION['user_id'] ?? null;
-$input = json_decode(file_get_contents('php://input'), true);
-$transaction_id = $input['transaction_id'] ?? null;
+$data = json_decode(file_get_contents("php://input"), true);
+$transaction_id = $data['transaction_id'] ?? null;
 
-if (!$user_id || !$transaction_id) {
+if (!$transaction_id || !isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false]);
     exit;
 }
 
-$stmt = $pdo->prepare("UPDATE transaction SET status = 'received' WHERE transaction_id = ? AND buyer_id = ?");
-$stmt->execute([$transaction_id, $user_id]);
+// Make sure user owns this transaction
+$stmt = $pdo->prepare("SELECT buyer_id FROM transaction WHERE transaction_id = ?");
+$stmt->execute([$transaction_id]);
+$order = $stmt->fetch();
+
+if (!$order || $order['buyer_id'] != $_SESSION['user_id']) {
+    echo json_encode(['success' => false]);
+    exit;
+}
+
+// ✅ Mark order as received
+$pdo->prepare("UPDATE transaction SET status = 'received' WHERE transaction_id = ?")->execute([$transaction_id]);
 
 echo json_encode(['success' => true]);

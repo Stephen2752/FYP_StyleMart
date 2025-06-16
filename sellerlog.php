@@ -77,6 +77,8 @@ $qrcodeIsNull = empty($user['qrcode']);
     <p><a href="create_product.html">Create Product</a></p>
     <p><a href="view_product_list.php">View Product</a></p>
     <p><a href="profile.php">Back to Profile</a></p>
+    <p><a href="sell_orders.php">Sell Order</a></p>
+    <p><a href="sell_order_history.php">Sell History</a></p>
   <?php endif; ?>
 </body>
 </html>

@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION["username"] = $user["username"];
 
                 // Redirect to dashboard or welcome page
-                header("Location: profile.php");
+                header("Location: MainPage.php");
                 exit;
             } else {
                 header("Location: login.html?error=incorrect_password");
