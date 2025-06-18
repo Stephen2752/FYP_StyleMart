@@ -14,11 +14,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $price = $_POST['price'];
     $description = $_POST['description'];
 
-    // Update main product
-    $stmt = $pdo->prepare("UPDATE product SET product_name = ?, price = ?, description = ? WHERE product_id = ? AND user_id = ?");
-    $stmt->execute([$product_name, $price, $description, $product_id, $user_id]);
+    // Handle category update
+    $categories_json = $_POST['categories_json'] ?? '[]';
+    $categories = json_decode($categories_json, true);
 
-    // Add new images
+    $category_strings = [];
+    if (is_array($categories)) {
+        foreach ($categories as $cat) {
+            if (isset($cat['main']) && isset($cat['sub'])) {
+                $category_strings[] = $cat['main'] . ' - ' . $cat['sub'];
+            }
+        }
+    }
+    $category = implode(', ', $category_strings);
+
+    // Update product info
+    $stmt = $pdo->prepare("UPDATE product SET product_name = ?, price = ?, description = ?, category = ? WHERE product_id = ? AND user_id = ?");
+    $stmt->execute([$product_name, $price, $description, $category, $product_id, $user_id]);
+
+    // Handle new image uploads
     if (!empty($_FILES['images']['name'][0])) {
         $upload_dir = 'uploads/';
         foreach ($_FILES['images']['name'] as $index => $filename) {
@@ -36,17 +50,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $delete_stmt->execute([$product_id]);
 
     $total_stock = 0;
-    foreach ($_POST['sizes'] as $index => $size) {
-        $stock = $_POST['stock'][$index];
-        $stock_stmt = $pdo->prepare("INSERT INTO product_stock (product_id, size, quantity) VALUES (?, ?, ?)");
-        $stock_stmt->execute([$product_id, $size, $stock]);
-        $total_stock += $stock;
+    if (isset($_POST['sizes']) && isset($_POST['stock'])) {
+        foreach ($_POST['sizes'] as $index => $size) {
+            $stock = $_POST['stock'][$index];
+            $stock_stmt = $pdo->prepare("INSERT INTO product_stock (product_id, size, quantity) VALUES (?, ?, ?)");
+            $stock_stmt->execute([$product_id, $size, $stock]);
+            $total_stock += $stock;
+        }
     }
 
-    // Update total stock
-    $update_stock_stmt = $pdo->prepare("UPDATE product SET stock_quantity = ? WHERE product_id = ?");
-    $update_stock_stmt->execute([$total_stock, $product_id]);
+    // Update total stock and status
+    $status = $total_stock > 0 ? 'Available' : 'Out of Stock';
+    $update_stock_stmt = $pdo->prepare("UPDATE product SET stock_quantity = ?, status = ? WHERE product_id = ?");
+    $update_stock_stmt->execute([$total_stock, $status, $product_id]);
 
+    // Redirect to product list
     header("Location: view_product_list.php");
     exit;
 }

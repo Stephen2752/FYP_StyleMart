@@ -41,7 +41,9 @@ $stocks = $stock_stmt->fetchAll();
   <title>Edit Product</title>
   <style>
     img { width: 100px; margin: 5px; }
-    .size-stock-row { display: flex; gap: 10px; margin-bottom: 5px; }
+    .size-stock-row, .category-row { display: flex; gap: 10px; margin-bottom: 5px; align-items: center; }
+    .category-row select { padding: 4px; }
+    .remove-btn { cursor: pointer; color: red; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -58,6 +60,11 @@ $stocks = $stock_stmt->fetchAll();
 
     <label>Description</label>
     <textarea name="description" required><?= htmlspecialchars($product['description']) ?></textarea>
+
+    <label>Categories</label>
+    <div id="categoryWrapper"></div>
+    <button type="button" onclick="addCategoryRow()">+ Add Category</button>
+    <input type="hidden" name="categories_json" id="categories_json">
 
     <label>Images</label><br>
     <?php foreach ($images as $img): ?>
@@ -81,6 +88,74 @@ $stocks = $stock_stmt->fetchAll();
   </form>
 
   <script>
+    const categoryOptions = {
+      "Men": ["Clothes", "Shoes", "Pants"],
+      "Women": ["Clothes", "Shoes", "Pants"],
+      "Kids": ["Clothes", "Shoes", "Pants"]
+    };
+
+    const existingCategories = <?= json_encode(array_map('trim', explode(',', $product['category']))) ?>;
+
+    function createCategoryRow(selectedMain = '', selectedSub = '') {
+      const row = document.createElement('div');
+      row.className = 'category-row';
+
+      const mainSelect = document.createElement('select');
+      mainSelect.name = 'category_main[]';
+      mainSelect.required = true;
+
+      const subSelect = document.createElement('select');
+      subSelect.name = 'category_sub[]';
+      subSelect.required = true;
+
+      const removeBtn = document.createElement('span');
+      removeBtn.className = 'remove-btn';
+      removeBtn.innerHTML = '🗑';
+      removeBtn.onclick = () => row.remove();
+
+      // Populate main categories
+      for (let main in categoryOptions) {
+        const opt = document.createElement('option');
+        opt.value = main;
+        opt.textContent = main;
+        if (main === selectedMain) opt.selected = true;
+        mainSelect.appendChild(opt);
+      }
+
+      // Populate sub categories for selected main
+      const updateSubOptions = () => {
+        subSelect.innerHTML = '';
+        categoryOptions[mainSelect.value].forEach(sub => {
+          const opt = document.createElement('option');
+          opt.value = sub;
+          opt.textContent = sub;
+          if (sub === selectedSub) opt.selected = true;
+          subSelect.appendChild(opt);
+        });
+      };
+
+      mainSelect.onchange = updateSubOptions;
+      updateSubOptions();
+
+      row.appendChild(mainSelect);
+      row.appendChild(subSelect);
+      row.appendChild(removeBtn);
+
+      document.getElementById('categoryWrapper').appendChild(row);
+    }
+
+    function addCategoryRow() {
+      createCategoryRow();
+    }
+
+    // Initialize existing categories
+    existingCategories.forEach(cat => {
+      const parts = cat.split(' - ');
+      if (parts.length === 2) {
+        createCategoryRow(parts[0].trim(), parts[1].trim());
+      }
+    });
+
     function addSizeStockRow() {
       const wrapper = document.getElementById('sizeStockWrapper');
       const div = document.createElement('div');
@@ -91,6 +166,20 @@ $stocks = $stock_stmt->fetchAll();
       `;
       wrapper.appendChild(div);
     }
+
+    document.querySelector('form').addEventListener('submit', function (e) {
+      const mains = document.getElementsByName('category_main[]');
+      const subs = document.getElementsByName('category_sub[]');
+      const categories = [];
+
+      for (let i = 0; i < mains.length; i++) {
+        const main = mains[i].value;
+        const sub = subs[i].value;
+        categories.push({ main, sub });
+      }
+
+      document.getElementById('categories_json').value = JSON.stringify(categories);
+    });
   </script>
 </body>
 </html>
