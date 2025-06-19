@@ -491,5 +491,6 @@ UPDATE product SET subcategory = 'Shirt' WHERE product_id = 7;
 UPDATE product SET subcategory = 'Shirt' WHERE product_id = 8;
 
 SELECT product_id, product_name, category, subcategory FROM product WHERE category LIKE 'Men%' AND subcategory = 'Shirt';
+UPDATE product SET subcategory = 'Shirt' WHERE product_id = 10;
 
 
