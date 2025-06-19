@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 }
 
 $category = "Men";
-$subcategory = "Shirt";
+$subcategory = "Shirt"; // FIXED
 
 $stmt = $conn->prepare("SELECT * FROM product WHERE category LIKE ? AND subcategory = ?");
 $likeCategory = "$category%";
@@ -31,17 +31,15 @@ $result = $stmt->get_result();
             <?php while ($product = $result->fetch_assoc()): ?>
                 <li>
                     <?php
-$productId = $product['product_id'];
-$imgQuery = $conn->query("SELECT image_path FROM product_image WHERE product_id = $productId LIMIT 1");
-$image = $imgQuery->fetch_assoc();
-$imagePath = $image ? $image['image_path'] : 'placeholder.png'; // fallback if no image
-?>
-
-<img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image" width="150"><br>
-<strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
-Price: RM<?= $product['price'] ?><br>
-<?= htmlspecialchars($product['description']) ?><br>
-
+                    $productId = $product['product_id'];
+                    $imgQuery = $conn->query("SELECT image_path FROM product_image WHERE product_id = $productId LIMIT 1");
+                    $image = $imgQuery->fetch_assoc();
+                    $imagePath = $image ? $image['image_path'] : 'placeholder.png';
+                    ?>
+                    <img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image" width="150"><br>
+                    <strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
+                    Price: RM<?= $product['price'] ?><br>
+                    <?= htmlspecialchars($product['description']) ?><br>
                     Status: <?= $product['status'] ?><br>
                 </li>
             <?php endwhile; ?>
@@ -53,3 +51,4 @@ Price: RM<?= $product['price'] ?><br>
 </html>
 
 <?php $conn->close(); ?>
+

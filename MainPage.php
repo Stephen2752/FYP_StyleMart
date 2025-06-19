@@ -38,40 +38,36 @@ session_start(); // ✅ 所有输出之前执行
     </header>
 
     <!-- Menu bar -->
-    <nav class="menu-bar">
-      <div class="dropdown">
-        <button>Mens</button>
-        <div class="dropdown-content">
-          <a href="categort_men_shirt.php">Clothes</a>
-          <a href="category_men_shirts.html">Shirts</a>
-          <a href="category_men_shoes.html">Shoes</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button>Womens</button>
-        <div class="dropdown-content">
-          <a href="category_women_clothes.html">Clothes</a>
-          <a href="category_women_shirts.html">Shirts</a>
-          <a href="category_women_shoes.html">Shoes</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button>Kids</button>
-        <div class="dropdown-content">
-          <a href="category_kid_clothes.html">Clothes</a>
-          <a href="category_kid_shirts.html">Shirt</a>
-          <a href="category_kid_shoes.html">Shoes</a>
-        </div>
-      </div>
-      <div class="dropdown">
-        <button>Sports</button>
-        <div class="dropdown-content">
-          <a href="#">?</a>
-          <a href="#">?</a>
-          <a href="#">?</a>
-        </div>
-      </div>
-    </nav>
+    <!-- Menu bar -->
+<nav class="menu-bar">
+  <div class="dropdown">
+    <button>Mens</button>
+    <div class="dropdown-content">
+      <a href="category_men_shirt.php">Shirts</a>
+      <a href="category_men_pants.php">Pants</a>
+      <a href="category_men_shoes.php">Shoes</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button>Womens</button>
+    <div class="dropdown-content">
+      <a href="category_women_shirt.php">Shirts</a>
+      <a href="category_women_pants.php">Pants</a>
+      <a href="category_women_shoes.php">Shoes</a>
+    </div>
+  </div>
+
+  <div class="dropdown">
+    <button>Kids</button>
+    <div class="dropdown-content">
+      <a href="category_kids_shirt.php">Shirts</a>
+      <a href="category_kids_pants.php">Pants</a>
+      <a href="category_kids_shoes.php">Shoes</a>
+    </div>
+  </div>
+</nav>
+
 
     <!-- Products Grid -->
     <section class="products">
