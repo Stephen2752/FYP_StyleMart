@@ -42,7 +42,7 @@ session_start(); // ✅ 所有输出之前执行
       <div class="dropdown">
         <button>Mens</button>
         <div class="dropdown-content">
-          <a href="category_men_clothes.html">Clothes</a>
+          <a href="categort_men_shirt.php">Clothes</a>
           <a href="category_men_shirts.html">Shirts</a>
           <a href="category_men_shoes.html">Shoes</a>
         </div>
