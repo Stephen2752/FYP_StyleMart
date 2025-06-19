@@ -31,7 +31,7 @@ $result = $stmt->get_result();
             <?php while ($product = $result->fetch_assoc()): ?>
                 <li>
                     <?php
-$productId = $product['product_id = 10'];
+$productId = $product['product_id'];
 $imgQuery = $conn->query("SELECT image_path FROM product_image WHERE product_id = $productId LIMIT 1");
 $image = $imgQuery->fetch_assoc();
 $imagePath = $image ? $image['image_path'] : 'placeholder.png'; // fallback if no image
