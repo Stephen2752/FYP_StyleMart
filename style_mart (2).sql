@@ -488,4 +488,5 @@ UPDATE product SET category = 'Women - Shirt' WHERE product_id IN (7, 8);
 
 SELECT product_id, product_name, category FROM product;
 
+SELECT product_id, product_name, category FROM product WHERE category = 'Men - Shirt';
 
