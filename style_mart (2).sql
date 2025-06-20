@@ -482,15 +482,10 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
--- Men category
-UPDATE product SET subcategory = 'Shirt' WHERE product_id = 10;
-UPDATE product SET subcategory = 'Pants' WHERE product_id = 9;
+UPDATE product SET category = 'Men - Shirt' WHERE product_id = 10;
+UPDATE product SET category = 'Men - Pants' WHERE product_id = 9;
+UPDATE product SET category = 'Women - Shirt' WHERE product_id IN (7, 8);
 
--- Women category
-UPDATE product SET subcategory = 'Shirt' WHERE product_id = 7;
-UPDATE product SET subcategory = 'Shirt' WHERE product_id = 8;
-
-SELECT product_id, product_name, category, subcategory FROM product WHERE category LIKE 'Men' AND subcategory = 'Shirt';
-UPDATE product SET subcategory = 'Shirt' WHERE product_id = 10;
+SELECT product_id, product_name, category FROM product;
 
 
