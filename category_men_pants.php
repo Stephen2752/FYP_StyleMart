@@ -1,53 +1,66 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = "";
-$db = "style_mart";
+// Define category parts
+$mainCategory = "Men";
+$subCategory = "Pants";
+$fullCategory = "$mainCategory - $subCategory";
 
-$conn = new mysqli($host, $user, $pass, $db);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// Connect to DB
+require 'db.php'; // this file should define $pdo
 
-$category = "Men";
-$subcategory = "Pants"; 
-
-$stmt = $conn->prepare("SELECT * FROM product WHERE category LIKE ? AND subcategory = ?");
-$likeCategory = "$category%";
-$stmt->bind_param("ss", $likeCategory, $subcategory);
-$stmt->execute();
-$result = $stmt->get_result();
+// Prepare and execute the query
+$stmt = $pdo->prepare("SELECT * FROM product WHERE category = ?");
+$stmt->execute([$fullCategory]);
+$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title><?= "$category - $subcategory" ?> Products</title>
+    <title><?= "$mainCategory - $subCategory" ?> Products</title>
+    <style>
+        ul { padding: 0; }
+        li {
+            list-style: none;
+            border: 1px solid #ccc;
+            padding: 12px;
+            margin: 12px;
+            width: 220px;
+            display: inline-block;
+            vertical-align: top;
+            text-align: center;
+        }
+        img {
+            width: 150px;
+            height: auto;
+            margin-bottom: 8px;
+        }
+    </style>
 </head>
 <body>
-    <h2><?= "$category - $subcategory" ?> Products</h2>
-    <?php if ($result->num_rows > 0): ?>
+    <h2><?= "$mainCategory - $subCategory" ?> Products</h2>
+    <p>Total products found: <?= isset($products) ? count($products) : 0 ?></p>
+
+    <?php if (!empty($products)): ?>
         <ul>
-            <?php while ($product = $result->fetch_assoc()): ?>
-                <li>
-                    <?php
-                    $productId = $product['product_id'];
-                    $imgQuery = $conn->query("SELECT image_path FROM product_image WHERE product_id = $productId LIMIT 1");
-                    $image = $imgQuery->fetch_assoc();
-                    $imagePath = $image ? $image['image_path'] : 'placeholder.png';
-                    ?>
-                    <img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image" width="150"><br>
-                    <strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
-                    Price: RM<?= $product['price'] ?><br>
-                    <?= htmlspecialchars($product['description']) ?><br>
-                    Status: <?= $product['status'] ?><br>
-                </li>
-            <?php endwhile; ?>
+        <?php foreach ($products as $product): ?>
+            <li>
+                <?php
+                $productId = $product['product_id'];
+                $imgStmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ? LIMIT 1");
+                $imgStmt->execute([$productId]);
+                $image = $imgStmt->fetch(PDO::FETCH_ASSOC);
+                $imagePath = $image ? $image['image_path'] : 'placeholder.png';
+                ?>
+                <img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image"><br>
+                <strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
+                Price: RM<?= $product['price'] ?><br>
+                <?= htmlspecialchars($product['description']) ?><br>
+                Status: <?= $product['status'] ?><br>
+            </li>
+        <?php endforeach; ?>
         </ul>
     <?php else: ?>
-        <p>No products available.</p>
+        <p>No products found in <?= $fullCategory ?>.</p>
     <?php endif; ?>
 </body>
 </html>
-
-<?php $conn->close(); ?>
