@@ -16,27 +16,45 @@ body {
 }
   
   /* Topbar */
-  .topbar {
-    background: #3e3e3e;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-  }
-  
+ .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  justify-content: center;
+  padding: 0; /* reset padding */
+  height: 70px; /* ✅ fixed height */
+  overflow: hidden; /* ✅ prevents layout expansion */
+}
+
+  .topbar-container {
+  width: 100%;
+  max-width: 800px;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
   .topbar .logo {
     font-size: 20px;
     font-weight: bold;
   }
   
   /* From Uiverse.io by joe-watson-sbf */ 
-  .search {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-  }
+ .search {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* optional space between input and button */
+  text-align: center;
+  justify-content: flex-start; /* ✅ FIX: prevents spacing apart */
+  width: 100%;
+  max-width: 30em;
+}
+
 
   .search__input {
     font-family: inherit;
@@ -90,6 +108,68 @@ body {
     font-size: 20px;
     cursor: pointer;
   }
+
+  /* --- Search Results Styles --- */
+.search-wrapper {
+  width: 100%;
+  max-width: 800px;
+  margin: 90px auto 20px; /* ✅ enough space below fixed-height topbar */
+  position: relative;
+}
+
+
+.search {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search__input {
+  width: 100%;
+  font-size: 1rem;
+  padding: 0.7rem 1rem;
+  border-radius: 30px;
+  background-color: #f4f2f2;
+  border: none;
+  color: #646464;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #3e3e3e; /* ✅ match topbar background */
+  color: white;
+  border: 1px solid #3e3e3e;
+  border-radius: 5px;
+  margin-top: 6px;
+  z-index: 999;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  font-size: 0.95rem;
+}
+
+.search-result-item {
+  padding: 10px;
+  border-bottom: 1px solid #5a5a5a;
+  color: white;
+}
+
+.search-results a,
+.search-results a:visited,
+.search-results a:active,
+.search-result-item a,
+.search-result-item a:visited,
+.search-result-item a:active {
+  color: white !important;
+  text-decoration: none;
+}
+
+
+.search-result-item a:hover {
+  color: #ddd;
+  text-decoration: none;
+}
   
   /* Menu bar */
   .menu-bar {
