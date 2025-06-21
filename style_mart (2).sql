@@ -482,3 +482,11 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+UPDATE product SET category = 'Men - Shirt' WHERE product_id = 10;
+UPDATE product SET category = 'Men - Pants' WHERE product_id = 9;
+UPDATE product SET category = 'Women - Shirt' WHERE product_id IN (7, 8);
+
+SELECT product_id, product_name, category FROM product;
+
+SELECT product_id, product_name, category FROM product WHERE category = 'Men - Shirt';
+
