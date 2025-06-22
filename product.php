@@ -190,18 +190,20 @@ function displayStars($rate) {
   gap: 15px;
   }
 
-  .product-title {
+.product-title {
   margin: 0;
   font-size: 20px;
   font-weight: bold;
-  }
+  flex: 1; /* 占据左边空间 */
+}
 
   /* 新增：让产品名字和价钱并排，留大一点空隙 */
-  .title-price {
+.title-price {
   display: flex;
-  align-items: baseline; /* 产品名和价钱底部对齐 */
-  gap: 30px; /* 空隙留大一点 */
-  }
+  justify-content: space-between; /* 两边对齐 */
+  align-items: baseline;
+  gap: 10px;
+}
 
   /* From Uiverse.io by Pradeepsaranbishnoi */ 
   :focus {
@@ -267,9 +269,9 @@ function displayStars($rate) {
   .number-control {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
   border-radius: 4px;
   overflow: hidden;
+  margin-top: 10px;
   }
 
   .number-left,
@@ -301,6 +303,7 @@ function displayStars($rate) {
   font-weight: Bold;
   transition: all 0.5s;
   -webkit-transition: all 0.5s;
+  margin-top: 20px;
   }
 
   .add-to-cart:hover {
@@ -338,12 +341,13 @@ function displayStars($rate) {
   border-radius: 6px;
   }
 
-  .price {
+.price {
   font-weight: bold;
   color: #6a5acd;
   font-size: 18px;
-  margin: 8px 0;
-  }
+  white-space: nowrap; /* 不自动换行 */
+  padding-right: 50px;
+}
 
   .description {
   margin: 15px 0;
@@ -657,6 +661,69 @@ function displayStars($rate) {
   text-decoration: underline;
   }
 
+  .slider {
+  position: relative;
+  width: 300px;
+  height: auto;
+  overflow: hidden;
+}
+
+.slides {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.slide-image {
+  display: none;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.slide-image.active {
+  display: block;
+}
+
+.prev,
+.next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+  border: none;
+  font-size: 20px;
+  padding: 5px 10px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.prev {
+  left: 5px;
+}
+
+.next {
+  right: 5px;
+}
+
+.store-comment-section {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+}
+
+.add-comment {
+ font-size: 15px;
+ padding: 0.5em 1em;
+ border: transparent;
+ background: #2ba8fb;
+ color: white;
+ border-radius: 4px;
+}
+
+.add-comment:hover {
+ background: #6fc5ff;
+}
   </style>
 </head>
 <body>
@@ -712,15 +779,58 @@ function searchProduct(keyword) {
 
   <div class="product-details">
     <div class="left-panel">
-      <?php foreach ($images as $img): ?>
-        <img src="<?= htmlspecialchars($img) ?>" alt="Product Image" />
-      <?php endforeach; ?>
+      <div class="slider">
+        <button class="prev" onclick="prevSlide()" style="display: none;">❮</button>
+        <div class="slides">
+          <?php foreach ($images as $index => $img): ?>
+            <img src="<?= htmlspecialchars($img) ?>" class="slide-image <?= $index === 0 ? 'active' : '' ?>">
+          <?php endforeach; ?>
+        </div>
+        <button class="next" onclick="nextSlide()" style="display: none;">❯</button>
+      </div>
     </div>
+
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-image');
+        const prevBtn = document.querySelector('.prev');
+        const nextBtn = document.querySelector('.next');
+
+        if (slides.length > 1) {
+          prevBtn.style.display = 'block';
+          nextBtn.style.display = 'block';
+
+          function showSlide(index) {
+            slides.forEach((slide, i) => {
+              slide.classList.remove('active');
+              if (i === index) {
+                slide.classList.add('active');
+              }
+            });
+          }
+
+          function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+          }
+
+          function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+          }
+
+          showSlide(currentSlide);
+          window.prevSlide = prevSlide;
+          window.nextSlide = nextSlide;
+        }
+      });
+    </script>
 
     <div class="product-info-panel">
       <div class="title-price">
-        <h2 class="product-title"><?= htmlspecialchars($product['product_name']) ?></h2>
-        <p class="price">RM<?= number_format($product['price'], 2) ?></p>
+        <h2 class="product-title" style="flex: 1;"><?= htmlspecialchars($product['product_name']) ?></h2>
+        <p class="price" style="text-align: right; white-space: nowrap;">RM<?= number_format($product['price'], 2) ?></p>
       </div>
 
       <div class="mydict">
@@ -735,26 +845,26 @@ function searchProduct(keyword) {
       </div>
 
       <div class="action-buttons">
-  <form action="add_to_cart.php" method="POST" id="cart-form">
-    <input type="hidden" name="product_id" value="<?= $product_id ?>">
-    <input type="hidden" name="size" id="selected-size">
-    <input type="hidden" name="quantity" id="selected-quantity">
+        <form action="add_to_cart.php" method="POST" id="cart-form">
+          <input type="hidden" name="product_id" value="<?= $product_id ?>">
+          <input type="hidden" name="size" id="selected-size">
+          <input type="hidden" name="quantity" id="selected-quantity">
 
-    <div class="number-control">
-      <div class="number-left">-</div>
-      <input type="number" name="quantity_display" class="number-quantity" value="1" min="1">
-      <div class="number-right">+</div>
-    </div>
+          <div class="number-control">
+            <div class="number-left">-</div>
+            <input type="number" name="quantity_display" class="number-quantity" value="1" min="1">
+            <div class="number-right">+</div>
+          </div>
 
-    <button type="submit" class="add-to-cart">Add to Cart</button>
-  </form>
+          <button type="submit" class="add-to-cart">Add to Cart</button>
+        </form>
 
-  <form action="add_to_favorite.php" method="POST" id="fav-form">
-    <input type="hidden" name="product_id" value="<?= $product_id ?>">
-    <input type="hidden" name="size" id="favorite-size">
-    <button type="submit" class="add-to-favorite">❤️</button>
-  </form>
-</div>
+        <form action="add_to_favorite.php" method="POST" id="fav-form">
+          <input type="hidden" name="product_id" value="<?= $product_id ?>">
+          <input type="hidden" name="size" id="favorite-size">
+          <button type="submit" class="add-to-favorite">❤️</button>
+        </form>
+      </div>
 
       <div class="right-panel">
         <h3>Description</h3>
@@ -764,15 +874,39 @@ function searchProduct(keyword) {
     </div>
   </div>
 
-  <!-- Creator / Store Name -->
-  <div class="store-comment-section">
+  <!-- Seller & Comments section -->
+  <div class="store-comment-section" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
     <div class="store-name">
       Seller: <a href="seller_info_html"><?= htmlspecialchars($product['creator_username']) ?></a>
     </div>
 
     <h4>Comments</h4>
+        <?php if ($logged_in_user_id): ?>
+      <form class="comment-form" method="POST" action="product.php?id=<?= $product_id ?>">
+        <?php if (!empty($error_message)): ?>
+          <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
+        <?php endif; ?>
+
+        <label for="rate">Rate this product:</label><br>
+        <div class="stars-input">
+          <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
+          <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
+          <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
+          <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
+          <input type="radio" id="star1" name="rate" value="1" checked><label for="star1">★</label>
+        </div>
+
+        <br><br>
+        <label for="comment_text">Your Comment:</label><br>
+        <textarea name="comment_text" id="comment_text" required></textarea><br><br>
+
+        <button type="submit" class="add-comment">Add Comment</button>
+      </form>
+    <?php else: ?>
+      <p><a href="login.html">Log in</a> to add a comment.</p>
+    <?php endif; ?>
+    <br>
     <div class="comments">
-      <!-- Existing comments -->
       <?php if (!empty($comments)): ?>
         <?php foreach ($comments as $c): ?>
           <div class="comment">
@@ -787,37 +921,13 @@ function searchProduct(keyword) {
         <p>No comments yet. Be the first to comment!</p>
       <?php endif; ?>
     </div>
-
-    <!-- Comment form -->
-    <?php if ($logged_in_user_id): ?>
-    <form class="comment-form" method="POST" action="product.php?id=<?= $product_id ?>">
-      <?php if (!empty($error_message)): ?>
-        <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
-      <?php endif; ?>
-
-      <label for="rate">Rate this product:</label><br>
-      <div class="stars-input">
-        <!-- stars in reverse order for CSS trick -->
-        <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
-        <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
-        <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
-        <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
-        <input type="radio" id="star1" name="rate" value="1" checked><label for="star1">★</label>
-      </div>
-
-      <br><br>
-      <label for="comment_text">Your Comment:</label><br>
-      <textarea name="comment_text" id="comment_text" required></textarea><br><br>
-
-      <button type="submit">Add Comment</button>
-    </form>
-    <?php else: ?>
-      <p><a href="login.html">Log in</a> to add a comment.</p>
-    <?php endif; ?>
   </div>
 </main>
 
+
+
 <script>
+  const quantityInput = document.querySelector('.number-quantity');
   const minusBtn = document.querySelector('.number-left');
   const plusBtn = document.querySelector('.number-right');
 
@@ -866,7 +976,6 @@ function searchProduct(keyword) {
   const sizeRadios = document.querySelectorAll('input[name="radio"]');
   const selectedSizeInput = document.getElementById('selected-size');
   const favoriteSizeInput = document.getElementById('favorite-size');
-  const quantityInput = document.querySelector('.number-quantity');
   const selectedQuantityInput = document.getElementById('selected-quantity');
 
   function updateSelectedSize() {
@@ -901,6 +1010,7 @@ function searchProduct(keyword) {
       alert("Please select a size before adding to favorites.");
     }
   });
+  
 </script>
 
 </body>
