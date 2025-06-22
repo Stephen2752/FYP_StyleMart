@@ -120,18 +120,25 @@ function displayStars($rate) {
       color: red;
       margin-bottom: 0.5rem;
     }     
+    
     .back-btn {
-      display: flex;          /* 并排显示 */
-      align-items: center;    /* 垂直居中 */
-      margin-bottom: 15px;
-      cursor: pointer;
-      color: #000000;
-      font-weight: bold;      /* 可选：让文字更醒目 */
+    display: flex;          /* 并排显示 */
+    align-items: center;    /* 垂直居中 */
+    margin-bottom: 15px;
+    cursor: pointer;
+    color: #000000;
+    font-weight: bold;      /* 可选：让文字更醒目 */
     }
+
     .back-btn img {
-      width: 16px;            /* 根据需要调整图片大小 */
-      height: auto;
-      margin-right: 6px;      /* 图片和文字的间距 */
+    width: 16px;            /* 根据需要调整图片大小 */
+    height: auto;
+    margin-right: 6px;      /* 图片和文字的间距 */
+    }
+
+    .back-btn a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
     }
 
     
