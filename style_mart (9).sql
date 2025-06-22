@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2025 at 03:47 PM
+-- Generation Time: Jun 22, 2025 at 06:54 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -153,8 +153,6 @@ CREATE TABLE `product` (
   `price` decimal(9,2) NOT NULL,
   `description` text NOT NULL,
   `status` varchar(100) NOT NULL,
-  `stock_quantity` int(9) NOT NULL,
-  `sales_count` int(9) NOT NULL,
   `rate` int(5) DEFAULT NULL,
   `comment` varchar(255) DEFAULT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
@@ -165,16 +163,18 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `user_id`, `product_name`, `category`, `price`, `description`, `status`, `stock_quantity`, `sales_count`, `rate`, `comment`, `created_at`, `subcategory`) VALUES
-(7, 7, 'Cropped cotton-jersey T-shirt', 'Women - Clothes', 75.99, 'abcdefghijklmnop', 'Available', 68, 0, NULL, NULL, '2025-06-02 12:39:07', NULL),
-(8, 10, 'Teza wool maxi dress', 'Women - Clothes', 50.00, 'The Row\'s minimalist approach to design ensures pieces like this \'Teza\' dress can easily be dressed up or down, making it so versatile. It\'s cut from black wool in a streamlined silhouette and has subtle pleats at the front for volume.', 'Available', 30, 0, NULL, NULL, '2025-06-02 13:09:28', NULL),
-(9, 10, 'EZY Ultra Stretch Jeans', 'Men - Pants', 88.99, 'EZY Ultra Stretch Jeans', 'Available', 30, 0, NULL, NULL, '2025-06-02 20:24:09', NULL),
-(10, 11, 'wc123abc', 'Men - Shoes', 12.00, 'avswcshvdfjwvefjk', 'Available', 10, 0, NULL, NULL, '2025-06-03 14:56:43', NULL),
-(13, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:55:31', NULL),
-(14, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:55:34', NULL),
-(15, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:57:53', NULL),
-(16, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:57:56', NULL),
-(17, 18, 'Adidas Originals', 'Men - Shoes', 469.00, 'Samba OG leather ', 'Available', 3, 0, NULL, NULL, '2025-06-22 20:14:05', NULL);
+INSERT INTO `product` (`product_id`, `user_id`, `product_name`, `category`, `price`, `description`, `status`, `rate`, `comment`, `created_at`, `subcategory`) VALUES
+(7, 7, 'Cropped cotton-jersey T-shirt', 'Women - Clothes', 75.99, 'abcdefghijklmnop', 'Available', NULL, NULL, '2025-06-02 12:39:07', NULL),
+(8, 10, 'Teza wool maxi dress', 'Women - Clothes', 50.00, 'The Row\'s minimalist approach to design ensures pieces like this \'Teza\' dress can easily be dressed up or down, making it so versatile. It\'s cut from black wool in a streamlined silhouette and has subtle pleats at the front for volume.', 'Available', NULL, NULL, '2025-06-02 13:09:28', NULL),
+(9, 10, 'EZY Ultra Stretch Jeans', 'Men - Pants', 88.99, 'EZY Ultra Stretch Jeans', 'Available', NULL, NULL, '2025-06-02 20:24:09', NULL),
+(10, 11, 'wc123abc', 'Men - Shoes', 12.00, 'avswcshvdfjwvefjk', 'Available', NULL, NULL, '2025-06-03 14:56:43', NULL),
+(13, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', NULL, NULL, '2025-06-22 19:55:31', NULL),
+(14, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', NULL, NULL, '2025-06-22 19:55:34', NULL),
+(15, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', NULL, NULL, '2025-06-22 19:57:53', NULL),
+(16, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', NULL, NULL, '2025-06-22 19:57:56', NULL),
+(17, 18, 'Adidas Originals', 'Men - Shoes', 469.00, 'Samba OG leather ', 'Available', NULL, NULL, '2025-06-22 20:14:05', NULL),
+(18, 11, 'NIKE', 'Men - Shoes, Women - Shoes', 368.00, 'Court Vision Low Shoes', 'Available', NULL, NULL, '2025-06-22 23:43:43', NULL),
+(20, 11, 'fake', 'Men - Clothes', 11.00, 'qwerg', 'Available', NULL, NULL, '2025-06-23 00:33:26', NULL);
 
 -- --------------------------------------------------------
 
@@ -206,7 +206,9 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image_path`, `created_at
 (21, 14, 'uploads/6857ef361d72e_s-l1200.jpg', '2025-06-22 19:55:34'),
 (22, 15, 'uploads/6857efc15858d_lbj 23.png', '2025-06-22 19:57:53'),
 (23, 16, 'uploads/6857efc457767_lbj 23.png', '2025-06-22 19:57:56'),
-(24, 17, 'uploads/6857f38dcf360_Screenshot 2025-06-22 201155.png', '2025-06-22 20:14:05');
+(24, 17, 'uploads/6857f38dcf360_Screenshot 2025-06-22 201155.png', '2025-06-22 20:14:05'),
+(25, 18, 'uploads/685824af0efd0_Screenshot 2025-06-22 234112.png', '2025-06-22 23:43:43'),
+(27, 20, 'uploads/68583056e8be1_Picture1.jpg', '2025-06-23 00:33:26');
 
 -- --------------------------------------------------------
 
@@ -245,8 +247,11 @@ INSERT INTO `product_stock` (`stock_id`, `product_id`, `size`, `quantity`, `crea
 (69, 13, 'S', 100, '2025-06-22 19:55:31', '2025-06-22 19:55:31'),
 (70, 14, 'S', 100, '2025-06-22 19:55:34', '2025-06-22 19:55:34'),
 (71, 15, 'S', 100, '2025-06-22 19:57:53', '2025-06-22 19:57:53'),
-(72, 16, 'S', 100, '2025-06-22 19:57:56', '2025-06-22 19:57:56'),
-(73, 17, 'US7.5', 1, '2025-06-22 20:14:05', '2025-06-22 21:33:18');
+(72, 16, 'S', 98, '2025-06-22 19:57:56', '2025-06-22 23:37:47'),
+(73, 17, 'US7.5', 1, '2025-06-22 20:14:05', '2025-06-22 21:33:18'),
+(74, 18, 'US7.5', 9, '2025-06-22 23:43:43', '2025-06-22 23:43:43'),
+(75, 18, 'US7', 9, '2025-06-22 23:43:43', '2025-06-22 23:43:43'),
+(88, 20, 'S', 1, '2025-06-23 00:46:16', '2025-06-23 00:46:49');
 
 -- --------------------------------------------------------
 
@@ -277,7 +282,16 @@ INSERT INTO `transaction` (`transaction_id`, `buyer_id`, `seller_id`, `payment_s
 (72, 18, 11, 'Payment Failed', 12.00, 'uploads/receipts/1750593174_Screenshot (1).png', NULL, '2025-06-22 19:52:54', 'canceled', 10, NULL),
 (73, 18, 18, 'Verified', 469.00, 'uploads/receipts/1750595728_Screenshot 2025-06-16 122043.png', NULL, '2025-06-22 20:35:28', 'received', 17, 'the arc cyberjaya block d 17-03'),
 (74, 18, 10, 'Verified', 88.99, 'uploads/receipts/1750598347_Picture1.jpg', NULL, '2025-06-22 21:19:07', 'pending', 9, 'the arc cyberjaya block c 23-03'),
-(75, 18, 11, 'Verified', 12.00, 'uploads/receipts/1750598484_Screenshot 2024-07-31 144220.png', NULL, '2025-06-22 21:21:24', 'pending', 10, 'the arc cyberjaya block c 23-03');
+(75, 18, 11, 'Verified', 12.00, 'uploads/receipts/1750598484_Screenshot 2024-07-31 144220.png', NULL, '2025-06-22 21:21:24', 'pending', 10, 'the arc cyberjaya block c 23-03'),
+(76, 16, 18, 'Verified', 900.00, 'uploads/receipts/1750606631_Screenshot 2024-07-24 165911.png', NULL, '2025-06-22 23:37:11', 'received', 16, 'the arc cyberjaya block d 17-03'),
+(77, 16, 11, 'Verified', 15.00, 'uploads/receipts/1750607930_Screenshot 2024-07-24 142119.png', NULL, '2025-06-22 23:58:50', 'received', 19, 'the arc cyberjaya block d 17-03'),
+(78, 16, 11, 'Verified', 15.00, 'uploads/receipts/1750609108_Screenshot 2024-07-24 165911.png', NULL, '2025-06-23 00:18:28', 'pending', 19, 'the arc cyberjaya block d 17-03'),
+(79, 16, 11, 'Verified', 15.00, 'uploads/receipts/1750609757_Screenshot 2024-07-31 144220.png', NULL, '2025-06-23 00:29:17', 'pending', 19, 'the arc cyberjaya block d 17-03'),
+(80, 16, 11, 'Verified', 11.00, 'uploads/receipts/1750610035_Picture1.jpg', NULL, '2025-06-23 00:33:55', 'pending', 20, 'the arc cyberjaya block d 17-03'),
+(81, 16, 11, 'Verified', 11.00, 'uploads/receipts/1750610431_Screenshot 2024-07-24 110906.png', NULL, '2025-06-23 00:40:31', 'pending', 20, 'the arc cyberjaya block d 17-03'),
+(82, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610539_Screenshot 2024-07-24 142119.png', NULL, '2025-06-23 00:42:19', 'canceled', 20, 'the arc cyberjaya block d 17-03'),
+(83, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610646_Screenshot 2024-07-24 110906.png', NULL, '2025-06-23 00:44:06', 'canceled', 20, 'the arc cyberjaya block d 17-03'),
+(84, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610801_Screenshot 2024-07-31 144220.png', NULL, '2025-06-23 00:46:41', 'canceled', 20, 'the arc cyberjaya block d 17-03');
 
 -- --------------------------------------------------------
 
@@ -303,7 +317,13 @@ INSERT INTO `transaction_item` (`item_id`, `transaction_id`, `product_id`, `size
 (10, 72, 10, 'M', 1, 12.00),
 (11, 73, 17, 'US7.5', 1, 469.00),
 (12, 74, 9, 'S', 1, 88.99),
-(13, 75, 10, 'S', 1, 12.00);
+(13, 75, 10, 'S', 1, 12.00),
+(14, 76, 16, 'S', 1, 900.00),
+(18, 80, 20, 'S', 1, 11.00),
+(19, 81, 20, 'S', 1, 11.00),
+(20, 82, 20, 'S', 1, 11.00),
+(21, 83, 20, 'S', 1, 11.00),
+(22, 84, 20, 'S', 1, 11.00);
 
 -- --------------------------------------------------------
 
@@ -318,30 +338,31 @@ CREATE TABLE `user` (
   `password` varchar(255) NOT NULL,
   `contact_info` varchar(255) DEFAULT NULL,
   `phone_number` varchar(255) DEFAULT NULL,
-  `qrcode` varchar(255) DEFAULT NULL
+  `qrcode` varchar(255) DEFAULT NULL,
+  `status` enum('active','banned') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `contact_info`, `phone_number`, `qrcode`) VALUES
-(1, 'Stephen14233', '', '$2y$10$3qMyqmLpIBNyhJ343zFJGOTahm3Is59tvu3NicXjtzxgoX/LDWwo.', 'csvb nmyjthgvdc', NULL, NULL),
-(2, 'stephen1', '', '$2y$10$hyS3MCjgt.0ZRmT4XVf62us96MKAmxbHgLADw.eheosn5cdQtKgCa', 's dvfgnmhgfvdc', NULL, NULL),
-(3, 'Stephen13', 'stephen1313@gmail.com', '$2y$10$ecSbPF/TBJMOO/LdhgYGz.DblJc84FSpGXbJV5yo0dhk.oqyJmySS', 'jalan abu 1234', NULL, NULL),
-(4, 'step121212', 'step121212@gmail.com', '$2y$10$SJGi9siPMXcZUx5vZl7B7.iBEUssfJ0DPsxdDOeLTtyx5lA3M4ypW', NULL, NULL, NULL),
-(5, 'step1212', 'step1212@gmail.com', '$2y$10$oHoFPNypxloOd.yknG7tee0INOVRt6R08cBamz1TXNyelLVOtVf5.', NULL, NULL, NULL),
-(6, 'stephen99', 'stephen99@gmail.com', '$2y$10$DTCLhMO9vaMDuDXGPU4aY.qYyd7YVJRl3VGehkvlA0QqUNuaw35Lu', NULL, NULL, NULL),
-(7, 'w123', 'w123@gamil.com', '$2y$10$uIyNYya.KVPbV604Ka8s4eSN4B4SWUU7rhTgGzCMqvKD1HK7k/MLq', NULL, '0123456789', 'uploads/683c35b4aff49_1677675701695.jpg'),
-(8, 's123', 's123@gamil.com', '$2y$10$nGoGzCnaBXH/VyueRif4Rue/x5PlG3a5a78eERWv88Wk8sEhLYP/G', NULL, NULL, NULL),
-(9, 'ww123', 'ww123@gamil.com', '$2y$10$KBTna7qrZIoC50D3ZF6cbuHFUAavkwEjYVBBuEKVDp.qPi6FppCiO', NULL, NULL, NULL),
-(10, 'a123', '', '$2y$10$LXfBTXdibYVPxNLAPOP34OTgYLQchXCyI0tcJZVNDVpwK2DGQkHNe', NULL, '0127911341', 'uploads/683d31c221229_Screenshot 2025-06-02 130805.png'),
-(11, 'wc123', '', '$2y$10$IH43ibAu3xy9vf16K5vgYuRIBjD9Xkx3AeKNq6mEFue5I6FolFaU6', NULL, '012123142', 'uploads/683e9c42541aa_Screenshot (1).png'),
-(12, 'j123', '', '$2y$10$3Aq9f7X42h6yIFFwVXC.wOLTojxJwcn2yQhU8TGmsXVydpYwZhWry', NULL, NULL, NULL),
-(13, 'b123', '', '$2y$10$SHp47YAk5MzK1EKhiW3SMe6WuxhYLlzJebVFciPZSGCN2Gkn1raTa', NULL, '0127911342', 'uploads/684f97a24c76f_ChatGPT Image 2025年4月17日 17_20_37.png'),
-(16, 'ssdz123', '', '$2y$10$QhLtLfWSiSO1lxGwLBEb6e/ZLwSGP5JLTqdsivxPXX7mthEyr.5.6', NULL, '0127911348', 'uploads/684fd3012bf3d_Screenshot 2025-06-16 122043.png'),
-(17, 'ss123', '', '$2y$10$Fwgd7q8pKnL.1hLsPcdE7O3c4ZQ./YvY23Q40N4dBFQ7A0zzAnc5u', NULL, NULL, NULL),
-(18, 'ngwenghin', 'ngwenghin123@gamil.com', '$2y$10$JznvSHaVf9EVEwFN0onI8efd1lfWmMt9vuQerhyOTdQk4qH0.i1te', NULL, '1111', 'uploads/6857ef0fa2765_Screenshot (2).png');
+INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `contact_info`, `phone_number`, `qrcode`, `status`) VALUES
+(1, 'Stephen14233', '', '$2y$10$3qMyqmLpIBNyhJ343zFJGOTahm3Is59tvu3NicXjtzxgoX/LDWwo.', 'csvb nmyjthgvdc', NULL, NULL, 'banned'),
+(2, 'stephen1', '', '$2y$10$hyS3MCjgt.0ZRmT4XVf62us96MKAmxbHgLADw.eheosn5cdQtKgCa', 's dvfgnmhgfvdc', NULL, NULL, 'banned'),
+(3, 'Stephen13', 'stephen1313@gmail.com', '$2y$10$ecSbPF/TBJMOO/LdhgYGz.DblJc84FSpGXbJV5yo0dhk.oqyJmySS', 'jalan abu 1234', NULL, NULL, 'active'),
+(4, 'step121212', 'step121212@gmail.com', '$2y$10$SJGi9siPMXcZUx5vZl7B7.iBEUssfJ0DPsxdDOeLTtyx5lA3M4ypW', NULL, NULL, NULL, 'active'),
+(5, 'step1212', 'step1212@gmail.com', '$2y$10$oHoFPNypxloOd.yknG7tee0INOVRt6R08cBamz1TXNyelLVOtVf5.', NULL, NULL, NULL, 'active'),
+(6, 'stephen99', 'stephen99@gmail.com', '$2y$10$DTCLhMO9vaMDuDXGPU4aY.qYyd7YVJRl3VGehkvlA0QqUNuaw35Lu', NULL, NULL, NULL, 'active'),
+(7, 'w123', 'w123@gamil.com', '$2y$10$uIyNYya.KVPbV604Ka8s4eSN4B4SWUU7rhTgGzCMqvKD1HK7k/MLq', NULL, '0123456789', 'uploads/683c35b4aff49_1677675701695.jpg', 'active'),
+(8, 's123', 's123@gamil.com', '$2y$10$nGoGzCnaBXH/VyueRif4Rue/x5PlG3a5a78eERWv88Wk8sEhLYP/G', NULL, NULL, NULL, 'active'),
+(9, 'ww123', 'ww123@gamil.com', '$2y$10$KBTna7qrZIoC50D3ZF6cbuHFUAavkwEjYVBBuEKVDp.qPi6FppCiO', NULL, NULL, NULL, 'active'),
+(10, 'a123', '', '$2y$10$LXfBTXdibYVPxNLAPOP34OTgYLQchXCyI0tcJZVNDVpwK2DGQkHNe', NULL, '0127911341', 'uploads/683d31c221229_Screenshot 2025-06-02 130805.png', 'banned'),
+(11, 'wc123', '', '$2y$10$IH43ibAu3xy9vf16K5vgYuRIBjD9Xkx3AeKNq6mEFue5I6FolFaU6', NULL, '012123142', 'uploads/683e9c42541aa_Screenshot (1).png', 'active'),
+(12, 'j123', '', '$2y$10$3Aq9f7X42h6yIFFwVXC.wOLTojxJwcn2yQhU8TGmsXVydpYwZhWry', NULL, NULL, NULL, 'active'),
+(13, 'b123', '', '$2y$10$SHp47YAk5MzK1EKhiW3SMe6WuxhYLlzJebVFciPZSGCN2Gkn1raTa', NULL, '0127911342', 'uploads/684f97a24c76f_ChatGPT Image 2025年4月17日 17_20_37.png', 'active'),
+(16, 'ssdz123', 'ssdz123@gmail.comaaa', '$2y$10$QhLtLfWSiSO1lxGwLBEb6e/ZLwSGP5JLTqdsivxPXX7mthEyr.5.6', NULL, '0127911348', 'uploads/684fd3012bf3d_Screenshot 2025-06-16 122043.png', 'active'),
+(17, 'ss123', '', '$2y$10$Fwgd7q8pKnL.1hLsPcdE7O3c4ZQ./YvY23Q40N4dBFQ7A0zzAnc5u', NULL, NULL, NULL, 'active'),
+(18, 'ngwenghin', 'ngwenghin123@gamil.com', '$2y$10$JznvSHaVf9EVEwFN0onI8efd1lfWmMt9vuQerhyOTdQk4qH0.i1te', NULL, '1111', 'uploads/6857ef0fa2765_Screenshot (2).png', 'active');
 
 -- --------------------------------------------------------
 
@@ -362,7 +383,8 @@ CREATE TABLE `user_address` (
 
 INSERT INTO `user_address` (`address_id`, `user_id`, `address`, `created_at`) VALUES
 (1, 18, 'the arc cyberjaya block d 17-03', '2025-06-22 20:24:56'),
-(2, 18, 'the arc cyberjaya block c 23-03', '2025-06-22 20:26:04');
+(2, 18, 'the arc cyberjaya block c 23-03', '2025-06-22 20:26:04'),
+(3, 16, 'the arc cyberjaya block d 17-03', '2025-06-22 23:36:49');
 
 --
 -- Indexes for dumped tables
@@ -471,7 +493,7 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `comment`
@@ -495,31 +517,31 @@ ALTER TABLE `favorite`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `product_stock`
 --
 ALTER TABLE `product_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
+  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `transaction_item`
 --
 ALTER TABLE `transaction_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -531,7 +553,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `user_address`
 --
 ALTER TABLE `user_address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
