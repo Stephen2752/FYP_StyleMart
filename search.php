@@ -17,8 +17,8 @@ if (count($results) === 0) {
 } else {
     foreach ($results as $product) {
         echo "<div class='search-result-item'>";
-echo "<a href='product.php?id={$product['product_id']}'>" . htmlspecialchars($product['product_name']) . "</a>";
-echo "</div>";
+        echo "<a href='product.php?id={$product['product_id']}'>" . htmlspecialchars($product['product_name']) . "</a>";
+        echo "</div>";
 
     }
 }
