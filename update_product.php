@@ -6,6 +6,7 @@ if (!isset($_SESSION['user_id'])) {
     die('Unauthorized');
 }
 
+
 $user_id = $_SESSION['user_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,24 +46,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Update sizes and stock
+    // Delete old stock entries
     $delete_stmt = $pdo->prepare("DELETE FROM product_stock WHERE product_id = ?");
     $delete_stmt->execute([$product_id]);
 
-    $total_stock = 0;
-    if (isset($_POST['sizes']) && isset($_POST['stock'])) {
+    // Re-insert updated stock
+    if (!empty($_POST['sizes']) && !empty($_POST['stock'])) {
         foreach ($_POST['sizes'] as $index => $size) {
-            $stock = $_POST['stock'][$index];
-            $stock_stmt = $pdo->prepare("INSERT INTO product_stock (product_id, size, quantity) VALUES (?, ?, ?)");
-            $stock_stmt->execute([$product_id, $size, $stock]);
-            $total_stock += $stock;
+            $stock = isset($_POST['stock'][$index]) ? (int)$_POST['stock'][$index] : 0;
+            if ($size !== '') {
+                $stock_stmt = $pdo->prepare("INSERT INTO product_stock (product_id, size, quantity) VALUES (?, ?, ?)");
+                $stock_stmt->execute([$product_id, $size, $stock]);
+            }
         }
     }
 
-    // Update total stock and status
-    $status = $total_stock > 0 ? 'Available' : 'Out of Stock';
-    $update_stock_stmt = $pdo->prepare("UPDATE product SET stock_quantity = ?, status = ? WHERE product_id = ?");
-    $update_stock_stmt->execute([$total_stock, $status, $product_id]);
+    // Recalculate total quantity from product_stock
+    $total_stmt = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) FROM product_stock WHERE product_id = ?");
+    $total_stmt->execute([$product_id]);
+    $total_stock = (int) $total_stmt->fetchColumn();
+
+    // Update product status based on total stock
+    $status = $total_stock > 0 ? 'Available' : 'Sold Out';
+    $update_stmt = $pdo->prepare("UPDATE product SET status = ? WHERE product_id = ?");
+    $update_stmt->execute([$status, $product_id]);
 
     // Redirect to product list
     header("Location: view_product_list.php");

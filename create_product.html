@@ -333,16 +333,6 @@
       wrapper.appendChild(div);
     }
 
-    // Set status based on stock before submit
-    document.getElementById('productForm').addEventListener('submit', function(e) {
-      const stocks = document.querySelectorAll('input[name="stock[]"]');
-      let totalStock = 0;
-      stocks.forEach(input => {
-        totalStock += Number(input.value) || 0;
-      });
-      const statusInput = document.getElementById('statusInput');
-      statusInput.value = totalStock > 1 ? "Available" : "Out of Stock";
-    });
 
     // Initialize + button visibility
     updateAddButtons();

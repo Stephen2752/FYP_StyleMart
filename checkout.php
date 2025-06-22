@@ -93,6 +93,15 @@ foreach ($cartDetails as $item) {
         $item['product_id'],
         $item['size']
     ]);
+     // ✅ Check and update product status
+    $totalStockStmt = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) FROM product_stock WHERE product_id = ?");
+    $totalStockStmt->execute([$item['product_id']]);
+    $total_stock = (int) $totalStockStmt->fetchColumn();
+
+    if ($total_stock <= 0) {
+        $updateStatusStmt = $pdo->prepare("UPDATE product SET status = 'Sold Out' WHERE product_id = ?");
+        $updateStatusStmt->execute([$item['product_id']]);
+    }
 }
 
 // Delete from cart

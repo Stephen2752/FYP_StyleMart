@@ -24,6 +24,8 @@
         <div class="input-container">
           <input placeholder="Enter password" type="password" name="password" id="password" required>
           <span id="passwordError" class="error" style="color: red; font-size: 0.8rem; display: none;">Incorrect password.</span>
+          <span id="bannedError" class="error" style="color: red; font-size: 0.8rem; display: none;">Your account has been banned.</span>
+
         </div>
 
         <button class="submit" type="submit">Login</button>
@@ -49,6 +51,10 @@
       } else if (error === 'incorrect_password') {
         document.getElementById('passwordError').style.display = 'inline';
         document.getElementById('password').value = '';
+      }else if (error === 'banned') {
+      document.getElementById('bannedError').style.display = 'inline';
+      document.getElementById('login_id').value = '';
+      document.getElementById('password').value = '';
       }
     };
   </script>

@@ -23,20 +23,6 @@ if ($action === 'verify') {
     $stmt->execute([$transaction_id]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    foreach ($items as $item) {
-        $size = trim($item['size']); // remove whitespace
-
-        $decrease = $pdo->prepare("
-            UPDATE product_stock 
-            SET quantity = quantity - ? 
-            WHERE product_id = ? AND size = ?
-        ");
-        $decrease->execute([$item['quantity'], $item['product_id'], $size]);
-
-        if ($decrease->rowCount() === 0) {
-            error_log("❗ Stock not decreased: product_id={$item['product_id']}, size={$size}");
-        }
-    }
 
 } elseif ($action === 'fail') {
     // ❌ Set payment_status = Failed + cancel order
@@ -49,19 +35,33 @@ if ($action === 'verify') {
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($items as $item) {
-        $size = trim($item['size']);
+    $product_id = $item['product_id'];
+    $size = trim($item['size']);
 
-        $restore = $pdo->prepare("
-            UPDATE product_stock 
-            SET quantity = quantity + ? 
-            WHERE product_id = ? AND size = ?
-        ");
-        $restore->execute([$item['quantity'], $item['product_id'], $size]);
+    // Restore stock for this size
+    $restore = $pdo->prepare("
+        UPDATE product_stock 
+        SET quantity = quantity + ? 
+        WHERE product_id = ? AND size = ?
+    ");
+    $restore->execute([$item['quantity'], $product_id, $size]);
 
-        if ($restore->rowCount() === 0) {
-            error_log("❗ Stock not restored: product_id={$item['product_id']}, size={$size}");
-        }
+    if ($restore->rowCount() === 0) {
+        error_log("❗ Stock not restored: product_id={$product_id}, size={$size}");
     }
+
+    // ✅ After restoring, check total stock for the product
+    $totalStockStmt = $pdo->prepare("SELECT COALESCE(SUM(quantity), 0) FROM product_stock WHERE product_id = ?");
+    $totalStockStmt->execute([$product_id]);
+    $total_stock = (int) $totalStockStmt->fetchColumn();
+
+    // If total > 0, mark product as Available
+    if ($total_stock > 0) {
+        $updateStatusStmt = $pdo->prepare("UPDATE product SET status = 'Available' WHERE product_id = ?");
+        $updateStatusStmt->execute([$product_id]);
+    }
+}
+
 }
 
 // ✅ Redirect back to admin page

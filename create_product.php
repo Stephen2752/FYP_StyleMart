@@ -42,9 +42,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Insert into product table with initial stock quantity = $total_stock
-    $stmt = $pdo->prepare("INSERT INTO product (user_id, product_name, category, price, description, status, stock_quantity) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->execute([$user_id, $product_name, $category, $price, $description, $status, $total_stock]);
+    
+    $stmt = $pdo->prepare("INSERT INTO product (user_id, product_name, category, price, description, status) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$user_id, $product_name, $category, $price, $description, $status]);
     $product_id = $pdo->lastInsertId();
 
     // Handle images
