@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2025 at 01:32 PM
+-- Generation Time: Jun 22, 2025 at 03:47 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -93,7 +93,7 @@ CREATE TABLE `comment` (
   `comment_text` text NOT NULL,
   `rate` int(1) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
-) ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `comment`
@@ -169,7 +169,12 @@ INSERT INTO `product` (`product_id`, `user_id`, `product_name`, `category`, `pri
 (7, 7, 'Cropped cotton-jersey T-shirt', 'Women - Clothes', 75.99, 'abcdefghijklmnop', 'Available', 68, 0, NULL, NULL, '2025-06-02 12:39:07', NULL),
 (8, 10, 'Teza wool maxi dress', 'Women - Clothes', 50.00, 'The Row\'s minimalist approach to design ensures pieces like this \'Teza\' dress can easily be dressed up or down, making it so versatile. It\'s cut from black wool in a streamlined silhouette and has subtle pleats at the front for volume.', 'Available', 30, 0, NULL, NULL, '2025-06-02 13:09:28', NULL),
 (9, 10, 'EZY Ultra Stretch Jeans', 'Men - Pants', 88.99, 'EZY Ultra Stretch Jeans', 'Available', 30, 0, NULL, NULL, '2025-06-02 20:24:09', NULL),
-(10, 11, 'wc123abc', 'Men - Shoes', 12.00, 'avswcshvdfjwvefjk', 'Available', 10, 0, NULL, NULL, '2025-06-03 14:56:43', NULL);
+(10, 11, 'wc123abc', 'Men - Shoes', 12.00, 'avswcshvdfjwvefjk', 'Available', 10, 0, NULL, NULL, '2025-06-03 14:56:43', NULL),
+(13, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:55:31', NULL),
+(14, 18, 'nike x nba chicago bulls jersey \'derrick rose 1\' dn2131-657', 'Men - Clothes', 900.00, 'bulls', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:55:34', NULL),
+(15, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:57:53', NULL),
+(16, 18, 'lebron', 'Men - Clothes', 900.00, 'lakers', 'Available', 100, 0, NULL, NULL, '2025-06-22 19:57:56', NULL),
+(17, 18, 'Adidas Originals', 'Men - Shoes', 469.00, 'Samba OG leather ', 'Available', 3, 0, NULL, NULL, '2025-06-22 20:14:05', NULL);
 
 -- --------------------------------------------------------
 
@@ -196,7 +201,12 @@ INSERT INTO `product_image` (`image_id`, `product_id`, `image_path`, `created_at
 (12, 8, 'uploads/683d320840dc0_Screenshot 2025-06-02 130303.png', '2025-06-02 13:09:28'),
 (13, 8, 'uploads/683d323671391_Screenshot 2025-06-02 130311.png', '2025-06-02 13:10:14'),
 (14, 9, 'uploads/683d97e979cbd_Screenshot 2025-06-02 202311.png', '2025-06-02 20:24:09'),
-(15, 10, 'uploads/683e9cab3a589_Screenshot 2025-06-03 145615.png', '2025-06-03 14:56:43');
+(15, 10, 'uploads/683e9cab3a589_Screenshot 2025-06-03 145615.png', '2025-06-03 14:56:43'),
+(20, 13, 'uploads/6857ef33bcd59_s-l1200.jpg', '2025-06-22 19:55:31'),
+(21, 14, 'uploads/6857ef361d72e_s-l1200.jpg', '2025-06-22 19:55:34'),
+(22, 15, 'uploads/6857efc15858d_lbj 23.png', '2025-06-22 19:57:53'),
+(23, 16, 'uploads/6857efc457767_lbj 23.png', '2025-06-22 19:57:56'),
+(24, 17, 'uploads/6857f38dcf360_Screenshot 2025-06-22 201155.png', '2025-06-22 20:14:05');
 
 -- --------------------------------------------------------
 
@@ -225,13 +235,18 @@ INSERT INTO `product_stock` (`stock_id`, `product_id`, `size`, `quantity`, `crea
 (21, 7, 'M', 10, '2025-06-02 19:38:13', '2025-06-02 19:38:13'),
 (22, 7, 'L', 21, '2025-06-02 19:38:13', '2025-06-02 19:38:13'),
 (23, 7, 'XL', 15, '2025-06-02 19:38:13', '2025-06-02 19:38:13'),
-(24, 9, 'S', 10, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
+(24, 9, 'S', 8, '2025-06-02 20:24:09', '2025-06-22 21:33:26'),
 (25, 9, 'M', 0, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
 (26, 9, 'L', 15, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
 (27, 9, 'XL', 5, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
-(66, 10, 'S', 8, '2025-06-18 18:07:49', '2025-06-18 18:07:49'),
-(67, 10, 'M', 2, '2025-06-18 18:07:49', '2025-06-18 18:07:49'),
-(68, 10, 'XL', 0, '2025-06-18 18:07:49', '2025-06-18 18:07:49');
+(66, 10, 'S', 6, '2025-06-18 18:07:49', '2025-06-22 21:33:28'),
+(67, 10, 'M', 0, '2025-06-18 18:07:49', '2025-06-22 20:36:17'),
+(68, 10, 'XL', 0, '2025-06-18 18:07:49', '2025-06-18 18:07:49'),
+(69, 13, 'S', 100, '2025-06-22 19:55:31', '2025-06-22 19:55:31'),
+(70, 14, 'S', 100, '2025-06-22 19:55:34', '2025-06-22 19:55:34'),
+(71, 15, 'S', 100, '2025-06-22 19:57:53', '2025-06-22 19:57:53'),
+(72, 16, 'S', 100, '2025-06-22 19:57:56', '2025-06-22 19:57:56'),
+(73, 17, 'US7.5', 1, '2025-06-22 20:14:05', '2025-06-22 21:33:18');
 
 -- --------------------------------------------------------
 
@@ -249,8 +264,20 @@ CREATE TABLE `transaction` (
   `confirmed_by` int(9) DEFAULT NULL,
   `transaction_date` datetime NOT NULL DEFAULT current_timestamp(),
   `status` varchar(20) NOT NULL DEFAULT 'pending',
-  `product_id` int(9) DEFAULT NULL
+  `product_id` int(9) DEFAULT NULL,
+  `shipping_address` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transaction`
+--
+
+INSERT INTO `transaction` (`transaction_id`, `buyer_id`, `seller_id`, `payment_status`, `total_amount`, `receipt`, `confirmed_by`, `transaction_date`, `status`, `product_id`, `shipping_address`) VALUES
+(71, 18, 11, 'Verified', 12.00, 'uploads/receipts/1750593144_Screenshot (1).png', NULL, '2025-06-22 19:52:24', 'received', 10, NULL),
+(72, 18, 11, 'Payment Failed', 12.00, 'uploads/receipts/1750593174_Screenshot (1).png', NULL, '2025-06-22 19:52:54', 'canceled', 10, NULL),
+(73, 18, 18, 'Verified', 469.00, 'uploads/receipts/1750595728_Screenshot 2025-06-16 122043.png', NULL, '2025-06-22 20:35:28', 'received', 17, 'the arc cyberjaya block d 17-03'),
+(74, 18, 10, 'Verified', 88.99, 'uploads/receipts/1750598347_Picture1.jpg', NULL, '2025-06-22 21:19:07', 'pending', 9, 'the arc cyberjaya block c 23-03'),
+(75, 18, 11, 'Verified', 12.00, 'uploads/receipts/1750598484_Screenshot 2024-07-31 144220.png', NULL, '2025-06-22 21:21:24', 'pending', 10, 'the arc cyberjaya block c 23-03');
 
 -- --------------------------------------------------------
 
@@ -266,6 +293,17 @@ CREATE TABLE `transaction_item` (
   `quantity` int(11) NOT NULL,
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transaction_item`
+--
+
+INSERT INTO `transaction_item` (`item_id`, `transaction_id`, `product_id`, `size`, `quantity`, `price`) VALUES
+(9, 71, 10, 'M', 1, 12.00),
+(10, 72, 10, 'M', 1, 12.00),
+(11, 73, 17, 'US7.5', 1, 469.00),
+(12, 74, 9, 'S', 1, 88.99),
+(13, 75, 10, 'S', 1, 12.00);
 
 -- --------------------------------------------------------
 
@@ -302,7 +340,29 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `contact_info`, 
 (12, 'j123', '', '$2y$10$3Aq9f7X42h6yIFFwVXC.wOLTojxJwcn2yQhU8TGmsXVydpYwZhWry', NULL, NULL, NULL),
 (13, 'b123', '', '$2y$10$SHp47YAk5MzK1EKhiW3SMe6WuxhYLlzJebVFciPZSGCN2Gkn1raTa', NULL, '0127911342', 'uploads/684f97a24c76f_ChatGPT Image 2025年4月17日 17_20_37.png'),
 (16, 'ssdz123', '', '$2y$10$QhLtLfWSiSO1lxGwLBEb6e/ZLwSGP5JLTqdsivxPXX7mthEyr.5.6', NULL, '0127911348', 'uploads/684fd3012bf3d_Screenshot 2025-06-16 122043.png'),
-(17, 'ss123', '', '$2y$10$Fwgd7q8pKnL.1hLsPcdE7O3c4ZQ./YvY23Q40N4dBFQ7A0zzAnc5u', NULL, NULL, NULL);
+(17, 'ss123', '', '$2y$10$Fwgd7q8pKnL.1hLsPcdE7O3c4ZQ./YvY23Q40N4dBFQ7A0zzAnc5u', NULL, NULL, NULL),
+(18, 'ngwenghin', 'ngwenghin123@gamil.com', '$2y$10$JznvSHaVf9EVEwFN0onI8efd1lfWmMt9vuQerhyOTdQk4qH0.i1te', NULL, '1111', 'uploads/6857ef0fa2765_Screenshot (2).png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_address`
+--
+
+CREATE TABLE `user_address` (
+  `address_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `address` text NOT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `user_address`
+--
+
+INSERT INTO `user_address` (`address_id`, `user_id`, `address`, `created_at`) VALUES
+(1, 18, 'the arc cyberjaya block d 17-03', '2025-06-22 20:24:56'),
+(2, 18, 'the arc cyberjaya block c 23-03', '2025-06-22 20:26:04');
 
 --
 -- Indexes for dumped tables
@@ -391,6 +451,13 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `user_address`
+--
+ALTER TABLE `user_address`
+  ADD PRIMARY KEY (`address_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -404,13 +471,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `complaint`
@@ -428,37 +495,43 @@ ALTER TABLE `favorite`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `product_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `image_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `product_stock`
 --
 ALTER TABLE `product_stock`
-  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `stock_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
+  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `transaction_item`
 --
 ALTER TABLE `transaction_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `user_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `user_address`
+--
+ALTER TABLE `user_address`
+  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -524,6 +597,12 @@ ALTER TABLE `transaction`
 ALTER TABLE `transaction_item`
   ADD CONSTRAINT `transaction_item_ibfk_1` FOREIGN KEY (`transaction_id`) REFERENCES `transaction` (`transaction_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `transaction_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `user_address`
+--
+ALTER TABLE `user_address`
+  ADD CONSTRAINT `user_address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

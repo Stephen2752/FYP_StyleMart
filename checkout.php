@@ -7,8 +7,9 @@ session_start();
 
 $user_id = $_SESSION['user_id'] ?? null;
 $cart_ids = json_decode($_POST['cart_ids'] ?? '[]', true);
+$shipping_address = trim($_POST['shipping_address'] ?? '');
 
-if (!$user_id || empty($cart_ids) || !isset($_FILES['receipt'])) {
+if (!$user_id || empty($cart_ids) || !isset($_FILES['receipt']) || empty($shipping_address)) {
     echo json_encode(['success' => false, 'error' => 'Missing data']);
     exit;
 }
@@ -37,10 +38,9 @@ foreach ($cart_ids as $cart_id) {
     if (!$item) continue;
 
     if ($sellerId === null) {
-        $sellerId = $item['seller_id']; // all items must belong to the same seller
+        $sellerId = $item['seller_id']; // ensure single seller
     }
 
-    // Calculate total
     $itemTotal = $item['price'] * $item['quantity'];
     $totalAmount += $itemTotal;
 
@@ -52,22 +52,23 @@ foreach ($cart_ids as $cart_id) {
     ];
 }
 
-// Insert a single transaction
+// Insert transaction
 $stmt = $pdo->prepare("
-    INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, total_amount, receipt)
-    VALUES (?, ?, ?, 'Paid', ?, ?)
+    INSERT INTO transaction (buyer_id, seller_id, product_id, payment_status, total_amount, receipt, shipping_address)
+    VALUES (?, ?, ?, 'Paid', ?, ?, ?)
 ");
 $stmt->execute([
     $user_id,
     $sellerId,
-    $cartDetails[0]['product_id'], // still need a product_id (can be the first one)
+    $cartDetails[0]['product_id'], // any 1 product ID
     $totalAmount,
-    $targetFile
+    $targetFile,
+    $shipping_address
 ]);
 
 $transaction_id = $pdo->lastInsertId();
 
-// Insert each item into transaction_item
+// Insert transaction items
 foreach ($cartDetails as $item) {
     $stmt = $pdo->prepare("
         INSERT INTO transaction_item (transaction_id, product_id, size, quantity, price)
@@ -81,7 +82,7 @@ foreach ($cartDetails as $item) {
         $item['price']
     ]);
 
-    // Decrease product_stock
+    // Reduce stock
     $updateStock = $pdo->prepare("
         UPDATE product_stock 
         SET quantity = quantity - ? 
@@ -94,9 +95,10 @@ foreach ($cartDetails as $item) {
     ]);
 }
 
-// Remove items from cart
+// Delete from cart
 $inClause = implode(',', array_fill(0, count($cart_ids), '?'));
 $deleteStmt = $pdo->prepare("DELETE FROM cart WHERE cart_id IN ($inClause)");
 $deleteStmt->execute($cart_ids);
 
+// Respond success
 echo json_encode(['success' => true, 'message' => 'Order placed successfully']);
