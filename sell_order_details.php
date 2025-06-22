@@ -36,9 +36,10 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <p><strong>Buyer:</strong> <?= htmlspecialchars($order['buyer_name']) ?></p>
 <p><strong>Contact:</strong> <?= htmlspecialchars($order['contact_info']) ?> | <?= htmlspecialchars($order['phone_number']) ?></p>
+<p><strong>Shipping Address:</strong><br><?= nl2br(htmlspecialchars($order['shipping_address'])) ?></p>
 <p><strong>Total:</strong> RM <?= number_format($order['total_amount'], 2) ?></p>
-<p><strong>Payment Status:</strong> <?= $order['payment_status'] ?></p>
-<p><strong>Status:</strong> <?= $order['status'] ?></p>
+<p><strong>Payment Status:</strong> <?= htmlspecialchars($order['payment_status']) ?></p>
+<p><strong>Status:</strong> <?= htmlspecialchars($order['status']) ?></p>
 
 <h3>Items</h3>
 <table border="1" cellpadding="6">
@@ -46,8 +47,8 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php foreach ($items as $i): ?>
         <tr>
             <td><?= htmlspecialchars($i['product_name']) ?></td>
-            <td><?= $i['size'] ?></td>
-            <td><?= $i['quantity'] ?></td>
+            <td><?= htmlspecialchars($i['size']) ?></td>
+            <td><?= (int)$i['quantity'] ?></td>
             <td>RM <?= number_format($i['price'], 2) ?></td>
             <td>RM <?= number_format($i['price'] * $i['quantity'], 2) ?></td>
         </tr>
