@@ -43,20 +43,22 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php if (!empty($products)): ?>
         <ul>
         <?php foreach ($products as $product): ?>
-            <li>
-                <?php
-                $productId = $product['product_id'];
-                $imgStmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ? LIMIT 1");
-                $imgStmt->execute([$productId]);
-                $image = $imgStmt->fetch(PDO::FETCH_ASSOC);
-                $imagePath = $image ? $image['image_path'] : 'placeholder.png';
-                ?>
-                <img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image"><br>
-                <strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
-                Price: RM<?= $product['price'] ?><br>
-                <?= htmlspecialchars($product['description']) ?><br>
-                Status: <?= $product['status'] ?><br>
-            </li>
+           <li>
+    <?php
+    $productId = $product['product_id'];
+    $imgStmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ? LIMIT 1");
+    $imgStmt->execute([$productId]);
+    $image = $imgStmt->fetch(PDO::FETCH_ASSOC);
+    $imagePath = $image ? $image['image_path'] : 'placeholder.png';
+    ?>
+    <a href="product.php?id=<?= $productId ?>" style="text-decoration: none; color: inherit;">
+        <img src="<?= htmlspecialchars($imagePath) ?>" alt="Product Image"><br>
+        <strong><?= htmlspecialchars($product['product_name']) ?></strong><br>
+        Price: RM<?= $product['price'] ?><br>
+        
+    </a>
+</li>
+
         <?php endforeach; ?>
         </ul>
     <?php else: ?>
