@@ -85,6 +85,7 @@ $stocks = $stock_stmt->fetchAll();
     <button type="button" onclick="addSizeStockRow()">+ Add Size</button>
 
     <button type="submit">Update Product</button>
+    <button type="button" onclick="confirmDelete()">Delete Product</button>
   </form>
 
   <script>
@@ -180,6 +181,13 @@ $stocks = $stock_stmt->fetchAll();
 
       document.getElementById('categories_json').value = JSON.stringify(categories);
     });
+
+    function confirmDelete() {
+    if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+      const productId = <?= json_encode($product['product_id']) ?>;
+      window.location.href = 'view_product_delete.php?product_id=' + productId;
+    }
+  }
   </script>
 </body>
 </html>
