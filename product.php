@@ -912,30 +912,37 @@ function displayStars($rate) {
   const nextBtn = document.querySelector('.slider-button.next');
   let currentIndex = 0;
 
+  // Disable/enable buttons at edges
+  if (prevBtn && nextBtn) {
+  prevBtn.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateSlider();
+    }
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      updateSlider();
+    }
+  });
+
+  // Initialize button state
+  updateSlider();
+}
+
+
   function updateSlider() {
   const offset = -currentIndex * 100;
   track.style.transform = `translateX(${offset}%)`;
 
-  // Disable/enable buttons at edges
-  if (prevBtn && nextBtn) {
-    prevBtn.disabled = currentIndex === 0;
-    nextBtn.disabled = currentIndex === images.length - 1;
-  }
+  if (prevBtn) prevBtn.disabled = currentIndex === 0;
+  if (nextBtn) nextBtn.disabled = currentIndex === images.length - 1;
 }
 
-  prevBtn.addEventListener('click', () => {
-  if (currentIndex > 0) {
-    currentIndex--;
-    updateSlider();
-  }
-});
 
-nextBtn.addEventListener('click', () => {
-  if (currentIndex < images.length - 1) {
-    currentIndex++;
-    updateSlider();
-  }
-});
+  
 
   const quantityInput = document.querySelector('.number-quantity');
   const minusBtn = document.querySelector('.number-left');
