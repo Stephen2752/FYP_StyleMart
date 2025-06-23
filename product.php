@@ -757,40 +757,12 @@ function displayStars($rate) {
 .add-comment:hover {
  background: #6fc5ff;
 }
-.slider {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      overflow: hidden;
-    }
-    .slider-track {
-      display: flex;
-      transition: transform 0.4s ease;
-    }
-    .slider-image {
-      min-width: 100%;
-      max-width: 100%;
-      object-fit: cover;
-      display: block;
-    }
-    .slider-button {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 2em;
-      color: #333;
-      background: rgba(255,255,255,0.7);
-      border: none;
-      padding: 0 10px;
-      cursor: pointer;
-      z-index: 1;
-    }
-    .slider-button.prev {
-      left: 0;
-    }
-    .slider-button.next {
-      right: 0;
-    }
+
+.slider-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
   </style>
 </head>
 <body>
@@ -941,21 +913,29 @@ function displayStars($rate) {
   let currentIndex = 0;
 
   function updateSlider() {
-    const offset = -currentIndex * 100;
-    track.style.transform = `translateX(${offset}%)`;
-  }
+  const offset = -currentIndex * 100;
+  track.style.transform = `translateX(${offset}%)`;
 
+  // Disable/enable buttons at edges
   if (prevBtn && nextBtn) {
-    prevBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + images.length) % images.length;
-      updateSlider();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % images.length;
-      updateSlider();
-    });
+    prevBtn.disabled = currentIndex === 0;
+    nextBtn.disabled = currentIndex === images.length - 1;
   }
+}
+
+  prevBtn.addEventListener('click', () => {
+  if (currentIndex > 0) {
+    currentIndex--;
+    updateSlider();
+  }
+});
+
+nextBtn.addEventListener('click', () => {
+  if (currentIndex < images.length - 1) {
+    currentIndex++;
+    updateSlider();
+  }
+});
 
   const quantityInput = document.querySelector('.number-quantity');
   const minusBtn = document.querySelector('.number-left');
