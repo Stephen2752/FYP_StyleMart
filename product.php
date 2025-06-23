@@ -8,12 +8,10 @@ if (!isset($_GET['id'])) {
 
 $product_id = (int)$_GET['id'];
 
-// Start session to get logged-in user (assuming you have a session-based login)
 session_start();
-$logged_in_user_id = $_SESSION['user_id'] ?? null; // adjust if your session variable is different
+$logged_in_user_id = $_SESSION['user_id'] ?? null;
 
 try {
-    // Get product details and creator info
     $stmt = $pdo->prepare("
         SELECT p.*, u.username AS creator_username 
         FROM product p 
@@ -28,16 +26,13 @@ try {
         exit;
     }
 
-    // Handle comment form submission
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text'], $_POST['rate']) && $logged_in_user_id) {
         $comment_text = trim($_POST['comment_text']);
         $rate = (int)$_POST['rate'];
 
-        // Simple validation
         if ($comment_text !== '' && $rate >= 1 && $rate <= 5) {
             $insertStmt = $pdo->prepare("INSERT INTO comment (product_id, user_id, comment_text, rate, created_at) VALUES (?, ?, ?, ?, NOW())");
             $insertStmt->execute([$product_id, $logged_in_user_id, $comment_text, $rate]);
-            // Redirect to avoid form resubmission
             header("Location: product.php?id=" . $product_id);
             exit;
         } else {
@@ -45,17 +40,14 @@ try {
         }
     }
 
-    // Get images
     $imgStmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ?");
     $imgStmt->execute([$product_id]);
     $images = $imgStmt->fetchAll(PDO::FETCH_COLUMN);
 
-    // Get stock (size and quantity)
     $stockStmt = $pdo->prepare("SELECT size, quantity FROM product_stock WHERE product_id = ?");
     $stockStmt->execute([$product_id]);
     $stock = $stockStmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-    // Get comments with user info
     $commentStmt = $pdo->prepare("
         SELECT c.comment_text, c.rate, u.username 
         FROM comment c 
@@ -84,9 +76,43 @@ function displayStars($rate) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Product Details - StyleMart</title>
+  <link rel="stylesheet" href="product.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    <style>
-        /* Simple styles for comment form */
+  <style>
+    .slider {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+    .slider-image {
+      min-width: 100%;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2em;
+      color: #333;
+      background: rgba(255,255,255,0.7);
+      border: none;
+      padding: 0 10px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .slider-button.prev {
+      left: 0;
+    }
+    .slider-button.next {
+      right: 0;
+    }
     .comment-form {
       margin-top: 1rem;
       border-top: 1px solid #ccc;
@@ -731,16 +757,47 @@ function displayStars($rate) {
 .add-comment:hover {
  background: #6fc5ff;
 }
+.slider {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      overflow: hidden;
+    }
+    .slider-track {
+      display: flex;
+      transition: transform 0.4s ease;
+    }
+    .slider-image {
+      min-width: 100%;
+      max-width: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .slider-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2em;
+      color: #333;
+      background: rgba(255,255,255,0.7);
+      border: none;
+      padding: 0 10px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    .slider-button.prev {
+      left: 0;
+    }
+    .slider-button.next {
+      right: 0;
+    }
   </style>
 </head>
 <body>
 
-<!-- Topbar -->
-  <header class="topbar">
-  <!-- Left: Logo -->
+<header class="topbar">
   <div class="logo">StyleMart</div>
 
-  <!-- Center: Search Bar -->
   <div class="search-wrapper">
     <div class="search">
       <input type="text" id="searchInput" class="search__input" placeholder="Type your text" oninput="searchProduct(this.value)">
@@ -755,26 +812,7 @@ function displayStars($rate) {
     <div id="searchResults" class="search-results"></div>
   </div>
 
-<!-- JS for live search -->
-<script>
-function searchProduct(keyword) {
-  if (keyword.length === 0) {
-    document.getElementById("searchResults").innerHTML = "";
-    return;
-  }
-
-  fetch("search.php?query=" + encodeURIComponent(keyword))
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("searchResults").innerHTML = data;
-    });
-}
-</script>
-
-
-
-      <!-- Right: Icons -->
-   <div class="icons">
+  <div class="icons">
     <span class="icon" onclick="checkLogin('profile.php')">👤</span>
     <span class="icon" onclick="checkLogin('cart.php')">🛒</span>
     <span class="icon" onclick="checkLogin('favorite.php')">❤️</span>
@@ -787,52 +825,17 @@ function searchProduct(keyword) {
   <div class="product-details">
     <div class="left-panel">
       <div class="slider">
-        <button class="prev" onclick="prevSlide()" style="display: none;">❮</button>
-        <div class="slides">
-          <?php foreach ($images as $index => $img): ?>
-            <img src="<?= htmlspecialchars($img) ?>" class="slide-image <?= $index === 0 ? 'active' : '' ?>">
+        <div class="slider-track">
+          <?php foreach ($images as $img): ?>
+            <img src="<?= htmlspecialchars($img) ?>" alt="Product Image" class="slider-image">
           <?php endforeach; ?>
         </div>
-        <button class="next" onclick="nextSlide()" style="display: none;">❯</button>
+        <?php if (count($images) > 1): ?>
+          <button class="slider-button prev">&#10094;</button>
+          <button class="slider-button next">&#10095;</button>
+        <?php endif; ?>
       </div>
     </div>
-
-    <script>
-      window.addEventListener('DOMContentLoaded', () => {
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide-image');
-        const prevBtn = document.querySelector('.prev');
-        const nextBtn = document.querySelector('.next');
-
-        if (slides.length > 1) {
-          prevBtn.style.display = 'block';
-          nextBtn.style.display = 'block';
-
-          function showSlide(index) {
-            slides.forEach((slide, i) => {
-              slide.classList.remove('active');
-              if (i === index) {
-                slide.classList.add('active');
-              }
-            });
-          }
-
-          function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
-          }
-
-          function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-          }
-
-          showSlide(currentSlide);
-          window.prevSlide = prevSlide;
-          window.nextSlide = nextSlide;
-        }
-      });
-    </script>
 
     <div class="product-info-panel">
       <div class="title-price">
@@ -881,34 +884,33 @@ function searchProduct(keyword) {
     </div>
   </div>
 
-  <!-- Seller & Comments section -->
   <div class="store-comment-section" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
     <div class="store-name">
       Seller: <a href="seller_info_html"><?= htmlspecialchars($product['creator_username']) ?></a>
     </div>
 
     <h4>Comments</h4>
-        <?php if ($logged_in_user_id): ?>
-      <form class="comment-form" method="POST" action="product.php?id=<?= $product_id ?>">
-        <?php if (!empty($error_message)): ?>
-          <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
-        <?php endif; ?>
+    <?php if ($logged_in_user_id): ?>
+    <form class="comment-form" method="POST" action="product.php?id=<?= $product_id ?>">
+      <?php if (!empty($error_message)): ?>
+        <div class="error-message"><?= htmlspecialchars($error_message) ?></div>
+      <?php endif; ?>
 
-        <label for="rate">Rate this product:</label><br>
-        <div class="stars-input">
-          <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
-          <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
-          <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
-          <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
-          <input type="radio" id="star1" name="rate" value="1" checked><label for="star1">★</label>
-        </div>
+      <label for="rate">Rate this product:</label><br>
+      <div class="stars-input">
+        <input type="radio" id="star5" name="rate" value="5"><label for="star5">★</label>
+        <input type="radio" id="star4" name="rate" value="4"><label for="star4">★</label>
+        <input type="radio" id="star3" name="rate" value="3"><label for="star3">★</label>
+        <input type="radio" id="star2" name="rate" value="2"><label for="star2">★</label>
+        <input type="radio" id="star1" name="rate" value="1" checked><label for="star1">★</label>
+      </div>
 
-        <br><br>
-        <label for="comment_text">Your Comment:</label><br>
-        <textarea name="comment_text" id="comment_text" required></textarea><br><br>
+      <br><br>
+      <label for="comment_text">Your Comment:</label><br>
+      <textarea name="comment_text" id="comment_text" required></textarea><br><br>
 
-        <button type="submit" class="add-comment">Add Comment</button>
-      </form>
+      <button type="submit" class="add-comment">Add Comment</button>
+    </form>
     <?php else: ?>
       <p><a href="login.html">Log in</a> to add a comment.</p>
     <?php endif; ?>
@@ -931,9 +933,30 @@ function searchProduct(keyword) {
   </div>
 </main>
 
-
-
 <script>
+  const track = document.querySelector('.slider-track');
+  const images = document.querySelectorAll('.slider-image');
+  const prevBtn = document.querySelector('.slider-button.prev');
+  const nextBtn = document.querySelector('.slider-button.next');
+  let currentIndex = 0;
+
+  function updateSlider() {
+    const offset = -currentIndex * 100;
+    track.style.transform = `translateX(${offset}%)`;
+  }
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      updateSlider();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % images.length;
+      updateSlider();
+    });
+  }
+
   const quantityInput = document.querySelector('.number-quantity');
   const minusBtn = document.querySelector('.number-left');
   const plusBtn = document.querySelector('.number-right');
@@ -949,22 +972,32 @@ function searchProduct(keyword) {
     let value = parseInt(quantityInput.value);
     quantityInput.value = value + 1;
   });
-   document.getElementById("profile").addEventListener("click", function () {
-      fetch("check_login.php")
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.loggedIn) {
-            window.location.href = "profile.php";
-          } else {
-            window.location.href = "login.html";
-          }
-        })
-        .catch((err) => {
-          console.error("Error checking login status:", err);
-          window.location.href = "login.html"; // fallback if error
-        });
-    });
-     function checkLogin(redirectUrl) {
+
+  // search
+  function searchProduct(keyword) {
+    if (keyword.length === 0) {
+      document.getElementById("searchResults").innerHTML = "";
+      return;
+    }
+
+    fetch("search.php?query=" + encodeURIComponent(keyword))
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById("searchResults").innerHTML = data;
+      });
+  }
+
+  document.addEventListener('click', function(event) {
+    const searchWrapper = document.querySelector('.search-wrapper');
+    const searchResults = document.getElementById('searchResults');
+
+    if (!searchWrapper.contains(event.target)) {
+      searchResults.innerHTML = '';
+    }
+  });
+
+  // end search
+  function checkLogin(redirectUrl) {
     fetch("check_login.php")
       .then((res) => res.json())
       .then((data) => {
@@ -980,6 +1013,7 @@ function searchProduct(keyword) {
         window.location.href = "login.html";
       });
   }
+
   const sizeRadios = document.querySelectorAll('input[name="radio"]');
   const selectedSizeInput = document.getElementById('selected-size');
   const favoriteSizeInput = document.getElementById('favorite-size');
@@ -998,11 +1032,9 @@ function searchProduct(keyword) {
     radio.addEventListener('change', updateSelectedSize);
   });
 
-  // Ensure quantity is updated before submitting
   document.getElementById("cart-form").addEventListener("submit", function(e) {
     selectedQuantityInput.value = quantityInput.value;
 
-    // Check if a size is selected
     if (!selectedSizeInput.value) {
       e.preventDefault();
       alert("Please select a size before adding to cart.");
@@ -1010,14 +1042,13 @@ function searchProduct(keyword) {
   });
 
   document.getElementById("fav-form").addEventListener("submit", function(e) {
-    updateSelectedSize(); // Ensure size is updated
+    updateSelectedSize();
 
     if (!favoriteSizeInput.value) {
       e.preventDefault();
       alert("Please select a size before adding to favorites.");
     }
   });
-  
 </script>
 
 </body>

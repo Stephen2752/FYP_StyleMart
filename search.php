@@ -17,19 +17,10 @@ if (count($results) === 0) {
 } else {
     foreach ($results as $product) {
         echo "<div class='search-result-item'>";
-        echo "<a href='product.php?id={$product['product_id']}'>" . htmlspecialchars($product['product_name']) . "</a>";
+        echo "<a href='product.php?id=" . urlencode($product['product_id']) . "'>" . htmlspecialchars($product['product_name']) . " - RM" . number_format($product['price'], 2) . "</a>";
         echo "</div>";
-
     }
 }
 
-echo "<style>
-.search-result-item a,
-.search-result-item a:visited,
-.search-result-item a:active {
-  color: white !important;
-  text-decoration: none;
-}
-</style>";
-
+// Add optional CSS here if needed
 ?>
