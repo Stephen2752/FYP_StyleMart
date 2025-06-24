@@ -23,6 +23,15 @@ if ($action === 'verify') {
     $stmt->execute([$transaction_id]);
     $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    // Get seller ID
+    $stmt = $pdo->prepare("SELECT seller_id FROM transaction WHERE transaction_id = ?");
+    $stmt->execute([$transaction_id]);
+    $seller_id = $stmt->fetchColumn();
+
+    // Notify seller
+    $stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+    $stmt->execute([$seller_id, "Transaction (ID: $transaction_id) has been verified. Please prepare to ship."]);
+
 
 } elseif ($action === 'fail') {
     // ❌ Set payment_status = Failed + cancel order
@@ -60,9 +69,17 @@ if ($action === 'verify') {
         $updateStatusStmt = $pdo->prepare("UPDATE product SET status = 'Available' WHERE product_id = ?");
         $updateStatusStmt->execute([$product_id]);
     }
-}
+
+    $stmt = $pdo->prepare("SELECT buyer_id FROM transaction WHERE transaction_id = ?");
+    $stmt->execute([$transaction_id]);
+    $buyer_id = $stmt->fetchColumn();
+
+    $stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+    $stmt->execute([$buyer_id, "Transaction (ID: $transaction_id) failed. Your payment was not verified."]);
+    }
 
 }
+
 
 // ✅ Redirect back to admin page
 header("Location: manageorder.php");

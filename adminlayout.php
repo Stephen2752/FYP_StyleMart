@@ -1,7 +1,18 @@
 <?php
+require 'db.php'; // if not already included above
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
+
+if (!isset($_SESSION['admin_id'])) {
+    echo "Access denied. Admin not logged in.";
+    exit;
+}
+$admin_id = $_SESSION['admin_id'];
+
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM notification WHERE admin_id = ? AND is_read = 0");
+$stmt->execute([$admin_id]);
+$count = $stmt->fetchColumn();
 ?>
 
 <!DOCTYPE html>
@@ -75,6 +86,7 @@ if (session_status() == PHP_SESSION_NONE) {
 <body>
 
 <div class="sidebar">
+    <a href="notification_admin.php">🔔 Notifications (<?= $count ?>)</a>
     <a href="admin_dashboard.php">Admin Dashboard</a>
     <a href="manage_users.php">Manage Users</a>
     <a href="manage_seller.php">Manage Sellers</a>
