@@ -180,14 +180,30 @@ $user_id = $_SESSION['user_id'];
 
 // Fetch favorite items
 $stmt = $pdo->prepare("
-    SELECT f.favorite_id, p.product_id, p.product_name, p.price,
-           (SELECT pi.image_path FROM product_image pi WHERE pi.product_id = p.product_id ORDER BY pi.image_id ASC LIMIT 1) AS image_path,
-           u.username AS seller, u.user_id AS seller_id
+    SELECT 
+        f.favorite_id,
+        p.product_id,
+        p.product_name,
+        p.price,
+        p.status,
+        IFNULL(SUM(s.quantity), 0) AS total_stock,
+        (
+            SELECT pi.image_path 
+            FROM product_image pi 
+            WHERE pi.product_id = p.product_id 
+            ORDER BY pi.image_id ASC 
+            LIMIT 1
+        ) AS image_path,
+        u.username AS seller,
+        u.user_id AS seller_id
     FROM favorite f
     JOIN product p ON f.product_id = p.product_id
     JOIN user u ON p.user_id = u.user_id
+    LEFT JOIN product_stock s ON s.product_id = p.product_id
     WHERE f.user_id = ?
+    GROUP BY f.favorite_id
 ");
+
 $stmt->execute([$user_id]);
 $fav_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -204,9 +220,16 @@ foreach ($fav_items as $item) {
 }
 ?>
 
+<style>
+.cart-item.out-of-stock {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+</style>
+
 <h2>Your Favorites</h2>
 <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-  <button id="delete-selected-fav" style="background-color:red;color:white;">Delete Selected</button>
+<button id="delete-selected-fav">🗑️</button>
 </div>
 
 <div class="back-btn"><a href="MainPage.php"><img src="uploads/previous.png" alt="Back">Back</a></div>
@@ -217,47 +240,63 @@ foreach ($fav_items as $item) {
     <h3>
       Seller: <a href="seller_info.html?id=<?= $seller_id ?>" class="seller-link"><?= htmlspecialchars($group['seller']) ?></a>
     </h3>
+
+
     <?php foreach ($group['items'] as $item): ?>
-      <div class="cart-item" data-favorite-id="<?= $item['favorite_id'] ?>">
-        <a href="product.php?id=<?= $item['product_id'] ?>">
-          <img src="<?= htmlspecialchars($item['image_path']) ?>" alt="Product Image" class="cart-image">
-        </a>
-        <div class="cart-info">
-          <h4><a href="product.php?id=<?= $item['product_id'] ?>"><?= htmlspecialchars($item['product_name']) ?></a></h4>
-          <p>Price: RM <?= number_format($item['price'], 2) ?></p>
-        </div>
-        <div class="cart-actions">
-          <input type="checkbox" class="favorite-checkbox">
-        </div>
-      </div>
-    <?php endforeach; ?>
+<div class="cart-item <?= $item['total_stock'] <= 0 ? 'out-of-stock' : '' ?>" data-favorite-id="<?= $item['favorite_id'] ?>">
+  <input type="checkbox" class="favorite-checkbox">
+  <a href="product.php?id=<?= $item['product_id'] ?>">
+      <img src="<?= htmlspecialchars($item['image_path']) ?>" alt="Product Image" class="cart-image">
+    </a>
+    <div class="cart-info">
+      <h4><a href="product.php?id=<?= $item['product_id'] ?>"><?= htmlspecialchars($item['product_name']) ?></a></h4>
+      <p>Price: RM <?= number_format($item['price'], 2) ?></p>
+      <p>Stock: <?= $item['total_stock'] > 0 ? 'Available' : 'Out of Stock' ?></p>
+    </div>
+    <div class="cart-actions">
+    </div>
+  </div>
+<?php endforeach; ?>
+
   </div>
 <?php endforeach; ?>
 </div>
 
 <script>
 document.getElementById('delete-selected-fav').addEventListener('click', () => {
-  const selected = Array.from(document.querySelectorAll('.favorite-checkbox:checked'));
-  if (selected.length === 0) return;
-  const ids = selected.map(cb => cb.closest('.cart-item').dataset.favoriteId);
-  fetch('delete_favorites.php', {
+  const checkboxes = document.querySelectorAll('.favorite-checkbox:checked');
+  if (checkboxes.length === 0) return;
+
+  const ids = Array.from(checkboxes).map(cb =>
+    cb.closest('.cart-item').dataset.favoriteId
+  );
+
+  fetch('delete_favorite_item.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ favorite_ids: ids })
-  }).then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        ids.forEach(id => {
-          const item = document.querySelector(`.cart-item[data-favorite-id='${id}']`);
-          if (item) item.remove();
-        });
-        document.querySelectorAll('.cart-container').forEach(container => {
-          if (container.querySelectorAll('.cart-item').length === 0) {
-            container.remove();
-          }
-        });
-      }
-    });
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      ids.forEach(id => {
+        const item = document.querySelector(`.cart-item[data-favorite-id="${id}"]`);
+        if (item) item.remove();
+      });
+
+      document.querySelectorAll('.cart-container').forEach(container => {
+        if (!container.querySelector('.cart-item')) {
+          container.remove();
+        }
+      });
+    } else {
+      alert(data.error || "Delete failed.");
+    }
+  })
+  .catch(err => {
+    console.error('Delete error:', err);
+  });
 });
 </script>
+
 

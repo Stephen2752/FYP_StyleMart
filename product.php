@@ -868,7 +868,6 @@ function displayStars($rate) {
 
         <form action="add_to_favorite.php" method="POST" id="fav-form">
           <input type="hidden" name="product_id" value="<?= $product_id ?>">
-          <input type="hidden" name="size" id="favorite-size">
           <button type="submit" class="add-to-favorite">❤️</button>
         </form>
       </div>
