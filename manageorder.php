@@ -1,6 +1,7 @@
 <?php
 require 'db.php';
 session_start();
+include 'adminlayout.php';
 
 // OPTIONAL: Ensure only admin can access
 // if (!isset($_SESSION['admin_id'])) { header('Location: admin_login.php'); exit(); }

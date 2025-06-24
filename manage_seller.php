@@ -1,6 +1,7 @@
 <?php
 require 'db.php';
 session_start();
+include 'adminlayout.php';
 
 $status = $_GET['status'] ?? 'all';
 $search_id = $_GET['search_id'] ?? '';

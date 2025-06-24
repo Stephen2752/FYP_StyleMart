@@ -1,6 +1,7 @@
 <?php
 require 'db.php';
 session_start();
+include 'adminlayout.php';
 
 $product_id = $_GET['id'] ?? null;
 if (!$product_id) {

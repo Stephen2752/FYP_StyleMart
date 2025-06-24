@@ -851,7 +851,8 @@ function displayStars($rate) {
       <div class="right-panel">
         <h3>Description</h3>
         <p class="description"><?= nl2br(htmlspecialchars($product['description'])) ?></p>
-        <button class="report-btn">⚠️ Report</button>
+        <button class="report-btn" onclick="location.href='report.php?id=<?= $product_id ?>'">⚠️ Report</button>
+
       </div>
     </div>
   </div>

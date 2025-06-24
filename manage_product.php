@@ -1,7 +1,7 @@
 <?php
 require 'db.php';
 session_start();
-
+include 'adminlayout.php';
 // Filters
 $search = $_GET['search'] ?? '';
 $status = $_GET['status'] ?? 'all';
