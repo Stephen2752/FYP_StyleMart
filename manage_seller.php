@@ -42,7 +42,7 @@ $sellers = $stmt->fetchAll();
 <table border="1" width="100%">
     <tr><th>ID</th><th>Username</th><th>Email</th><th>Status</th><th>Action</th></tr>
     <?php foreach ($sellers as $seller): ?>
-    <tr class="clickable-row" data-href="seller_info.php?seller_id=<?= $seller['user_id'] ?>">
+    <tr class="clickable-row" data-href="seller_info_admin.php?seller_id=<?= $seller['user_id'] ?>">
         <td><?= $seller['user_id'] ?></td>
         <td><?= htmlspecialchars($seller['username']) ?></td>
         <td><?= htmlspecialchars($seller['email']) ?></td>
