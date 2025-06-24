@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 22, 2025 at 06:54 PM
+-- Generation Time: Jun 24, 2025 at 02:42 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -101,7 +101,8 @@ CREATE TABLE `comment` (
 
 INSERT INTO `comment` (`comment_id`, `product_id`, `user_id`, `comment_text`, `rate`, `created_at`) VALUES
 (1, 8, 7, 'abc', 5, '2025-06-02 20:14:00'),
-(2, 8, 10, 'gooooood', 3, '2025-06-02 20:15:07');
+(2, 8, 10, 'gooooood', 3, '2025-06-02 20:15:07'),
+(3, 18, 16, 'goood quality', 5, '2025-06-24 16:09:45');
 
 -- --------------------------------------------------------
 
@@ -112,12 +113,32 @@ INSERT INTO `comment` (`comment_id`, `product_id`, `user_id`, `comment_text`, `r
 CREATE TABLE `complaint` (
   `complaint_id` int(9) NOT NULL,
   `user_id` int(9) NOT NULL,
+  `product_id` int(9) NOT NULL,
+  `seller_id` int(9) NOT NULL,
+  `report_reason` varchar(255) NOT NULL,
   `complaint_text` text NOT NULL,
-  `admin_id` int(9) DEFAULT NULL,
-  `admin_feedback` text DEFAULT NULL,
-  `status` varchar(255) NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+  `image_path_1` varchar(255) NOT NULL,
+  `image_path_2` varchar(255) NOT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'Pending',
+  `assigned_admin_id` int(9) DEFAULT NULL,
+  `admin_response` text DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `complaint`
+--
+
+INSERT INTO `complaint` (`complaint_id`, `user_id`, `product_id`, `seller_id`, `report_reason`, `complaint_text`, `image_path_1`, `image_path_2`, `status`, `assigned_admin_id`, `admin_response`, `created_at`, `updated_at`) VALUES
+(1, 16, 9, 10, 'Fake Product', 'a123 ezy is fake', 'uploads/reports/685a5175dd18a_Picture1.jpg', 'uploads/reports/685a5175dd197_Screenshot (1).png', 'In Review', 3, NULL, '2025-06-24 15:19:17', '2025-06-24 15:20:13'),
+(2, 16, 9, 10, 'Fake Product', 'a123 ezy is fake', 'uploads/reports/685a5179afc60_Picture1.jpg', 'uploads/reports/685a5179afc66_Screenshot (1).png', 'Pending', NULL, NULL, '2025-06-24 15:19:21', '2025-06-24 15:19:21'),
+(3, 16, 18, 11, 'Fake Product', 'fake nike', 'uploads/reports/685a5247b7621_Screenshot 2024-07-23 111354.png', 'uploads/reports/685a5247b7663_Screenshot 2024-07-24 105602.png', 'Pending', NULL, NULL, '2025-06-24 15:22:47', '2025-06-24 15:22:47'),
+(4, 16, 18, 11, 'Fake Product', 'fake nike', 'uploads/reports/685a5298182bb_Screenshot 2024-07-23 111354.png', 'uploads/reports/685a5298182c6_Screenshot 2024-07-24 105602.png', 'Pending', NULL, NULL, '2025-06-24 15:24:08', '2025-06-24 15:24:08'),
+(5, 16, 17, 18, 'Fake Product', 'adidas fake', 'uploads/reports/685a52aacc464_Screenshot 2024-07-24 142119.png', 'uploads/reports/685a52aacc46b_Screenshot 2024-07-24 165911.png', 'Pending', NULL, NULL, '2025-06-24 15:24:26', '2025-06-24 15:24:26'),
+(6, 17, 18, 11, 'Fake Product', 'fake nike', 'uploads/reports/685a5fde7de31_Screenshot 2024-07-23 111354.png', 'uploads/reports/685a5fde7de40_Screenshot 2024-07-23 111354.png', 'Resolved', 3, 'it product are be baned', '2025-06-24 16:20:46', '2025-06-24 16:23:20'),
+(7, 17, 18, 11, 'Fake Product', 'fakeee nike', 'uploads/reports/685a630e26a7e_Screenshot 2024-07-23 111354.png', 'uploads/reports/685a630e26a83_Screenshot 2024-07-23 111354.png', 'Pending', NULL, NULL, '2025-06-24 16:34:22', '2025-06-24 16:34:22'),
+(8, 17, 17, 18, 'Fake Product', 'abc', 'uploads/reports/685a63f7e659e_Screenshot 2024-07-23 111354.png', 'uploads/reports/685a63f7e65a2_Screenshot 2024-07-23 111354.png', 'Pending', NULL, NULL, '2025-06-24 16:38:15', '2025-06-24 16:38:15');
 
 -- --------------------------------------------------------
 
@@ -138,6 +159,39 @@ CREATE TABLE `favorite` (
 
 INSERT INTO `favorite` (`favorite_id`, `user_id`, `product_id`, `favorited_at`) VALUES
 (2, 8, 9, '2025-06-03 12:50:13');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notification`
+--
+
+CREATE TABLE `notification` (
+  `notification_id` int(11) NOT NULL,
+  `user_id` int(9) DEFAULT NULL,
+  `admin_id` int(9) DEFAULT NULL,
+  `message` text NOT NULL,
+  `is_read` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notification`
+--
+
+INSERT INTO `notification` (`notification_id`, `user_id`, `admin_id`, `message`, `is_read`, `created_at`) VALUES
+(1, 17, NULL, 'Your report has been successfully submitted and is awaiting admin review.', 1, '2025-06-24 16:20:46'),
+(2, NULL, NULL, 'A new complaint has been submitted and needs your attention.', 1, '2025-06-24 16:20:46'),
+(3, 17, NULL, 'Your report has been successfully submitted and is awaiting admin review.', 1, '2025-06-24 16:34:22'),
+(4, NULL, NULL, 'A new complaint has been submitted and requires your attention.', 1, '2025-06-24 16:34:22'),
+(5, 17, NULL, 'Your report has been successfully submitted and is awaiting admin review.', 1, '2025-06-24 16:38:15'),
+(6, NULL, NULL, 'A new complaint has been submitted and requires your attention.', 0, '2025-06-24 16:38:15'),
+(7, NULL, NULL, 'Your complaint (ID: ) has been processed. Admin Response: ', 0, '2025-06-24 16:44:38'),
+(8, NULL, 3, 'You have successfully processed complaint ID: .', 1, '2025-06-24 16:44:38'),
+(9, NULL, NULL, 'Your complaint (ID: ) has been processed. Admin Response: ', 0, '2025-06-24 16:44:54'),
+(10, NULL, 3, 'You have successfully processed complaint ID: .', 1, '2025-06-24 16:44:54'),
+(11, NULL, NULL, 'Your complaint (ID: ) has been processed. Admin Response: ', 0, '2025-06-24 16:44:54'),
+(12, NULL, 3, 'You have successfully processed complaint ID: .', 1, '2025-06-24 16:44:54');
 
 -- --------------------------------------------------------
 
@@ -241,7 +295,7 @@ INSERT INTO `product_stock` (`stock_id`, `product_id`, `size`, `quantity`, `crea
 (25, 9, 'M', 0, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
 (26, 9, 'L', 15, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
 (27, 9, 'XL', 5, '2025-06-02 20:24:09', '2025-06-02 20:24:09'),
-(66, 10, 'S', 6, '2025-06-18 18:07:49', '2025-06-22 21:33:28'),
+(66, 10, 'S', 5, '2025-06-18 18:07:49', '2025-06-24 07:49:23'),
 (67, 10, 'M', 0, '2025-06-18 18:07:49', '2025-06-22 20:36:17'),
 (68, 10, 'XL', 0, '2025-06-18 18:07:49', '2025-06-18 18:07:49'),
 (69, 13, 'S', 100, '2025-06-22 19:55:31', '2025-06-22 19:55:31'),
@@ -291,7 +345,8 @@ INSERT INTO `transaction` (`transaction_id`, `buyer_id`, `seller_id`, `payment_s
 (81, 16, 11, 'Verified', 11.00, 'uploads/receipts/1750610431_Screenshot 2024-07-24 110906.png', NULL, '2025-06-23 00:40:31', 'pending', 20, 'the arc cyberjaya block d 17-03'),
 (82, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610539_Screenshot 2024-07-24 142119.png', NULL, '2025-06-23 00:42:19', 'canceled', 20, 'the arc cyberjaya block d 17-03'),
 (83, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610646_Screenshot 2024-07-24 110906.png', NULL, '2025-06-23 00:44:06', 'canceled', 20, 'the arc cyberjaya block d 17-03'),
-(84, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610801_Screenshot 2024-07-31 144220.png', NULL, '2025-06-23 00:46:41', 'canceled', 20, 'the arc cyberjaya block d 17-03');
+(84, 16, 11, 'Payment Failed', 11.00, 'uploads/receipts/1750610801_Screenshot 2024-07-31 144220.png', NULL, '2025-06-23 00:46:41', 'canceled', 20, 'the arc cyberjaya block d 17-03'),
+(85, 16, 11, 'Paid', 12.00, 'uploads/receipts/1750722563_Screenshot 2024-07-24 110906.png', NULL, '2025-06-24 07:49:23', 'pending', 10, 'the arc cyberjaya block d 17-03');
 
 -- --------------------------------------------------------
 
@@ -323,7 +378,8 @@ INSERT INTO `transaction_item` (`item_id`, `transaction_id`, `product_id`, `size
 (19, 81, 20, 'S', 1, 11.00),
 (20, 82, 20, 'S', 1, 11.00),
 (21, 83, 20, 'S', 1, 11.00),
-(22, 84, 20, 'S', 1, 11.00);
+(22, 84, 20, 'S', 1, 11.00),
+(23, 85, 10, 'S', 1, 12.00);
 
 -- --------------------------------------------------------
 
@@ -418,7 +474,9 @@ ALTER TABLE `comment`
 ALTER TABLE `complaint`
   ADD PRIMARY KEY (`complaint_id`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `admin_id` (`admin_id`);
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `seller_id` (`seller_id`),
+  ADD KEY `assigned_admin_id` (`assigned_admin_id`);
 
 --
 -- Indexes for table `favorite`
@@ -427,6 +485,12 @@ ALTER TABLE `favorite`
   ADD PRIMARY KEY (`favorite_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `notification`
+--
+ALTER TABLE `notification`
+  ADD PRIMARY KEY (`notification_id`);
 
 --
 -- Indexes for table `product`
@@ -493,25 +557,31 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `cart_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `comment`
 --
 ALTER TABLE `comment`
-  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `comment_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `complaint`
 --
 ALTER TABLE `complaint`
-  MODIFY `complaint_id` int(9) NOT NULL AUTO_INCREMENT;
+  MODIFY `complaint_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `favorite`
 --
 ALTER TABLE `favorite`
   MODIFY `favorite_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `notification`
+--
+ALTER TABLE `notification`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -535,13 +605,13 @@ ALTER TABLE `product_stock`
 -- AUTO_INCREMENT for table `transaction`
 --
 ALTER TABLE `transaction`
-  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `transaction_id` int(9) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `transaction_item`
 --
 ALTER TABLE `transaction_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `user`
@@ -577,8 +647,10 @@ ALTER TABLE `comment`
 -- Constraints for table `complaint`
 --
 ALTER TABLE `complaint`
-  ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  ADD CONSTRAINT `complaint_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`admin_id`);
+  ADD CONSTRAINT `complaint_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `complaint_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`product_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `complaint_ibfk_3` FOREIGN KEY (`seller_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `complaint_ibfk_4` FOREIGN KEY (`assigned_admin_id`) REFERENCES `admin` (`admin_id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `favorite`

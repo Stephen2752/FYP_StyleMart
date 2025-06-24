@@ -263,7 +263,7 @@ flex: 1 1 250px; /* 把每个section的最小宽度提高到250px */
 max-width: 250px; /* 让文字一行容纳更多 */
 margin: 5px 10px;
 }
-
+%
 
 
 .footer h4 {
