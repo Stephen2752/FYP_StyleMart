@@ -10,6 +10,6 @@ if ($admin_id && $notification_id) {
     $stmt->execute([$notification_id, $admin_id]);
 }
 
-header('Location: adminmanagereport.php');
+header('Location: notification_admin.php');
 exit;
 ?>
