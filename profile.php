@@ -187,6 +187,14 @@ cursor: pointer;
       <p><strong>Username:</strong> <?= htmlspecialchars($user['username']) ?></p>
       <p><strong>Email:</strong> <?= htmlspecialchars($user['email']) ?></p>
 
+      <?php
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM notification WHERE user_id = ? AND is_read = 0");
+$stmt->execute([$user_id]);
+$count = $stmt->fetchColumn();
+?>
+
+<a href="notification_user.php">🔔 Notifications (<?= $count ?>)</a>
+
       <div class="button-group">
         <form action="sellerlog.php" method="GET">
           <button type="submit">Seller Manage</button>

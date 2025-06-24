@@ -26,10 +26,21 @@ if (isset($_POST['respond'])) {
     $admin_response = $_POST['admin_response'];
     $status = $_POST['status'];
 
+    // Update complaint
     $stmt = $pdo->prepare("UPDATE complaint SET admin_response = ?, status = ? WHERE complaint_id = ?");
     $stmt->execute([$admin_response, $status, $complaint_id]);
 
-    echo "<script>alert('Response submitted successfully.'); window.location='adminmanagereport.php';</script>";
+    // Get the user_id of the complaint owner
+    $stmt = $pdo->prepare("SELECT user_id FROM complaint WHERE complaint_id = ?");
+    $stmt->execute([$complaint_id]);
+    $user_id = $stmt->fetchColumn();
+
+    // Insert user notification
+    $message = "Your complaint (ID: $complaint_id) has been processed. Admin Response: " . htmlspecialchars($admin_response);
+    $stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+    $stmt->execute([$user_id, $message]);
+
+    echo "<script>alert('Response submitted and user notified.'); window.location='adminmanagereport.php';</script>";
 }
 
 // Fetch all complaints
@@ -38,7 +49,9 @@ $stmt = $pdo->query("SELECT c.*, u.username AS reporter, s.username AS seller, a
                      JOIN user u ON c.user_id = u.user_id
                      JOIN user s ON c.seller_id = s.user_id
                      LEFT JOIN admin a ON c.assigned_admin_id = a.admin_id
+                     WHERE c.status != 'Resolved'
                      ORDER BY c.created_at DESC");
+
 
 $complaints = $stmt->fetchAll();
 ?>

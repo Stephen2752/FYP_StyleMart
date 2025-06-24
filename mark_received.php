@@ -23,4 +23,12 @@ if (!$order || $order['buyer_id'] != $_SESSION['user_id']) {
 // ✅ Mark order as received
 $pdo->prepare("UPDATE transaction SET status = 'received' WHERE transaction_id = ?")->execute([$transaction_id]);
 
+// After setting status to 'Received'
+$stmt = $pdo->prepare("SELECT seller_id FROM transaction WHERE transaction_id = ?");
+$stmt->execute([$transaction_id]);
+$seller_id = $stmt->fetchColumn();
+
+$stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+$stmt->execute([$seller_id, "The buyer has received the order (ID: $transaction_id)."]);
+
 echo json_encode(['success' => true]);

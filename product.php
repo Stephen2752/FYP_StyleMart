@@ -26,18 +26,43 @@ try {
         exit;
     }
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text'], $_POST['rate']) && $logged_in_user_id) {
-        $comment_text = trim($_POST['comment_text']);
-        $rate = (int)$_POST['rate'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment_text'], $_POST['rate'])) {
+    $user_id = $_SESSION['user_id'] ?? null;
+    $rate = (int)$_POST['rate'];
+    $comment_text = trim($_POST['comment_text']);
 
-        if ($comment_text !== '' && $rate >= 1 && $rate <= 5) {
-            $insertStmt = $pdo->prepare("INSERT INTO comment (product_id, user_id, comment_text, rate, created_at) VALUES (?, ?, ?, ?, NOW())");
-            $insertStmt->execute([$product_id, $logged_in_user_id, $comment_text, $rate]);
-            header("Location: product.php?id=" . $product_id);
-            exit;
-        } else {
-            $error_message = "Please provide a valid comment and rating.";
+    if (!$user_id) {
+        echo "You must log in to comment.";
+        exit;
+    }
+
+    if ($comment_text !== '' && $rate >= 1 && $rate <= 5) {
+        // ✅ Insert comment
+        $stmt = $pdo->prepare("INSERT INTO comment (user_id, product_id, rate, comment_text, created_at) VALUES (?, ?, ?, ?, NOW())");
+        $stmt->execute([$user_id, $product_id, $rate, $comment_text]);
+
+        // ✅ Get seller info
+        $stmt = $pdo->prepare("SELECT user_id, product_name FROM product WHERE product_id = ?");
+        $stmt->execute([$product_id]);
+        $product = $stmt->fetch();
+
+        if ($product) {
+            $seller_id = $product['user_id'];
+            $product_name = $product['product_name'];
+
+            // ✅ Notify seller
+            $message = "A new comment has been posted on your product \"$product_name\" (ID: $product_id).";
+            $stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+            $stmt->execute([$seller_id, $message]);
         }
+
+        // ✅ Redirect after success
+        header("Location: product.php?id=$product_id");
+        exit;
+    } else {
+        $error_message = "Please provide a valid comment and rating.";
+    }
+
     }
 
     $imgStmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ?");

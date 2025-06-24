@@ -111,3 +111,14 @@ $deleteStmt->execute($cart_ids);
 
 // Respond success
 echo json_encode(['success' => true, 'message' => 'Order placed successfully']);
+
+// Notify buyer
+$stmt = $pdo->prepare("INSERT INTO notification (user_id, message) VALUES (?, ?)");
+$stmt->execute([$user_id, "Your payment for transaction ID $transaction_id has been submitted."]);
+
+// Notify all admins
+$adminStmt = $pdo->query("SELECT admin_id FROM admin");
+foreach ($adminStmt->fetchAll() as $admin) {
+    $stmt = $pdo->prepare("INSERT INTO notification (admin_id, message) VALUES (?, ?)");
+    $stmt->execute([$admin['admin_id'], "A new transaction (ID: $transaction_id) has been submitted."]);
+}

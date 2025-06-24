@@ -34,16 +34,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     move_uploaded_file($image1['tmp_name'], $image1_path);
     move_uploaded_file($image2['tmp_name'], $image2_path);
 
-    // Insert into database
-    $stmt = $pdo->prepare("
-        INSERT INTO complaint (user_id, product_id, seller_id, report_reason, complaint_text, image_path_1, image_path_2, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')
-    ");
-    $stmt->execute([$user_id, $product_id, $seller_id, $report_reason, $complaint_text, $image1_path, $image2_path]);
+    // After complaint is inserted
+$stmt = $pdo->prepare("
+    INSERT INTO complaint (user_id, product_id, seller_id, report_reason, complaint_text, image_path_1, image_path_2, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 'Pending')
+");
+$stmt->execute([$user_id, $product_id, $seller_id, $report_reason, $complaint_text, $image1_path, $image2_path]);
 
-    // Redirect to success page to prevent resubmission
-    echo "Report susseful.";
-    exit;
+// Notify all admins
+$adminStmt = $pdo->query("SELECT admin_id FROM admin");
+$admins = $adminStmt->fetchAll();
+
+foreach ($admins as $admin) {
+    $stmt = $pdo->prepare("
+        INSERT INTO notification (admin_id, message) 
+        VALUES (?, ?)
+    ");
+    $stmt->execute([
+        $admin['admin_id'],
+        "A new complaint has been submitted and requires your attention."
+    ]);
+}
+
+echo "Report successful.";
+exit;
+
 } else {
     echo "Invalid request.";
 }
