@@ -884,7 +884,9 @@ function displayStars($rate) {
 
   <div class="store-comment-section" style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
     <div class="store-name">
-      Seller: <a href="seller_info_html"><?= htmlspecialchars($product['creator_username']) ?></a>
+      Seller: <a href="seller_info.php?seller_id=<?= $product['user_id'] ?>">
+    <?= htmlspecialchars($product['creator_username']) ?>
+</a>
     </div>
 
     <h4>Comments</h4>

@@ -224,7 +224,7 @@ foreach ($cart_items as $item) {
 <?php foreach ($grouped as $seller_id => $group): ?>
   <div class="cart-container" data-seller-id="<?= $seller_id ?>">
     <h3>
-      Seller: <a href="seller_info.html?id=<?= $seller_id ?>" class="seller-link"><?= htmlspecialchars($group['seller']) ?></a>
+      Seller: <a href="seller_info.php?seller_id=<?= $seller_id ?>" class="seller-link"><?= htmlspecialchars($group['seller']) ?></a>
     </h3>
     <?php foreach ($group['items'] as $item): ?>
       <div class="cart-item" data-cart-id="<?= $item['cart_id'] ?>">
