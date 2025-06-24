@@ -22,7 +22,7 @@ $users = $stmt->fetchAll();
 <h2>Manage Users</h2>
 <form method="GET">
     <input type="text" name="search_id" placeholder="Search by User ID">
-    <button type="submit">Search</button>
+    <button type="submit" class="btn-blue">Search</button>
 </form>
 
 <ul>
@@ -44,7 +44,7 @@ $users = $stmt->fetchAll();
             <?php if (($user['status'] ?? 'active') === 'active'): ?>
                 <form method="POST" action="ban_user.php" style="display:inline;">
                     <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
-                    <button type="submit">Ban</button>
+                    <button type="submit" class="btn-red">Ban</button>
                 </form>
             <?php else: ?>
                 Banned

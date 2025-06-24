@@ -90,7 +90,7 @@ $complaints = $stmt->fetchAll();
                     <option value="Resolved" <?= $c['status'] == 'Resolved' ? 'selected' : '' ?>>Resolved</option>
                 </select><br><br>
 
-                <button type="submit" name="respond">Submit Response</button>
+                <button type="submit" name="respond" class="btn-blue">Submit Response</button>
             </form>
         <?php else: ?>
             <p><strong>Admin Response:</strong> <?= $c['admin_response'] ?></p>

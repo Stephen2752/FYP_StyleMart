@@ -20,8 +20,8 @@ $sellers = $stmt->fetchAll();
 
 <h2>Manage Sellers</h2>
 <form method="GET">
-    <input type="text" name="search_id" placeholder="Search by Seller ID">
-    <button type="submit">Search</button>
+    <input type="text" name="search_id" placeholder="Search by User ID">
+    <button type="submit" class="btn-blue">Search</button>
 </form>
 
 <ul>
@@ -51,7 +51,8 @@ $sellers = $stmt->fetchAll();
             <?php if (($seller['status'] ?? 'active') === 'active'): ?>
                 <form method="POST" action="ban_user.php" style="display:inline;">
                     <input type="hidden" name="user_id" value="<?= $seller['user_id'] ?>">
-                    <button type="submit" onclick="event.stopPropagation();">Ban</button>
+                    <button type="submit" onclick="event.stopPropagation();" class="btn-red">Ban</button>
+
                 </form>
             <?php else: ?>
                 Banned

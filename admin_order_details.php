@@ -173,10 +173,10 @@ margin: 0;
 <body>
 <!-- Topbar -->
 <header class="topbar">
-<div class="logo"><a href="#">StyleMart Admin Dashboard</a></div>
+<div class="logo"><a href="admin_dashboard.php">StyleMart Admin Dashboard</a></div>
 </header>
 <div class="container">
-    <div class="back-btn"><a href="#"><img src="uploads/previous.png">Back</a></div>
+    <div class="back-btn"><a href="manageorder.php"><img src="uploads/previous.png">Back</a></div>
     <h2 class="page-title">Admin Order Details - Transaction #<?= $transaction_id ?></h2>
 
     <div class="info">

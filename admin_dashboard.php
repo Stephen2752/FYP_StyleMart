@@ -29,7 +29,7 @@ $recentComplaints = $pdo->query("
 ")->fetchAll();
 ?>
 
-<h1>Admin Dashboard</h1>
+<h2>Admin Dashboard</h2>
 
 <div class="dashboard-grid">
     <a href="manage_seller.php">
