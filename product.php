@@ -218,6 +218,11 @@ function displayStars($rate) {
     font-weight: bold;
   }
 
+  .topbar .logo a{
+    text-decoration: none;
+    color: white;
+  }
+
   .icons .icon {
     margin-left: 15px;
     font-size: 20px;
@@ -796,7 +801,7 @@ function displayStars($rate) {
 <body>
 
 <header class="topbar">
-  <div class="logo">StyleMart</div>
+  <div class="logo"><a href="MainPage.php">StyleMart</a></div>
 
   <div class="search-wrapper">
     <div class="search">

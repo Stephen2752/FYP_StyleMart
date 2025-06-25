@@ -23,7 +23,10 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 <div class="page-wrapper">
   <header class="topbar">
-    <div class="logo">StyleMart</div>
+    <div class="logo">
+  <a href="MainPage.php" style="text-decoration: none; color: white; font-weight: bold;">StyleMart</a>
+</div>
+
 
     <div class="search-wrapper">
       <div class="search">

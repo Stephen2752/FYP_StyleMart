@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shopping Cart - StyleMart</title>
+  <title>Favorite - StyleMart</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <style>
     body {
@@ -53,7 +53,7 @@
       text-decoration: none;
       font-weight: bold;
     }
-    #cart-wrapper {
+    #favorite-wrapper {
       margin: 0 20px 80px;
     }
     .cart-container {
@@ -106,22 +106,7 @@
       align-items: center;
       font-weight: bold;
     }
-    #total-price {
-      font-size: 18px;
-      color: #222;
-    }
-    #pay-btn {
-      padding: 10px 20px;
-      border: none;
-      background-color: #2ba8fb;
-      color: white;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    #pay-btn:disabled {
-      background-color: #aaa;
-      cursor: not-allowed;
-    }
+
   .top-action-bar {
     display: flex;
     justify-content: space-between;
@@ -137,7 +122,7 @@
     font-weight: bold;
   }
 
-  #delete-selected {
+  #delete-selected-fav {
     background-color: red;
     color: white;
     padding: 8px 14px;
@@ -164,6 +149,8 @@
       border-radius: 6px;
       cursor: pointer;
     }
+
+    
   </style>
 </head>
 <body>
@@ -207,6 +194,31 @@ $stmt = $pdo->prepare("
 $stmt->execute([$user_id]);
 $fav_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+?>
+
+<header class="topbar">
+  <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+</header>
+
+<style>
+.cart-item.out-of-stock {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+</style>
+
+<h2>Your Favorites</h2>
+<div class="top-action-bar">
+  <div class="back-btn">
+    <a href="MainPage.php"><img src="uploads/previous.png" alt="Back">Back</a>
+  </div>
+  <button id="delete-selected-fav">🗑️</button>
+</div>
+
+
+
+<?php
 if (!$fav_items) {
     echo "<p>Your favorites list is empty.</p>";
     exit;
@@ -219,20 +231,6 @@ foreach ($fav_items as $item) {
     $grouped[$item['seller_id']]['items'][] = $item;
 }
 ?>
-
-<style>
-.cart-item.out-of-stock {
-  filter: grayscale(100%);
-  opacity: 0.6;
-}
-</style>
-
-<h2>Your Favorites</h2>
-<div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-<button id="delete-selected-fav">🗑️</button>
-</div>
-
-<div class="back-btn"><a href="MainPage.php"><img src="uploads/previous.png" alt="Back">Back</a></div>
 
 <div id="favorite-wrapper">
 <?php foreach ($grouped as $seller_id => $group): ?>

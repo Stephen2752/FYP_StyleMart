@@ -40,13 +40,177 @@ $stocks = $stock_stmt->fetchAll();
   <meta charset="UTF-8">
   <title>Edit Product</title>
   <style>
-    img { width: 100px; margin: 5px; }
-    .size-stock-row, .category-row { display: flex; gap: 10px; margin-bottom: 5px; align-items: center; }
-    .category-row select { padding: 4px; }
-    .remove-btn { cursor: pointer; color: red; font-weight: bold; }
+    body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f2f2f2;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* full viewport height */
+    margin: 0;
+    }
+
+        /* Topbar */
+    .topbar {
+    display: flex;
+    justify-content: flex-start; /* logo靠左 */
+    align-items: center;
+    padding: 12px 20px;
+    background: #3e3e3e;
+    color: white;
+    height: 42px; /* 保持原来高度 */
+    }
+
+    .topbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+    }
+
+    .logo a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .container {
+  padding: 20px;
+}
+
+    .back-btn {
+      display: flex;          /* 并排显示 */
+      align-items: center;    /* 垂直居中 */
+      margin-bottom: 15px;
+      cursor: pointer;
+      color: #000000;
+      font-weight: bold;      /* 可选：让文字更醒目 */
+    }
+
+    .back-btn img {
+      width: 16px;            /* 根据需要调整图片大小 */
+      height: auto;
+      margin-right: 6px;      /* 图片和文字的间距 */
+    }
+
+    .back-btn a {
+      color: rgb(0, 0, 0);
+      text-decoration: none;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      max-width: 800px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+      color: #444;
+    }
+
+    input[type="text"], input[type="number"], textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 8px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background-color: #2ba8fb;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 10px;
+    }
+
+    button:hover {
+      background-color: #1e90ff;
+    }
+
+    .delete-btn{
+      background-color: #dc3545;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 10px;
+    }
+
+    .delete-btn:hover{
+      background-color: #c82333;
+    }
+
+    .update-btn{
+      background-color: #15d62f;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      margin-right: 10px;
+    }
+
+    .update-btn:hover{
+      background-color: #0f9b22;
+    }
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      margin: 5px;
+      border-radius: 6px;
+    }
+
+    .size-stock-row, .category-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .remove-btn {
+      cursor: pointer;
+      color: red;
+      font-size: 18px;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
+    <div class="topbar">
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+  </div>
+
+  <div class="container">
+    <!-- Back Button -->
+    <div class="back-btn">
+      <a href="view_product_list.php"><img src="uploads/previous.png">Back</a>
+    </div>
   <h1>Edit Product: <?= htmlspecialchars($product['product_name']) ?></h1>
 
   <form action="update_product.php" method="POST" enctype="multipart/form-data">
@@ -84,8 +248,8 @@ $stocks = $stock_stmt->fetchAll();
     </div>
     <button type="button" onclick="addSizeStockRow()">+ Add Size</button>
 
-    <button type="submit">Update Product</button>
-    <button type="button" onclick="confirmDelete()">Delete Product</button>
+    <button type="submit" class="update-btn">Update Product</button>
+    <button type="button" class="delete-btn" onclick="confirmDelete()">Delete Product</button>
   </form>
 
   <script>
@@ -114,7 +278,6 @@ $stocks = $stock_stmt->fetchAll();
       removeBtn.innerHTML = '🗑';
       removeBtn.onclick = () => row.remove();
 
-      // Populate main categories
       for (let main in categoryOptions) {
         const opt = document.createElement('option');
         opt.value = main;
@@ -123,7 +286,6 @@ $stocks = $stock_stmt->fetchAll();
         mainSelect.appendChild(opt);
       }
 
-      // Populate sub categories for selected main
       const updateSubOptions = () => {
         subSelect.innerHTML = '';
         categoryOptions[mainSelect.value].forEach(sub => {
@@ -149,7 +311,6 @@ $stocks = $stock_stmt->fetchAll();
       createCategoryRow();
     }
 
-    // Initialize existing categories
     existingCategories.forEach(cat => {
       const parts = cat.split(' - ');
       if (parts.length === 2) {
@@ -183,11 +344,11 @@ $stocks = $stock_stmt->fetchAll();
     });
 
     function confirmDelete() {
-    if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
-      const productId = <?= json_encode($product['product_id']) ?>;
-      window.location.href = 'view_product_delete.php?product_id=' + productId;
+      if (confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+        const productId = <?= json_encode($product['product_id']) ?>;
+        window.location.href = 'view_product_delete.php?product_id=' + productId;
+      }
     }
-  }
   </script>
 </body>
 </html>

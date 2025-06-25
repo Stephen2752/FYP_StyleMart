@@ -27,6 +27,14 @@
     .preview-container input[type="file"] { flex-grow: 1; }
     .preview-container button { width: 30px; height: 30px; font-weight: bold; font-size: 18px; line-height: 18px; padding: 0; }
    
+
+    
+.input-container,
+.category-entry,
+.preview-container,
+#sizeStockWrapper > div {
+  margin-bottom: 20px;
+}
     /* Topbar */
     .topbar {
     display: flex;
@@ -122,15 +130,17 @@
     height: 1rem;
     }
 
-    .textarea-style {
+.textarea-style {
   padding: 1rem;
   font-size: 0.875rem;
   line-height: 1.25rem;
   width: 100%;
+  height: 100px; /* 改短 */
   border-radius: 0.5rem;
   border: 1px solid #e5e7eb;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   resize: vertical;
+  box-sizing: border-box;
 }
 
 /* From Uiverse.io by suda-code */ 
@@ -138,7 +148,7 @@
   padding: 12.5px 30px;
   border: 0;
   border-radius: 100px;
-  background-color: #2ba8fb;
+  background-color: #15d62f;
   color: #ffffff;
   font-weight: Bold;
   transition: all 0.5s;
@@ -146,7 +156,7 @@
 }
 
 .create-product:hover {
-  background-color: #6fc5ff;
+  background-color: #0f9b22;
   box-shadow: 0 0 20px #6fc5ff50;
   transform: scale(1.1);
 }
@@ -158,6 +168,43 @@
   box-shadow: none;
   transform: scale(0.98);
 }
+
+/* Unified secondary button style */
+.btn-secondary {
+  padding: 8px 16px;
+  background-color: #2ba8fb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background 0.3s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #1e90ff;
+}
+
+/* For + / - small icon buttons */
+.preview-container button {
+  background-color: #2ba8fb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.preview-container button:hover {
+  background-color: #1e90ff;
+}
+
   </style>
 </head>
 <body>
@@ -177,7 +224,7 @@
 
       <label>Category</label>
       <div id="categoryWrapper"></div>
-      <button type="button" onclick="addCategoryField()">+ ADD Category</button>
+      <button type="button" onclick="addCategoryField()" class="btn-secondary">+ ADD Category</button>
 
       <div class="category-list" id="selectedCategories"></div>
       <input type="hidden" name="categories_json" id="categoryInput" />
@@ -187,6 +234,7 @@
         <input placeholder="Price" type="number" name="price" id="price" step="0.01" required>
       </div>
 
+      <label>Description</label>
       <div class="input-container">
         <textarea placeholder="Description" name="description" id="description" required class="textarea-style"></textarea>
       </div>
@@ -207,7 +255,7 @@
 
       <label>Sizes & Stock</label>
       <div id="sizeStockWrapper"></div>
-      <button type="button" onclick="addSizeStockRow()">+ ADD Size/Stock</button>
+      <button type="button" onclick="addSizeStockRow()" class="btn-secondary">+ ADD Size/Stock</button>
 
       <div style="display: flex; justify-content: flex-end;">
         <button type="submit" class="create-product">Create Product</button>
@@ -235,8 +283,8 @@
           <option value="Shoes">Shoes</option>
           <option value="Pants">Pants</option>
         </select>
-        <button type="button" onclick="confirmCategory(this)">Confirm</button>
-        <button type="button" onclick="removeCategory(this)">Remove</button>
+        <button type="button" onclick="confirmCategory(this)" class="btn-secondary">Confirm</button>
+        <button type="button" onclick="removeCategory(this)" class="btn-secondary">Remove</button>
       `;
       wrapper.appendChild(div);
     }

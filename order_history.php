@@ -52,77 +52,186 @@ foreach ($transactions as $t) {
     <meta charset="UTF-8">
     <title>Order History</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f4f4f4;
-            padding: 20px;
-        }
-        .order-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-        .order-card {
-            background: white;
-            border: 1px solid #ccc;
-            padding: 15px;
-            border-radius: 6px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .item-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-top: 1px solid #eee;
-        }
-        .order-info {
-            flex: 1;
-            margin-left: 15px;
-        }
-        .order-status {
-            font-weight: bold;
-            padding: 5px 10px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-        .status-pending { background-color: orange; color: white; }
-        .status-shipped { background-color: #3498db; color: white; }
-        .status-received { background-color: green; color: white; }
-        .status-canceled { background-color: red; color: white; }
-        .product-image { width: 80px; height: auto; }
-        .receive-btn {
-            padding: 5px 10px;
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-        .receive-btn:disabled {
-            background-color: grey;
-            cursor: not-allowed;
-        }
-        .back-btn {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            cursor: pointer;
-            color: #000000;
-            font-weight: bold;
-        }
-        .back-btn img {
-            width: 16px;
-            height: auto;
-            margin-right: 6px;
-        }
+body {
+margin: 0;
+font-family: 'Inter', sans-serif;
+background: #f2f2f2;
+color: #333;
+display: flex;
+flex-direction: column;
+min-height: 100vh; /* full viewport height */
+margin: 0;
+}
+
+.topbar {
+  display: flex;
+  justify-content: flex-start; /* logo靠左 */
+  align-items: center;
+  padding: 12px 20px;
+  background: #3e3e3e;
+  color: white;
+  height: 42px;
+}
+
+.topbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.logo a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.order-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  padding: 20px;
+  width: 100%;
+  max-width: 750px;
+  box-sizing: border-box;
+}
+
+.order-status {
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.status-pending    { background-color: orange;   color: white; }
+.status-shipped    { background-color: #3498db; color: white; }
+.status-received   { background-color: green;    color: white; }
+.status-canceled   { background-color: red;      color: white; }
+
+.item-row {
+  display: flex;
+  border-top: 1px solid #eee;
+  padding: 15px 0;
+  gap: 15px;
+}
+
+.product-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.order-info {
+  flex: 1;
+}
+
+.order-info h4 {
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.order-info p {
+  margin: 3px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.summary-info {
+  margin-top: 15px;
+  font-size: 15px;
+}
+
+.address-section {
+  margin-top: 12px;
+}
+
+.address-dropdown {
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.save-address-btn {
+  padding: 6px 10px;
+  margin-left: 10px;
+  background-color: #2980b9;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.receive-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.receive-btn {
+  padding: 8px 16px;
+  background-color: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.receive-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.back-btn {
+display: flex;          /* 并排显示 */
+align-items: center;    /* 垂直居中 */
+margin-bottom: 15px;
+cursor: pointer;
+color: #000000;
+font-weight: bold;      /* 可选：让文字更醒目 */
+}
+
+.back-btn img {
+width: 16px;            /* 根据需要调整图片大小 */
+height: auto;
+margin-right: 6px;      /* 图片和文字的间距 */
+}
+
+.back-btn a {
+color: rgb(0, 0, 0);
+text-decoration: none;
+}
+
+.container {
+padding: 20px;
+}
+
     </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+  </header>
 
-<h2>Your Order History</h2>
+<div class="container">
+    
 <div class="back-btn"><a href="profile.php"><img src="uploads/previous.png" alt="Back">Back</a></div>
+<h2>Your Order History</h2>
 
 <div class="order-container">
 <?php foreach ($allOrders as $order): ?>
@@ -178,14 +287,17 @@ foreach ($transactions as $t) {
                     $order['status'] === 'canceled' ? 'Canceled' : 'Mark as Received'
                 );
             ?>
-            <button class="receive-btn" <?= $isDisabled ? 'disabled' : '' ?>>
-                <?= $btnText ?>
-            </button>
+            <div class="receive-btn-wrapper">
+                <button class="receive-btn" <?= $isDisabled ? 'disabled' : '' ?>>
+                    <?= $btnText ?>
+                </button>
+            </div>
+
         </div>
     </div>
 <?php endforeach; ?>
 </div>
-
+</div>
 <script>
 document.querySelectorAll('.receive-btn').forEach(button => {
     button.addEventListener('click', function () {

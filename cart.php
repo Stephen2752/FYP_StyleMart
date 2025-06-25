@@ -157,7 +157,7 @@
       margin: 0 auto 15px;
     }
     #payment-modal button {
-      background-color: #4CAF50;
+      background-color: #2ba8fb;
       color: white;
       border: none;
       padding: 10px 15px;
@@ -206,6 +206,19 @@ $addr_stmt = $pdo->prepare("SELECT * FROM user_address WHERE user_id = ? ORDER B
 $addr_stmt->execute([$user_id]);
 $addresses = $addr_stmt->fetchAll(PDO::FETCH_ASSOC);
 
+?>
+<header class="topbar">
+  <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+</header>
+<h2>Your Shopping Cart</h2>
+<div class="top-action-bar">
+  <div class="back-btn">
+    <a href="MainPage.php"><img src="uploads/previous.png" alt="Back">Back</a>
+  </div>
+  <button id="delete-selected">🗑️</button>
+</div>
+
+<?php
 if (!$cart_items) {
     echo "<p>Your cart is empty.</p>";
     exit;
@@ -218,16 +231,6 @@ foreach ($cart_items as $item) {
     $grouped[$item['seller_id']]['items'][] = $item;
 }
 ?>
-<header class="topbar">
-  <div class="logo"><a href="MainPage.php">StyleMart</a></div>
-</header>
-<h2>Your Shopping Cart</h2>
-<div class="top-action-bar">
-  <div class="back-btn">
-    <a href="MainPage.php"><img src="uploads/previous.png" alt="Back">Back</a>
-  </div>
-  <button id="delete-selected">🗑️</button>
-</div>
 
 <div id="cart-wrapper">
 <?php foreach ($grouped as $seller_id => $group): ?>

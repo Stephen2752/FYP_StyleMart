@@ -21,19 +21,133 @@ $stmt->execute([$seller_id]);
 $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<h2>Seller Order History (Completed Orders)</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order History</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9f9f9;
+      color: #333;
+    }
 
-<table border="1" cellpadding="8" cellspacing="0">
-    <tr>
-        <th>ID</th><th>Buyer</th><th>Total Price</th><th>Status</th><th>Completed At</th>
-    </tr>
-    <?php foreach ($transactions as $t): ?>
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 12px 20px;
+      background: #3e3e3e;
+      color: white;
+      height: 42px;
+    }
+
+    .topbar .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .topbar .logo a {
+      color: white;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .back-btn img {
+      width: 16px;
+      height: auto;
+      margin-right: 6px;
+    }
+
+    .wrapper {
+      max-width: 1000px;
+      margin: 0 auto 40px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    table th, table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #f0f0f0;
+    }
+
+    table tr:hover {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="topbar">
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
+  </header>
+
+  <!-- Back Button Outside -->
+  <div class="container">
+    <a href="sellerlog.php" class="back-btn">
+      <img src="uploads/previous.png" alt="Back">Back
+    </a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="wrapper">
+    <h2>Seller Order History (Completed Orders)</h2>
+
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Buyer</th>
+        <th>Total Price (RM)</th>
+        <th>Status</th>
+        <th>Completed At</th>
+      </tr>
+      <?php foreach ($transactions as $t): ?>
         <tr>
-            <td><?= $t['transaction_id'] ?></td>
-            <td><?= htmlspecialchars($t['buyer_name']) ?></td>
-            <td>RM <?= number_format($t['total_amount'], 2) ?></td>
-            <td><?= htmlspecialchars($t['status']) ?></td>
-            <td><?= htmlspecialchars($t['transaction_date']) ?></td>
+          <td><?= $t['transaction_id'] ?></td>
+          <td><?= htmlspecialchars($t['buyer_name']) ?></td>
+          <td><?= number_format($t['total_amount'], 2) ?></td>
+          <td><?= htmlspecialchars($t['status']) ?></td>
+          <td><?= htmlspecialchars($t['transaction_date']) ?></td>
         </tr>
-    <?php endforeach; ?>
-</table>
+      <?php endforeach; ?>
+    </table>
+  </div>
+
+</body>
+</html>
