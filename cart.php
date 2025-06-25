@@ -164,6 +164,15 @@
       border-radius: 6px;
       cursor: pointer;
     }
+    .cart-item.sold-out {
+  background-color: #ddd;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.cart-item.sold-out * {
+  pointer-events: none;
+}
+
   </style>
 </head>
 <body>
@@ -180,7 +189,7 @@ $user_id = $_SESSION['user_id'];
 
 // Fetch cart items
 $stmt = $pdo->prepare("
-    SELECT c.cart_id, c.quantity, c.size, p.product_name, p.price, 
+    SELECT c.cart_id, c.quantity, c.size, p.product_name, p.price, p.status,
        (SELECT pi.image_path FROM product_image pi WHERE pi.product_id = p.product_id ORDER BY pi.image_id ASC LIMIT 1) AS image_path,
        p.product_id,
        u.username AS seller, u.user_id AS seller_id, u.qrcode
@@ -227,7 +236,8 @@ foreach ($cart_items as $item) {
       Seller: <a href="seller_info.php?seller_id=<?= $seller_id ?>" class="seller-link"><?= htmlspecialchars($group['seller']) ?></a>
     </h3>
     <?php foreach ($group['items'] as $item): ?>
-      <div class="cart-item" data-cart-id="<?= $item['cart_id'] ?>">
+      <?php $isSoldOut = $item['status'] === 'Sold Out'; ?>
+      <div class="cart-item <?= $isSoldOut ? 'sold-out' : '' ?>" data-cart-id="<?= $item['cart_id'] ?>">
         <a href="product.php?id=<?= $item['product_id'] ?>">
           <img src="<?= htmlspecialchars($item['image_path']) ?>" alt="Product Image" class="cart-image">
         </a>
@@ -239,7 +249,7 @@ foreach ($cart_items as $item) {
           <p>Total: RM <?= number_format($item['price'] * $item['quantity'], 2) ?></p>
         </div>
         <div class="cart-actions">
-          <input type="checkbox" class="cart-item-checkbox" data-seller-id="<?= $seller_id ?>">
+          <input type="checkbox" class="cart-item-checkbox" data-seller-id="<?= $seller_id ?>" <?= $isSoldOut ? 'disabled' : '' ?>>
         </div>
       </div>
     <?php endforeach; ?>

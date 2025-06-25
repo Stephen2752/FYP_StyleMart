@@ -150,7 +150,7 @@ if (!$seller) {
                 $price = number_format($product['price'], 2);
 
                 echo "
-                <a href='product.php?id={$product['product_id']}' class='product-card'>
+                <a href='admin_product.php?id={$product['product_id']}' class='product-card'>
                     <img src='{$imagePath}' alt='Product Image'>
                     <p>{$name}</p>
                     <p class='price'>RM{$price}</p>

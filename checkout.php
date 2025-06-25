@@ -50,6 +50,30 @@ foreach ($cart_ids as $cart_id) {
         'quantity' => $item['quantity'],
         'price' => $item['price']
     ];
+
+    // Check if there is enough stock for all cart items (combined by product_id + size)
+$stockCheck = [];
+
+foreach ($cartDetails as $item) {
+    $key = $item['product_id'] . '_' . $item['size'];
+    if (!isset($stockCheck[$key])) {
+        // Get current stock from DB
+        $stmt = $pdo->prepare("SELECT quantity FROM product_stock WHERE product_id = ? AND size = ?");
+        $stmt->execute([$item['product_id'], $item['size']]);
+        $stockCheck[$key] = (int)$stmt->fetchColumn();
+    }
+
+    $stockCheck[$key] -= $item['quantity'];
+
+    if ($stockCheck[$key] < 0) {
+        echo json_encode([
+            'success' => false,
+            'error' => 'Insufficient stock for this product'
+        ]);
+        exit;
+    }
+}
+
 }
 
 // Insert transaction

@@ -19,10 +19,10 @@ if (!$product) {
     exit;
 }
 
-// Fetch product image
-$stmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ? ORDER BY image_id ASC LIMIT 1");
+// Fetch all product images
+$stmt = $pdo->prepare("SELECT image_path FROM product_image WHERE product_id = ? ORDER BY image_id ASC");
 $stmt->execute([$product_id]);
-$image = $stmt->fetchColumn();
+$images = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // Fetch product stock
 $stmt = $pdo->prepare("SELECT size, quantity FROM product_stock WHERE product_id = ?");
@@ -71,18 +71,20 @@ $sales = $stmt->fetchAll();
 </head>
 <body>
     <h2>Product Details (ID: <?= $product_id ?>)</h2>
-    <img src="<?= htmlspecialchars($image ?? 'default.png') ?>" alt="Product Image">
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+    <?php foreach ($images as $img): ?>
+        <img src="<?= htmlspecialchars($img) ?>" alt="Product Image" style="max-width: 200px; height: auto; border: 1px solid #ccc;">
+    <?php endforeach; ?>
+    </div>
     <p><strong>Name:</strong> <?= htmlspecialchars($product['product_name']) ?></p>
     <p><strong>Price:</strong> RM<?= number_format($product['price'], 2) ?></p>
     <p><strong>Status:</strong> <?= htmlspecialchars($product['status']) ?></p>
     <p><strong>Seller:</strong> <?= htmlspecialchars($product['username']) ?></p>
 
     <h3>Stock Info:</h3>
-    <ul>
         <?php foreach ($stock as $s): ?>
             <li>Size <?= htmlspecialchars($s['size']) ?>: <?= $s['quantity'] ?> pcs</li>
         <?php endforeach; ?>
-    </ul>
 
     <form method="POST" action="ban_product.php">
         <input type="hidden" name="product_id" value="<?= $product_id ?>">
