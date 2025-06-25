@@ -788,6 +788,9 @@ function displayStars($rate) {
   cursor: not-allowed;
 }
 
+.add-to-favorite{
+  margin-bottom: 53px;
+}
   </style>
 </head>
 <body>
