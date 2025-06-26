@@ -205,6 +205,155 @@
   background-color: #1e90ff;
 }
 
+@media (max-width: 768px) {
+  /* 容器缩进 */
+  .form-container {
+    padding: 16px;
+    box-shadow: none;
+    border: none;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  /* 顶部按钮对齐 */
+  .back-btn {
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  /* 分类区域（category）调整为纵向 */
+  .category-entry {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .category-entry select,
+  .category-entry button {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  #selectedCategories span {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+  }
+
+.preview-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+  margin-top: 10px;
+}
+
+.preview-container input[type="file"] {
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.preview-container .button-group {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.preview-container button {
+  background-color: #2ba8fb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  cursor: pointer;
+  line-height: 32px;
+  text-align: center;
+}
+
+.preview-container .image-preview {
+  margin-left: 10px;
+}
+
+
+  .image-preview img {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  /* Size & Stock 输入字段垂直排列 */
+  .size-stock-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .size-stock-row input {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+
+  .size-stock-row button {
+    width: 100%;
+    height: 36px;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  /* Textarea 缩短高度 */
+  .textarea-style {
+    height: 80px;
+  }
+
+  /* 提交按钮右对齐 */
+  .form-container form > div[style*="justify-content: flex-end"] {
+    justify-content: center !important;
+  }
+
+  .create-product {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 10px;
+  }
+
+  .btn-secondary {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  label {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .image-preview img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+}
+
   </style>
 </head>
 <body>

@@ -38,6 +38,7 @@ $stocks = $stock_stmt->fetchAll();
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Product</title>
   <style>
     body {
@@ -199,6 +200,72 @@ $stocks = $stock_stmt->fetchAll();
       font-size: 18px;
       margin-left: 8px;
     }
+
+    @media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  form {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  button, .update-btn, .delete-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+    margin: 10px 0 0 0;
+  }
+
+  img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .size-stock-row,
+  .category-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .remove-btn {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .topbar .logo a {
+    font-size: 16px;
+  }
+
+  .topbar {
+    padding: 10px;
+  }
+}
+
   </style>
 </head>
 <body>

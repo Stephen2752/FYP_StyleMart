@@ -36,6 +36,7 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order Details</title>
   <style>
     body {
@@ -133,6 +134,42 @@ $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
     button:hover {
       background-color: #1e40af;
     }
+
+    @media (max-width: 768px) {
+  .wrapper {
+    padding: 12px;
+  }
+
+  h2, h3 {
+    font-size: 16px;
+  }
+
+  p {
+    font-size: 13px;
+    word-wrap: break-word;
+  }
+
+  table {
+    font-size: 12px;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  table th, table td {
+    padding: 8px;
+    white-space: normal;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 8px 14px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+  }
+}
+
   </style>
 </head>
 <body>

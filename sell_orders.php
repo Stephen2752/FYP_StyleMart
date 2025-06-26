@@ -26,6 +26,7 @@ $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Orders</title>
   <style>
     body {
@@ -132,6 +133,36 @@ $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .btn-details:hover {
       background-color: #3730a3;
     }
+
+@media (max-width: 768px) {
+  table {
+    font-size: 12px;
+    table-layout: fixed;
+    word-wrap: break-word;
+  }
+
+  table th, table td {
+    padding: 8px;
+    white-space: normal;
+  }
+
+  .btn-details {
+    font-size: 11px;
+    padding: 4px 8px;
+    display: inline-block;
+    text-align: right;
+    float: right;
+  }
+
+  .wrapper {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -163,12 +194,12 @@ $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
       </tr>
       <?php foreach ($transactions as $t): ?>
         <tr>
-          <td><?= $t['transaction_id'] ?></td>
-          <td><?= htmlspecialchars($t['buyer_name']) ?></td>
-          <td><?= number_format($t['total_amount'], 2) ?></td>
-          <td><?= htmlspecialchars($t['payment_status']) ?></td>
-          <td><?= htmlspecialchars($t['status']) ?></td>
-          <td>
+          <td data-label="ID"><?= $t['transaction_id'] ?></td>
+          <td data-label="Buyer"><?= htmlspecialchars($t['buyer_name']) ?></td>
+          <td data-label="Total Price (RM)"><?= number_format($t['total_amount'], 2) ?></td>
+          <td data-label="Payment"><?= htmlspecialchars($t['payment_status']) ?></td>
+          <td data-label="Status"><?= htmlspecialchars($t['status']) ?></td>
+          <td data-label="Actions">
             <a href="sell_order_details.php?id=<?= $t['transaction_id'] ?>" class="btn-details">Details</a>
           </td>
         </tr>

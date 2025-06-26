@@ -52,6 +52,7 @@ $qrcodeIsNull = empty($user['qrcode']);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Setup</title>
   <style>
     body {
@@ -232,6 +233,88 @@ $qrcodeIsNull = empty($user['qrcode']);
     .btn-secondary:hover {
       background-color: #4B5563;
     }
+
+    @media (max-width: 768px) {
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+
+  .topbar .logo a {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .back-btn img {
+    width: 14px;
+    margin-right: 4px;
+  }
+
+
+  .container {
+    padding: 12px;
+  }
+
+  .form-container {
+    padding: 20px;
+    margin: 20px 10px;
+    border-radius: 10px;
+  }
+
+  form input[type="text"],
+  form input[type="file"],
+  form input[type="submit"],
+  .btn-action {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  form input[type="submit"] {
+    padding: 12px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  #preview {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .action-buttons {
+    max-width: 100%;
+    padding: 0 10px;
+  }
+
+  .btn-action {
+    font-size: 15px;
+    padding: 12px;
+  }
+
+  .done-message p {
+    font-size: 16px;
+  }
+
+  form input[type="text"]#phone {
+  max-width: 250px;
+}
+}
+
   </style>
 </head>
 <body>

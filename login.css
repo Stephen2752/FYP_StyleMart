@@ -217,3 +217,34 @@ justify-content: center;
 align-items: center;
 margin-bottom: 120px;
 }
+
+@media (max-width: 768px) {
+  .form {
+    margin-top: 40px;
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 90vw;
+  }
+
+  .input-container input,
+  .submit {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .back-btn {
+    font-size: 0.9rem;
+  }
+
+  .topbar .logo {
+    font-size: 18px;
+  }
+
+  .form-title {
+    font-size: 1.1rem;
+  }
+}

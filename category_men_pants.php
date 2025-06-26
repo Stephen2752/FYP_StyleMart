@@ -19,6 +19,89 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
   <link rel="stylesheet" href="category.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter&display=swap">
+    <style>
+    @media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .topbar {
+    background: #3e3e3e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .topbar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .search-wrapper {
+    position: relative;
+    flex: 1;
+    margin: 0 10px;
+    max-width: 100%;
+  }
+
+  .icons {
+    display: flex;
+    gap: 2px;
+    font-size: 18px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #5f5f5f;
+    color: white;
+    z-index: 9999;
+    border-radius: 5px;
+    margin-top: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 10px;
+    gap: 20px;
+  }
+
+  .product-card {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .footer-section {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
+  </style>
 </head>
 <body>
 <div class="page-wrapper">

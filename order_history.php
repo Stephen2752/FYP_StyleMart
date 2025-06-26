@@ -50,6 +50,7 @@ foreach ($transactions as $t) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order History</title>
     <style>
 body {
@@ -219,6 +220,86 @@ text-decoration: none;
 
 .container {
 padding: 20px;
+}
+
+@media (max-width: 768px) {
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+
+  .topbar .logo a {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .back-btn img {
+    width: 14px;
+    margin-right: 4px;
+  }
+
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .order-card {
+    padding: 16px;
+    margin: 0 10px;
+  }
+
+  .item-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+  }
+
+  .order-info h4 {
+    font-size: 16px;
+  }
+
+  .order-info p {
+    font-size: 14px;
+  }
+
+  .receive-btn,
+  .save-address-btn,
+  .address-dropdown {
+    width: 100%;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .receive-btn-wrapper {
+    justify-content: center;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .summary-info {
+    font-size: 14px;
+  }
 }
 
     </style>

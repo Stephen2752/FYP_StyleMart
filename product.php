@@ -203,31 +203,31 @@ function displayStars($rate) {
 
 
 
-  /* Topbar */
-  .topbar {
-    background: #3e3e3e;
-    color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 20px;
-  }
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+}
 
-  .topbar .logo {
-    font-size: 20px;
-    font-weight: bold;
-  }
+.topbar .logo {
+  font-size: 20px;
+  font-weight: bold;
+}
 
-  .topbar .logo a{
-    text-decoration: none;
-    color: white;
-  }
+.topbar .logo a {
+  text-decoration: none;
+  color: white;
+}
 
-  .icons .icon {
-    margin-left: 15px;
-    font-size: 20px;
-    cursor: pointer;
-  }
+.icons .icon {
+  margin-left: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 
   .product-container {
   padding: 20px;
@@ -323,11 +323,12 @@ function displayStars($rate) {
   }
 
 
-  .action-buttons {
+.action-buttons {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
-  }
+}
 
   .number-control {
   display: flex;
@@ -793,9 +794,135 @@ function displayStars($rate) {
   cursor: not-allowed;
 }
 
-.add-to-favorite{
+.add-to-favorite {
+  margin-bottom: 0;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: 0.3s;
+  height: 40px;
   margin-bottom: 53px;
 }
+
+.add-to-favorite:hover {
+  background-color: #ffecec;
+}
+
+@media (max-width: 768px) {
+  .topbar {
+    background: #3e3e3e;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .topbar .logo {
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .search-wrapper {
+    position: relative;
+    flex: 1;
+    margin: 0 10px;
+    max-width: 100%;
+  }
+
+  .icons {
+    display: flex;
+    gap: 2px;
+    font-size: 18px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-left: 4px;
+  }
+
+  .search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: #5f5f5f;
+    color: white;
+    z-index: 9999;
+    border-radius: 5px;
+    margin-top: 6px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+
+
+  .product-details {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .left-panel {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .left-panel img,
+  .slider {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .product-info-panel {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .title-price {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .number-control {
+    margin-top: 10px;
+  }
+
+  .right-panel {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .add-to-cart,
+  .add-to-favorite {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+
+
+  .store-name {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .comment-form textarea {
+    height: 60px;
+  }
+}
+
   </style>
 </head>
 <body>
@@ -823,6 +950,7 @@ function displayStars($rate) {
     <span class="icon" onclick="checkLogin('favorite.php')">❤️</span>
   </div>
 </header>
+
 
 <main class="product-container">
   <div class="back-btn"><a href="MainPage.php"><img src="uploads\previous.png" alt="Back">Back</a></div>

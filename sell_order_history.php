@@ -25,6 +25,7 @@ $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Order History</title>
   <style>
     body {
@@ -109,6 +110,37 @@ $transactions = $stmt->fetchAll(PDO::FETCH_ASSOC);
     table tr:hover {
       background-color: #f9f9f9;
     }
+
+    @media (max-width: 768px) {
+  .wrapper {
+    padding: 10px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  table {
+    font-size: 12px;
+    table-layout: fixed;
+    word-break: break-word;
+  }
+
+  table th, table td {
+    padding: 8px;
+    white-space: normal;
+  }
+
+  .container,
+  .back-btn {
+    font-size: 14px;
+  }
+
+  .back-btn img {
+    width: 14px;
+  }
+}
+
   </style>
 </head>
 <body>

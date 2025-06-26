@@ -25,115 +25,193 @@ $notifications = $stmt->fetchAll();
 <head>
     <title>User Notifications</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f4f4;
-        }
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+}
 
-        .topbar {
-            background: #3e3e3e;
-            color: white;
-            height: 42px;
-            display: flex;
-            align-items: center;
-            padding: 12px 20px;
-        }
+/* Topbar 样式，统一高度与 Product Page 相同 */
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  height: 42px;
+}
 
-        .topbar .logo a {
-            color: white;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 20px;
-        }
+.topbar .logo a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 20px;
+}
 
-        .back-btn {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
-            margin-left: 20px;
-            cursor: pointer;
-        }
+/* 返回按钮样式 */
+.back-btn {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+}
 
-        .back-btn img {
-            width: 16px;
-            height: auto;
-            margin-right: 6px;
-        }
+.back-btn img {
+  width: 16px;
+  height: auto;
+  margin-right: 6px;
+}
 
-        .back-btn a {
-            color: #000000;
-            text-decoration: none;
-            font-weight: bold;
-        }
+.back-btn a {
+  color: #000000;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-        .container {
-            padding: 20px;
-        }
+/* 页面容器 */
+.container {
+  padding: 20px;
+}
 
-        .notification-container {
-            max-width: 800px;
-            margin: 30px auto;
-            background: white;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+/* 通知卡片容器 */
+.notification-container {
+  max-width: 800px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
 
-        h2 {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+/* 标题样式 */
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-        .notification {
-            background-color: #f9f9f9;
-            padding: 15px 20px;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-            border-radius: 8px;
-        }
+/* 每条通知样式 */
+.notification {
+  background-color: #f9f9f9;
+  padding: 15px 20px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
 
-        .notification.unread {
-            background-color: #fff9f4;
-            border-left: 5px solid #f39c12;
-            font-weight: bold;
-        }
+.notification.unread {
+  background-color: #fff9f4;
+  border-left: 5px solid #f39c12;
+  font-weight: bold;
+}
 
-        .notification small {
-            display: block;
-            margin-top: 6px;
-            color: #888;
-        }
+.notification small {
+  display: block;
+  margin-top: 6px;
+  color: #888;
+}
 
-        form {
-            display: inline;
-        }
+/* 按钮样式 */
+form {
+  display: inline;
+}
 
-        button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 6px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 5px;
-        }
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 5px;
+  font-size: 14px;
+}
 
-        button:hover {
-            background-color: #0056b3;
-        }
+button:hover {
+  background-color: #0056b3;
+}
 
-        em {
-            color: #555;
-            font-size: 0.9em;
-        }
+em {
+  color: #555;
+  font-size: 0.9em;
+}
 
-        .no-data {
-            text-align: center;
-            color: #777;
-        }
-    </style>
+.no-data {
+  text-align: center;
+  color: #777;
+}
+
+@media (max-width: 768px) {
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+
+  .topbar .logo a {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .back-btn img {
+    width: 14px;
+    margin-right: 4px;
+  }
+
+
+  /* 通知容器 */
+  .notification-container {
+    padding: 20px 16px;
+    margin: 16px;
+  }
+
+  /* 放大通知框 */
+  .notification {
+    padding: 20px 18px;
+    font-size: 16px;
+  }
+
+  .notification small {
+    font-size: 14px;
+  }
+
+  /* 放大按钮 */
+  button {
+    width: 100%;
+    padding: 14px;
+    font-size: 16px;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .no-data {
+    font-size: 16px;
+  }
+}
+
+</style>
+
 </head>
 <body>
 

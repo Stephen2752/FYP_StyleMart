@@ -31,6 +31,8 @@ function getColorFromUsername($username) {
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>My Profile</title>
   <style>
 body {
@@ -165,6 +167,76 @@ padding: 10px 20px;
 font-size: 16px;
 cursor: pointer;
 }
+
+@media (max-width: 768px) {
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+}
+
+
+  .topbar .logo a {
+    font-size: 18px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .back-btn {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .back-btn img {
+    width: 14px;
+    margin-right: 4px;
+  }
+
+  .profile-wrapper {
+    padding: 15px 10px;
+  }
+
+  .profile-box {
+    padding: 1.5rem 1rem;
+    width: 100%;
+  }
+
+  .profile-box h2 {
+    font-size: 20px;
+  }
+
+  .avatar-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 32px;
+  }
+
+  .profile-box p {
+    font-size: 14px;
+  }
+
+  .profile-box .button-group button {
+    font-size: 14px;
+    width: 100%;
+    padding: 10px;
+  }
+
+  .profile-box .button-group {
+    gap: 8px;
+  }
+
+  .profile-box a {
+    font-size: 14px;
+    display: block;
+    margin: 10px 0;
+  }
+}
+
   </style>
 </head>
 <body>

@@ -96,7 +96,8 @@ text-decoration: none;
     input[type="text"],
     input[type="email"],
     input[type="password"] {
-      width: 600px; /* 控制宽度变短 */
+      width: 100%;       /* ✅ 自动根据容器缩放 */
+      max-width: 600px;  /* ✅ 保持桌面最大宽度 */
       padding: 10px;
       margin-top: 5px;
       border: 1px solid #ccc;

@@ -35,6 +35,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>My Product List</title>
   <style>
     body {
@@ -163,6 +164,32 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     .btn-wrapper {
   display: flex;
   justify-content: flex-end; /* 让按钮靠右 */
+}
+  @media (max-width: 768px) {
+  .product-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .product-info {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .edit-btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .btn-wrapper {
+    justify-content: center;
+  }
 }
 
   </style>

@@ -263,7 +263,7 @@ flex: 1 1 250px; /* 把每个section的最小宽度提高到250px */
 max-width: 250px; /* 让文字一行容纳更多 */
 margin: 5px 10px;
 }
-%
+
 
 
 .footer h4 {
@@ -285,6 +285,140 @@ margin-top: 5px;
 width: 28px; /* 保持图标尺寸 */
 height: 28px;
 }
+
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+.topbar {
+  background: #3e3e3e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.topbar .logo {
+  font-size: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  margin: 0 10px;
+  max-width: 100%;
+}
+
+
+.icons {
+  display: flex;
+  gap: 2px;  /* 原本是 4px，现在只留 2px */
+  font-size: 18px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 4px;
+}
+
+
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #5f5f5f;
+  color: white;
+  z-index: 9999;  /* VERY important */
+  border-radius: 5px;
+  margin-top: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+
+
+
+/* --- Menu Bar --- */
+.menu-bar {
+  background: white;
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+  gap: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.menu-bar .dropdown {
+  position: relative;
+}
+
+.menu-bar button {
+  background: none;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+/* Dropdown content: fixed */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 120px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 9999;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #f2f2f2;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 10px;
+    gap: 20px;
+  }
+
+  .product-card {
+    width: 100%;
+  }
+
+  .footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .footer-section {
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
+
   </style> 
 </head>
 <body>
@@ -375,35 +509,28 @@ function searchProduct(keyword) {
     </section>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-section about">
-      <h4>About us</h4>
-      <p>Style Mart is your go-to destination for trendy, affordable fashion. We offer a wide selection of styles, brands, and sizes—so you can find the perfect look without breaking the bank. New arrivals drop regularly, keeping your wardrobe fresh and fabulous.</p>
+<footer class="footer">
+  <div class="footer-section about">
+    <h4>About us</h4>
+    <p>Style Mart is your go-to destination for trendy, affordable fashion. We offer a wide selection of styles, brands, and sizes—so you can find the perfect look without breaking the bank. New arrivals drop regularly, keeping your wardrobe fresh and fabulous.</p>
+  </div>
+  <div class="footer-section contact">
+    <h4>Contact</h4>
+    <p>012-121 2753 (Stephen)<br>012-123 6251 (Wen Hin)<br>012-112 2367 (Mun Kit)</p>
+  </div>
+  <div class="footer-section address">
+    <h4>Address</h4>
+    <p>Persiaran Multimedia, 63100<br>Cyberjaya, Selangor</p>
+  </div>
+  <div class="footer-section connect">
+    <h4>Connect With Us</h4>
+    <div class="social-icons">
+      <a href="https://www.facebook.com" target="_blank"><img src="uploads/fb.png" alt="Facebook"></a>
+      <a href="https://www.instagram.com" target="_blank"><img src="uploads/ig.png" alt="Instagram"></a>
+      <a href="https://www.x.com" target="_blank"><img src="uploads/twitter.png" alt="X"></a>
     </div>
-    <div class="footer-section contact">
-      <h4>Contact</h4>
-      <p>012-121 2753 (Stephen)<br>012-123 6251 (Wen Hin)<br>012-112 2367 (Mun Kit)</p>
-    </div>
-    <div class="footer-section address">
-      <h4>Address</h4>
-      <p>Persiaran Multimedia, 63100<br>Cyberjaya, Selangor</p>
-    </div>
-    <div class="footer-section connect">
-      <h4>Connect With Us</h4>
-      <div class="social-icons">
-        <a href="https://www.facebook.com" target="_blank">
-          <img src="uploads/fb.png" alt="Facebook">
-        </a>
-        <a href="https://www.instagram.com" target="_blank">
-          <img src="uploads/ig.png" alt="Instagram">
-        </a>
-        <a href="https://www.x.com" target="_blank">
-          <img src="uploads/twitter.png" alt="x">
-        </a>
-      </div>
-    </div>
-  </footer>
+  </div>
+</footer>
 
   <!-- Profile login check script -->
   <script>
