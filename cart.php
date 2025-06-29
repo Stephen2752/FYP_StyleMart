@@ -1,3 +1,47 @@
+<?php
+require 'db.php';
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.html');
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+
+// Fetch cart items
+$stmt = $pdo->prepare("
+    SELECT c.cart_id, c.quantity, c.size, p.product_name, p.price, p.status,
+       (SELECT pi.image_path FROM product_image pi WHERE pi.product_id = p.product_id ORDER BY pi.image_id ASC LIMIT 1) AS image_path,
+       p.product_id,
+       u.username AS seller, u.user_id AS seller_id, u.qrcode
+    FROM cart c
+    JOIN product p ON c.product_id = p.product_id
+    JOIN user u ON p.user_id = u.user_id
+    WHERE c.user_id = ?
+");
+$stmt->execute([$user_id]);
+$cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Fetch user addresses
+$addr_stmt = $pdo->prepare("SELECT * FROM user_address WHERE user_id = ? ORDER BY address_id ASC");
+$addr_stmt->execute([$user_id]);
+$addresses = $addr_stmt->fetchAll(PDO::FETCH_ASSOC);
+
+?>
+
+<?php
+if (!$cart_items) {
+    echo "<p>Your cart is empty.</p>";
+    exit;
+}
+
+$grouped = [];
+foreach ($cart_items as $item) {
+    $grouped[$item['seller_id']]['seller'] = $item['seller'];
+    $grouped[$item['seller_id']]['qrcode'] = $item['qrcode'];
+    $grouped[$item['seller_id']]['items'][] = $item;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -173,40 +217,60 @@
   pointer-events: none;
 }
 
+@media (max-width: 768px) {
+  #payment-modal {
+    top: 0;
+    left: 0;
+    transform: none;
+    width: 100vw;
+    height: 100vh;
+    max-width: none;
+    border-radius: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  #payment-modal img {
+    max-width: 100%;
+    height: auto;
+    max-height: 200px;
+    object-fit: contain;
+    margin: 0 auto 20px;
+  }
+
+  #payment-modal form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #shipping-address-dropdown,
+  #payment-modal input[type="file"],
+  #payment-modal button[type="submit"] {
+    width: 100%;
+    margin-bottom: 12px;
+    font-size: 16px;
+  }
+
+  #payment-modal button[type="submit"] {
+    padding: 12px;
+  }
+
+  #payment-modal button[onclick] {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    color: #555;
+  }
+}
+
+
   </style>
 </head>
 <body>
 
-<?php
-require 'db.php';
-session_start();
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.html');
-    exit();
-}
 
-$user_id = $_SESSION['user_id'];
-
-// Fetch cart items
-$stmt = $pdo->prepare("
-    SELECT c.cart_id, c.quantity, c.size, p.product_name, p.price, p.status,
-       (SELECT pi.image_path FROM product_image pi WHERE pi.product_id = p.product_id ORDER BY pi.image_id ASC LIMIT 1) AS image_path,
-       p.product_id,
-       u.username AS seller, u.user_id AS seller_id, u.qrcode
-    FROM cart c
-    JOIN product p ON c.product_id = p.product_id
-    JOIN user u ON p.user_id = u.user_id
-    WHERE c.user_id = ?
-");
-$stmt->execute([$user_id]);
-$cart_items = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Fetch user addresses
-$addr_stmt = $pdo->prepare("SELECT * FROM user_address WHERE user_id = ? ORDER BY address_id ASC");
-$addr_stmt->execute([$user_id]);
-$addresses = $addr_stmt->fetchAll(PDO::FETCH_ASSOC);
-
-?>
 <header class="topbar">
   <div class="logo"><a href="MainPage.php">StyleMart</a></div>
 </header>
@@ -218,19 +282,6 @@ $addresses = $addr_stmt->fetchAll(PDO::FETCH_ASSOC);
   <button id="delete-selected">🗑️</button>
 </div>
 
-<?php
-if (!$cart_items) {
-    echo "<p>Your cart is empty.</p>";
-    exit;
-}
-
-$grouped = [];
-foreach ($cart_items as $item) {
-    $grouped[$item['seller_id']]['seller'] = $item['seller'];
-    $grouped[$item['seller_id']]['qrcode'] = $item['qrcode'];
-    $grouped[$item['seller_id']]['items'][] = $item;
-}
-?>
 
 <div id="cart-wrapper">
 <?php foreach ($grouped as $seller_id => $group): ?>
