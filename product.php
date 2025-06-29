@@ -31,11 +31,6 @@ try {
     $rate = (int)$_POST['rate'];
     $comment_text = trim($_POST['comment_text']);
 
-    if (!$user_id) {
-        echo "You must log in to comment.";
-        exit;
-    }
-
     if ($comment_text !== '' && $rate >= 1 && $rate <= 5) {
         // ✅ Insert comment
         $stmt = $pdo->prepare("INSERT INTO comment (user_id, product_id, rate, comment_text, created_at) VALUES (?, ?, ?, ?, NOW())");

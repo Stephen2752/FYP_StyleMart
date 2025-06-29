@@ -3,8 +3,9 @@ session_start();
 require 'db.php';
 
 $user_id = $_SESSION['user_id'] ?? null;
-if (!$user_id) {
-    die("User not logged in.");
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.html');
+    exit();
 }
 
 $product_id = $_POST['product_id'] ?? null;
