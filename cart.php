@@ -219,51 +219,75 @@ foreach ($cart_items as $item) {
 
 @media (max-width: 768px) {
   #payment-modal {
-    top: 0;
-    left: 0;
-    transform: none;
-    width: 100vw;
-    height: 100vh;
-    max-width: none;
-    border-radius: 0;
+    top: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    padding: 30px 20px 20px !important;
     box-sizing: border-box;
-    padding: 20px;
     overflow-y: auto;
-  }
-
-  #payment-modal img {
-    max-width: 100%;
-    height: auto;
-    max-height: 200px;
-    object-fit: contain;
-    margin: 0 auto 20px;
-  }
-
-  #payment-modal form {
     display: flex;
     flex-direction: column;
-  }
-
-  #shipping-address-dropdown,
-  #payment-modal input[type="file"],
-  #payment-modal button[type="submit"] {
-    width: 100%;
-    margin-bottom: 12px;
-    font-size: 16px;
-  }
-
-  #payment-modal button[type="submit"] {
-    padding: 12px;
+    justify-content: flex-start;
+    align-items: center;
   }
 
   #payment-modal button[onclick] {
     position: absolute;
     top: 10px;
     right: 15px;
-    font-size: 24px;
-    color: #555;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+  }
+
+  #payment-modal #qrcode-area {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #payment-modal img {
+    max-width: 80%;
+    height: auto;
+    max-height: 160px;
+    object-fit: contain;
+  }
+
+  #payment-modal form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  #payment-modal select,
+  #payment-modal input[type="file"],
+  #payment-modal button[type="submit"] {
+    width: 90%;
+    font-size: 16px;
+    margin-bottom: 16px;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+
+  #payment-modal button[type="submit"] {
+    background-color: #2ba8fb;
+    color: white;
+    border: none;
   }
 }
+
+
 
 
   </style>
@@ -323,7 +347,7 @@ foreach ($cart_items as $item) {
   <form id="payment-form" enctype="multipart/form-data">
     <label for="shipping-address-dropdown">Select Address:</label><br>
     <select name="shipping_address" id="shipping-address-dropdown" required style="width: 100%; margin-bottom: 10px;"></select>
-
+      <label>Receipt:</label>
     <input type="file" name="receipt" required><br><br>
     <button type="submit">OK</button>
   </form>
