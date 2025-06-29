@@ -28,8 +28,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit;
         }
 
-        $stmt = $pdo->prepare("INSERT INTO user (username, password) VALUES (?, ?)");
-        $stmt->execute([$username, $hashed_password]);
+        $stmt = $pdo->prepare("INSERT INTO user (username, email, password) VALUES (?, ?, ?)");
+        $stmt->execute([$username, $email, $hashed_password]);
+
 
         header("Location: login.html");
         exit;

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("UPDATE user SET phone_number = ?, qrcode = ? WHERE user_id = ?");
             $stmt->execute([$phone, $targetPath, $user_id]);
 
-            echo "Seller info saved successfully! <a href='profile.php'>Return to Profile</a>";
+            header("Location: sellerlog.php");
             exit;
         } else {
             $error = "Error uploading QR code.";

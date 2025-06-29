@@ -6,9 +6,9 @@ include 'adminlayout.php';
 $totalProducts = $pdo->query("SELECT COUNT(*) FROM product")->fetchColumn();
 $availableProducts = $pdo->query("SELECT COUNT(*) FROM product WHERE status = 'Available'")->fetchColumn();
 
-$totalSellers = $pdo->query("SELECT COUNT(DISTINCT user_id) FROM product")->fetchColumn();
+$totalSellers = $pdo->query("SELECT COUNT(DISTINCT qrcode) FROM user")->fetchColumn();
 $totalUsers = $pdo->query("SELECT COUNT(*) FROM user")->fetchColumn();
-$totalBuyers = $totalUsers - $totalSellers;
+$totalBuyers = $totalUsers;
 
 $totalTransactions = $pdo->query("SELECT COUNT(*) FROM transaction")->fetchColumn();
 $totalComplaints = $pdo->query("SELECT COUNT(*) FROM complaint")->fetchColumn();
