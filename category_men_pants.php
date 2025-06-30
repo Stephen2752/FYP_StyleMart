@@ -5,7 +5,7 @@ $subCategory = "Pants";
 $fullCategory = "$mainCategory - $subCategory";
 require 'db.php';
 
-$stmt = $pdo->prepare("SELECT * FROM product WHERE category = ?");
+$stmt = $pdo->prepare("SELECT * FROM product WHERE category = ? AND status = 'available'");
 $stmt->execute([$fullCategory]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
