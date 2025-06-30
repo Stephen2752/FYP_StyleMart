@@ -19,6 +19,7 @@ if (!$seller) {
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Seller Products</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet" />
   <style>
@@ -108,12 +109,65 @@ if (!$seller) {
       font-weight: bold;
       color: #6a5acd;
     }
+
+@media (max-width: 768px) {
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .product-card {
+    width: calc(50% - 10px); /* 两张卡片并排 + 间距 */
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 8px;
+    background-color: white;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    transition: box-shadow 0.3s;
+  }
+
+  .product-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .product-card p {
+    margin: 6px 0;
+    font-size: 13px;
+  }
+
+  .product-card .price {
+    font-weight: bold;
+    color: #6a5acd;
+    font-size: 14px;
+  }
+
+  .back-btn {
+    justify-content: flex-start;
+    margin-bottom: 10px;
+  }
+
+  h2 {
+    font-size: 20px;
+    text-align: left;
+  }
+}
+
+
+
   </style>
 </head>
 <body>
 
   <div class="topbar">
-    <div class="logo"><a href="index.php">StyleMart</a></div>
+    <div class="logo"><a href="MainPage.php">StyleMart</a></div>
   </div>
 
   <div class="container">
