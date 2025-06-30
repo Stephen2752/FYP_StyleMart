@@ -30,10 +30,7 @@ $addresses = $addr_stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <?php
-if (!$cart_items) {
-    echo "<p>Your cart is empty.</p>";
-    exit;
-}
+
 
 $grouped = [];
 foreach ($cart_items as $item) {
@@ -305,8 +302,12 @@ foreach ($cart_items as $item) {
   </div>
   <button id="delete-selected">🗑️</button>
 </div>
-
-
+<?php
+if (!$cart_items) {
+    echo "<p>Your cart is empty.</p>";
+    exit;
+}
+?>
 <div id="cart-wrapper">
 <?php foreach ($grouped as $seller_id => $group): ?>
   <div class="cart-container" data-seller-id="<?= $seller_id ?>">
