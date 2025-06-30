@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare("UPDATE user SET phone_number = ?, qrcode = ? WHERE user_id = ?");
             $stmt->execute([$phone, $targetPath, $user_id]);
 
-            header("Location: sellerlog.php");
+            echo "<script>alert('Create Seller Account Success.'); window.location='sellerlog.php';</script>";
             exit;
         } else {
             $error = "Error uploading QR code.";

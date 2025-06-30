@@ -70,6 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     
-    header("Location: sellerlog.php");
+    echo "<script>alert('Create Product Success.'); window.location='sellerlog.php';</script>";
 }   
 ?>

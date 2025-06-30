@@ -52,7 +52,7 @@ try {
     }
 
     $pdo->commit();
-    header("Location: account_settings.php?success=1");
+    echo "<script>alert('Account setting updated.'); window.location='profile.php';</script>";
     exit;
 } catch (Exception $e) {
     $pdo->rollBack();

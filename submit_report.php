@@ -56,10 +56,12 @@ foreach ($admins as $admin) {
     ]);
 }
 
-echo "Report successful.";
+echo "<script>alert('Report successfully.'); window.location='MainPage.php';</script>";
+
 exit;
 
 } else {
-    echo "Invalid request.";
+
+    echo "<script>alert('Invalid request.'); window.location='MainPage.php';</script>";
 }
 ?>
