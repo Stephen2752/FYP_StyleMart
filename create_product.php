@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    echo "Product created successfully.";
-}
+    
+    header("Location: sellerlog.php");
+}   
 ?>

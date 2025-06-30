@@ -5,9 +5,24 @@ $subCategory = "Shoes";
 $fullCategory = "$mainCategory - $subCategory";
 require 'db.php';
 
-$stmt = $pdo->prepare("SELECT * FROM product WHERE category = ? AND status = 'available'");
-$stmt->execute([$fullCategory]);
+
+$stmt = $pdo->prepare("
+    SELECT * FROM product 
+    WHERE (
+        category = ? 
+        OR category LIKE ? 
+        OR category LIKE ? 
+        OR category LIKE ?
+    ) AND status = 'available'
+");
+$stmt->execute([
+    $fullCategory,
+    "$fullCategory,%",
+    "%, $fullCategory",
+    "%, $fullCategory,%"
+]);
 $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
